@@ -1,0 +1,22 @@
+@startuml
+autonumber
+actor "Utilizador Não Registado" as UserNR
+
+activate UserNR
+UserNR -> ":Sistema" : regista utilizador
+activate ":Sistema"
+":Sistema" --> UserNR : solicita dados utilizador \n(email, password, nome, NIF, método pagamento)
+deactivate ":Sistema"
+
+UserNR -> ":Sistema" : introduz os dados solicitados
+activate ":Sistema"
+":Sistema" --> UserNR : apresenta dados e solicita confirmação
+deactivate ":Sistema"
+
+UserNR -> ":Sistema" : confirma
+activate ":Sistema"
+":Sistema" --> UserNR : operação bem sucedida \ncria conta de utilizador
+deactivate ":Sistema"
+
+deactivate UserNR
+@enduml
