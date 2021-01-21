@@ -1,0 +1,24 @@
+User Story 1 “Pedir lista”
+As a … Programador da Jakim das Coives SA
+I want … uma lista dos lugares disponiveis no parque da API
+So that … para passar essa informação actualizada aos meus clientes
+
+User Story 2 “Efectuar reserva”
+As a … Programador da Jakim das Coives SA
+I want … efectuar uma reserva
+So that … para os meus clientes usufruirem dos serviços disponibilizados pelo parque
+
+User Story 3 “Verificar reservas duplicadas”
+As a … Programador da Jakim das Coives SA
+I want … garantir que não efectuo uma reserva duplicada para o mesmo lugar no mesmo período de tempo
+So that … para prestar um serviço de qualidade aos meus clientes
+
+User Story 4 “Cancelar reserva”
+As a … Programador da Jakim das Coives SA
+I want … cancelar uma reserva anterior
+So that … para que o lugar fique disponivel para outra reserva, e assim reembolsar o meu cliente
+
+User Story 5 “Actualizar reserva”
+As a … Programador da Jakim das Coives SA
+I want … poder alterar a data e/ou hora de uma reserva mantendo o mesmo lugar (caso esteja livre)
+So that … dar flexibilidade de horário aos meus clientes
