@@ -1,18 +1,19 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UserNR
+actor ":API.Parque" as API
 
 activate UserNR
-UserNR -> ":API" : regista empresa
-activate ":API"
-":API" --> UserNR : solicita dados utilizador \n(email, password, nomeEmpresa, NIF)
-deactivate ":API"
+UserNR -> "API" : regista empresa
+activate "API"
+"API" --> UserNR : solicita dados utilizador \n(email, password, nomeEmpresa, NIF)
+deactivate "API"
 
-UserNR -> ":API" : introduz os dados solicitados
-activate ":API"
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
 
-":API" --> UserNR : operação bem sucedida \ncria conta para a empresa
-deactivate ":API"
+"API" --> UserNR : operação bem sucedida \ncria conta para a empresa
+deactivate "API"
 
 deactivate UserNR
 @enduml

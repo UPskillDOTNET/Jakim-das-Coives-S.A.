@@ -1,7 +1,7 @@
 @startuml
 autonumber
 actor "Sistema Central" as SC
-participant "API.Parque" as SA
+participant ":API.Parque" as SA
 
 activate SC
 SC --> SA : pede para cancelar uma reserva(id)
