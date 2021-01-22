@@ -61,4 +61,25 @@ Fluxos Alternativos
 
 --------------------------------------------------------------------------------------------------
 
+SD
 
+    @startuml
+    utonumber
+    actor "Sistema Central" as SC
+    participant ":api/reservasController" as RC
+    participant ":context" as C
+
+    activate SC
+    SC --> RC : pede para editar uma reserva(reserva)
+    activate RC
+
+    RC --> C : Entry(reserva).State = EntityState.Modified
+    activate C
+
+    C --> RC : SaveChangesAsync()
+    deactivate C
+
+    RC --> SC: NoContent() operação bem sucedida
+    deactivate RC
+    deactivate SC
+    @enduml
