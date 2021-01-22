@@ -10,11 +10,7 @@ deactivate ":Sistema"
 
 UserNR -> ":Sistema" : introduz os dados solicitados
 activate ":Sistema"
-":Sistema" --> UserNR : apresenta dados e solicita confirmação
-deactivate ":Sistema"
 
-UserNR -> ":Sistema" : confirma
-activate ":Sistema"
 ":Sistema" --> UserNR : operação bem sucedida \ncria conta de utilizador
 deactivate ":Sistema"
 
