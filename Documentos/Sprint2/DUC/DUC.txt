@@ -4,10 +4,10 @@ left to right direction
 actor "Utilizador Não Registado" as unr
 actor "Sistema Central" as sc
 
-usecase "UC1\nRegistar utilizador da API do Parque" as UC1
-usecase "UC2\nEfectuar reserva" as UC2
-usecase "UC3\nCancelar reserva" as UC3
-usecase "UC4\nEditar reserva" as UC4
+usecase "UC1\nRegistar Utilizador da API do Parque" as UC1
+usecase "UC2\nEfectuar Reserva" as UC2
+usecase "UC3\nCancelar Reserva" as UC3
+usecase "UC4\nEditar Reserva" as UC4
 
 unr--> UC1
 sc --> UC2
