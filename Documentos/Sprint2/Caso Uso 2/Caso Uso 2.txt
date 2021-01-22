@@ -1,6 +1,6 @@
 @startuml
 autonumber
-actor "Utilizador" as UserNR
+actor "Sistema Central" as UserNR
 
 activate UserNR
 UserNR -> ":API.Parque" : Inicia Reserva
