@@ -17,14 +17,13 @@ SSD
     @startuml
     autonumber
 
-    participant "Sistema J.d.Coives" as jdc
-    participant "API Parque Privado" as api
+    Actor "Sistema Central J.d.Coives" as jdc
+    participant ":API.Parque" as api
 
     jdc -> api : Pede uma determinada reserva
     api -> jdc : Entrega dados ao sistema central
     jdc -> api : Envia as alterações
     api -> jdc : Valida e informa o sucesso da operação
-
     @enduml
 
 --------------------------------------------------------------------------------------------------
