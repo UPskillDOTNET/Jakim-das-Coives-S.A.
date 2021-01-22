@@ -18,7 +18,7 @@ deactivate U
 activate C
 
 
-C --> UC : saveChangesAsync()
+C --> UC : SaveChangesAsync()
 deactivate C
 
 UC --> UNR: CreatedAtAction()\noperação bem sucedida
