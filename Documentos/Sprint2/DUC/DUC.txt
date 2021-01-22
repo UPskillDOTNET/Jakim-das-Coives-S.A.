@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+
+actor "Programador Sistema Central" as psc
+actor "Sistema Central" as sc
+
+usecase "UC1\nRegistar utilizador da API do Parque" as UC1
+usecase "UC2\nEfectuar reserva" as UC2
+usecase "UC3\nCancelar reserva" as UC3
+usecase "UC4\nEditar reserva" as UC4
+
+psc --> UC1
+sc --> UC2
+sc --> UC3
+sc --> UC4
+@enduml
