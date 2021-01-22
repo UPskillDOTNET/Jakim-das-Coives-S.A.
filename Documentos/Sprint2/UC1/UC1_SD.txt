@@ -1,0 +1,25 @@
+@startuml
+autonumber
+actor "Utilizador Não Registado" as UNR
+participant ":api/usersController" as UC
+participant ":api/user" as U
+participant ":context" as C
+
+activate UNR
+UNR --> UC : solicita registo empresa
+activate UC
+
+UC --> C : postAsync(id)
+activate C
+
+C --> U : retorna user
+deactivate C
+activate U
+
+U --> UC : recebe user
+deactivate U
+
+UC --> UNR: Created()\noperação bem sucedida
+deactivate UC
+deactivate UNR
+@enduml
