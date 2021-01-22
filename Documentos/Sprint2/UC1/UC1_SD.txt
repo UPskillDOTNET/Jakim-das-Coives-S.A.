@@ -9,17 +9,19 @@ activate UNR
 UNR --> UC : solicita registo empresa
 activate UC
 
-UC --> C : postAsync(id)
-activate C
-
-C --> U : retorna user
-deactivate C
+UC --> U : Add(user)
 activate U
 
-U --> UC : recebe user
-deactivate U
 
-UC --> UNR: Created()\noperação bem sucedida
+U --> C : Add(user)
+deactivate U
+activate C
+
+
+C --> UC : saveChangesAsync()
+deactivate C
+
+UC --> UNR: CreatedAtAction()\noperação bem sucedida
 deactivate UC
 deactivate UNR
 @enduml
