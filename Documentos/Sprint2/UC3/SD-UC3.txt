@@ -1,0 +1,33 @@
+@startuml
+autonumber
+actor "Sistema Central" as SC
+participant "api/reservasController" as RC
+participant "api/reserva" as R
+participant "context" as C
+
+activate SC
+SC --> RC : pede para cancelar uma reserva(id)
+activate RC
+
+RC --> C : findAsync(id)
+activate C
+
+
+C --> R : retorna reserva
+deactivate C
+activate R
+
+
+R --> RC : recebe reserva
+deactivate R
+
+RC --> C : remove(reserva)
+activate C
+
+C --> RC : saveChangesAsync()
+deactivate C
+
+RC --> SC: NoContent() operação bem sucedida
+deactivate RC
+deactivate SC
+@enduml

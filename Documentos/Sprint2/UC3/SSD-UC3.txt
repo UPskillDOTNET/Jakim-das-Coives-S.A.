@@ -1,0 +1,13 @@
+@startuml
+autonumber
+actor "Sistema Central" as SC
+participant "Sistema API" as SA
+
+activate SC
+SC --> SA : pede para cancelar uma reserva(id)
+activate SA
+
+SA --> SC: operação bem sucedida
+deactivate SA
+deactivate SC
+@enduml
