@@ -9,22 +9,22 @@ activate SC
 SC --> RC : pede para cancelar uma reserva(id)
 activate RC
 
-RC --> C : findAsync(id)
+RC --> C : FindAsync(id)
 activate C
 
 
-C --> R : retorna reserva
+C --> R : return(reserva)
 deactivate C
 activate R
 
 
-R --> RC : recebe reserva
+R --> RC : recebe (reserva)
 deactivate R
 
-RC --> C : remove(reserva)
+RC --> C : Remove(reserva)
 activate C
 
-C --> RC : saveChangesAsync()
+C --> RC : SaveChangesAsync()
 deactivate C
 
 RC --> SC: NoContent() operação bem sucedida
