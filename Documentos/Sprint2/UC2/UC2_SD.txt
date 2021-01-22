@@ -6,24 +6,22 @@ participant ":api/reserva" as R
 participant ":context" as C
 
 activate SC
-SC --> RC : pede para fazer uma reserva(id)
+SC --> RC : solicita reserva
 activate RC
 
-RC --> C : postAsync(id)
-activate C
-
-
-C --> R : retorna reserva
-deactivate C
+RC --> R : Add(reserva)
 activate R
 
 
-R --> RC : recebe reserva
+R --> C : Add(reserva)
 deactivate R
+activate C
 
 
+C --> RC : SaveChangesAsync()
+deactivate C
 
-RC --> SC: Created() operação bem sucedida
+RC --> SC: CreatedAtAction()\noperação bem sucedida
 deactivate RC
 deactivate SC
 @enduml
