@@ -1,9 +1,9 @@
 @startuml
 autonumber
 actor "Sistema Central" as SC
-participant "api/reservasController" as RC
-participant "api/reserva" as R
-participant "context" as C
+participant ":api/reservasController" as RC
+participant ":api/reserva" as R
+participant ":context" as C
 
 activate SC
 SC --> RC : pede para cancelar uma reserva(id)
