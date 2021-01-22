@@ -1,0 +1,29 @@
+@startuml
+autonumber
+actor "Sistema Central" as SC
+participant ":api/reservasController" as RC
+participant ":api/reserva" as R
+participant ":context" as C
+
+activate SC
+SC --> RC : pede para fazer uma reserva(id)
+activate RC
+
+RC --> C : postAsync(id)
+activate C
+
+
+C --> R : retorna reserva
+deactivate C
+activate R
+
+
+R --> RC : recebe reserva
+deactivate R
+
+
+
+RC --> SC: Created() operação bem sucedida
+deactivate RC
+deactivate SC
+@enduml
