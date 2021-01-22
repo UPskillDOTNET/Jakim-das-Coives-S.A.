@@ -1,0 +1,22 @@
+@startuml
+autonumber
+actor "Sistema Central" as UserNR
+
+activate UserNR
+UserNR -> ":API.Parque" : Inicia Reserva
+activate ":API.Parque"
+":API.Parque" --> UserNR : solicita dados \n(email, password, nome, NIF, método pagamento)
+deactivate ":API.Parque"
+
+UserNR -> ":API.Parque" : introduz os dados solicitados se necessario
+activate ":API.Parque"
+":API.Parque" --> UserNR : apresenta dados e solicita confirmação do pagamento
+deactivate ":API.Parque"
+
+UserNR -> ":API.Parque" : confirma pagamento
+activate ":API.Parque"
+":API.Parque" --> UserNR : operação bem sucedida \ncria Reserva
+deactivate ":API.Parque"
+
+deactivate UserNR
+@enduml
