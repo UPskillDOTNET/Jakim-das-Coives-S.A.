@@ -1,0 +1,71 @@
+Caso de Uso Simples
+
+    - Editar uma reserva feita por um utilizador
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O sistema central procura o registo. A API devolve a reserva para o sistema editar.
+    O sistema altera os dados, enviando de volta à API para validação. A API altera a reserva
+    e informa o sistema da Jakim das Coives do sucesso da operação.
+
+--------------------------------------------------------------------------------------------------
+
+SSD
+
+    @startuml
+    autonumber
+
+    participant "Sistema J.d.Coives" as jdc
+    participant "API Parque Privado" as api
+
+    jdc -> api : Pede uma determinada reserva
+    api -> jdc : Entrega dados ao sistema central
+    jdc -> api : Envia as alterações
+    api -> jdc : Valida e informa o sucesso da operação
+
+    @enduml
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Sistema central da Jakim das Coives
+
+Partes Interessadas
+    - S.C: pretende alterar a reserva para satisfazer o pedido do seu cliente
+    - Parque Privado: pretende saber as alterações à reserva que o cliente fez, validando-as
+
+Pré-condições
+    - O cliente da J.d.C iniciou um processo de alteração
+
+Pós-condições
+    - As alterações são gravadas no sistema do parque Privado
+
+
+Fluxo Básico
+
+    1. O sistema pede o registo da reserva existente na api do parque Privado
+    2. A API devolve a reserva para edição pelo sistema
+    3. O sistema edita o objeto da reserva e envia à API para gravação
+    4. A API valida e informa do sucesso.
+
+Fluxos Alternativos
+
+    *a - O sistema solicita o cancelamento da alteração.
+	    O caso de uso acaba.
+
+    2a - A reserva não existe na API
+        A API informa o sistema de que a reserva não existe.
+        O sistema cancela a alteração.
+        O caso de uso acaba.
+
+    4a - As alterações estão inválidas
+        A API informa o sistema de que a reserva é inválida.
+        A API permite a correção dos dados em falta.
+        O sistema cancela a alteração.
+        O caso de uso acaba.
+
+
