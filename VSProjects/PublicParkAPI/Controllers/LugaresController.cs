@@ -10,7 +10,7 @@ using PublicParkAPI.Models;
 
 namespace PublicParkAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/lugares")]
     [ApiController]
     public class LugaresController : ControllerBase
     {
@@ -40,6 +40,16 @@ namespace PublicParkAPI.Controllers
             }
 
             return lugar;
+        }
+
+        // GET: api/lugares/available
+        [HttpGet("available/{time}")]
+        public async Task<ActionResult<IEnumerable<Lugar>>> GetAvailableLugaresAtTime(DateTime _time) //retornar lugares disponiveis a uma certa hora
+        {
+            throw new NotImplementedException();
+
+            var result = new List<Lugar>();
+
         }
 
         // PUT: api/Lugares/5
