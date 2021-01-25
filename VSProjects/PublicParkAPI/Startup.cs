@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using PublicParkAPI.Data;
 
 namespace PublicParkAPI
 {
@@ -32,6 +34,9 @@ namespace PublicParkAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicParkAPI", Version = "v1" });
             });
+
+            services.AddDbContext<PublicParkAPIContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("PublicParkAPIContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
