@@ -1,16 +1,18 @@
 @startuml
 left to right direction
 
-actor "Utilizador Não Registado" as unr
-actor "Sistema Central" as sc
+actor "Cliente Não Registado" as C
+actor "Cliente" as SC
 
-usecase "UC1\nRegistar utilizador na API do Parque" as UC1
+usecase "UC1\nRegistar Cliente na API do Parque" as UC1
 usecase "UC2\nEfectuar reserva" as UC2
 usecase "UC3\nCancelar reserva" as UC3
 usecase "UC4\nEditar reserva" as UC4
+usecase "UC5\nPesquisar disponibilidade" as UC5
 
-unr--> UC1
-sc --> UC2
-sc --> UC3
-sc --> UC4
+C --> UC1
+SC --> UC2
+SC --> UC3
+SC --> UC4
+SC --> UC5
 @enduml
