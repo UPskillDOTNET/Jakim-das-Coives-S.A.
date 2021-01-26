@@ -10,6 +10,9 @@ using PublicParkAPI.Models;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PublicParkAPI.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PublicParkAPI.Controllers
 {
@@ -18,19 +21,23 @@ namespace PublicParkAPI.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly PublicParkAPIContext _context;
         public UsersController(UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration, PublicParkAPIContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _context = context;
         }
-        [HttpGet]
-        public ActionResult<string> Get()
+
+        /*[HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return " << Controlador UsuariosController :: WebApiUsuarios >> ";
-        }
+            return await _context.Users.ToListAsync();
+        }*/
+
         [HttpPost("Criar")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
@@ -42,7 +49,7 @@ namespace PublicParkAPI.Controllers
             }
             else
             {
-                return BadRequest("Usuário ou senha inválidos");
+                return BadRequest("Utilizador ou password inválido");
             }
         }
         [HttpPost("Login")]
@@ -57,7 +64,7 @@ namespace PublicParkAPI.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "login inválido.");
+                ModelState.AddModelError(string.Empty, "Login inválido.");
                 return BadRequest(ModelState);
             }
         }
@@ -66,7 +73,7 @@ namespace PublicParkAPI.Controllers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.Email),
-                new Claim("meuValor", "oque voce quiser"),
+                new Claim("maneldospcs", "jakimdascoives"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
