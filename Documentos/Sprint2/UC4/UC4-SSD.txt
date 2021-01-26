@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Cliente" as UserNR
+actor ":API.Parque" as API
+
+activate UserNR
+UserNR -> "API" : inicia alteracao de reserva
+activate "API"
+"API" --> UserNR : solicita dados novos cliente \n(nif, lugarId, inicio, fim)
+deactivate "API"
+
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
+
+"API" --> UserNR : operação bem sucedida
+deactivate "API"
+
+deactivate UserNR
+@enduml

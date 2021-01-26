@@ -1,6 +1,6 @@
 Caso de Uso Simples
 
-    - Editar uma reserva feita por um utilizador
+    - Editar uma reserva feita por um cliente
     
 --------------------------------------------------------------------------------------------------
 
@@ -8,18 +8,6 @@ Formato Breve
 
     O sistema envia dados de uma reserva editados à API para validação. A API altera a reserva
     e informa o sistema da Jakim das Coives do sucesso da operação.
-
---------------------------------------------------------------------------------------------------
-
-SSD
-
-@startuml
-autonumber
-    Actor "Cliente" as CL
-    participant ":API.Parque" as api
-    CL -> api : Envia as alterações
-    api -> CL : Valida e informa o sucesso da operação
-@enduml
 
 --------------------------------------------------------------------------------------------------
 
@@ -60,25 +48,3 @@ Fluxos Alternativos
         O caso de uso acaba.
 
 --------------------------------------------------------------------------------------------------
-
-SD
-
-@startuml
-actor "Cliente" as CL
-    participant ":api/reservasController" as RC
-    participant ":context" as C
-
-    activate CL
-    CL --> RC : pede para editar uma reserva(reserva)
-    activate RC
-
-    RC --> C : Entry(reserva).State = EntityState.Modified
-    activate C
-
-    C --> RC : SaveChangesAsync()
-    deactivate C
-
-    RC --> CL: NoContent() operação bem sucedida
-    deactivate RC
-    deactivate CL
-@enduml
