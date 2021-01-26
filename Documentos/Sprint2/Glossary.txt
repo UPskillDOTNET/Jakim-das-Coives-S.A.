@@ -1,8 +1,8 @@
-Sistema Central : Nome genérico das aplicações que integram as APIs dos parques. São clientes do parque.
+Cliente : Nome genérico das aplicações que integram as APIs dos parques. São clientes do parque.
 
 API.Parque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
 
-Utilizador não registado: É o programador de um sistema central que pretende integrar a API no seu sistema e necessita de se registar na API para obter credenciais para a utilizar.
+Cliente não registado: É o programador de uma aplicação Web que pretende integrar a API dos parques no seu sistema e necessita de se registar na API para identificar as suas reservas no parque.
 
 api/reservasController : É o Controller da API responsável pelo CRUD das reservas.
 
@@ -10,6 +10,8 @@ api/reserva : É o Model da reserva na API.
 
 context : É o nome da base de dados da API.
 
-api/usersController : É o Controller da API responsável por registar e fazer login de utilizadores.
+api/clientesController : É o Controller da API responsável pelo CRUD de clientes.
 
-api/user : É o Model do user na API.
+api/cliente : É o Model do user na API.
+
+CRUD: Acrónimo de C (create), R (read), U (update) e D (delete)

@@ -1,0 +1,107 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class ClientesController {
+  +Get GetCliente()
+  +Get GetClienteById(nif)
+  +Post PostCliente()
+  +Put PutCliente(nif, cliente)
+  +Delete DeleteCliente(nif)
+}
+
+class Cliente {
+  -Int nif PK
+  -String nome
+  -String email
+}
+
+class ReservasController {
+  +Get GetReserva()
+  +Get GetReservaById(id)
+  +Post PostReserva()
+  +Put PutReserva(id, reserva)
+  +Delete DeleteReserva(id)
+}
+
+class Reserva {
+  -Int reservaId PK
+  -Int nifCliente FK
+  -Int lugarId FK
+  -DateTime inicio
+  -DateTime fim
+}
+
+class LugaresController {
+  +Get GetLugar()
+  +Get GetLugarById(id)
+  +Post PostLugar()
+  +Put PutLugar(id, lugar)
+  +Delete DeleteLugar(id)
+}
+
+class Lugar {
+  -Int lugarId PK
+  -Int parqueId FK
+  -Int numero
+  -String fila
+  -Int andar
+  -Double preco
+}
+
+class ParquesController {
+  +Get GetParque()
+  +Get GetParqueById(id)
+  +Post PostParque()
+  +Put PutParque(id, parque)
+  +Delete DeleteParque(id)
+}
+
+class Parque {
+  -Int parqueId PK
+  -String rua
+  -Int freguesiaId FK
+}
+
+class FreguesiasController {
+  +Get GetFreguesia()
+  +Get GetFreguesiaById(id)
+  +Post PostFreguesia()
+  +Put PutFreguesia(id, freguesia)
+  +Delete DeleteFreguesia(id)
+}
+
+class Freguesia {
+  -Int freguesiaId PK
+  -String nome
+}
+
+class Context {
+  -DbSet<Cliente> Clientes
+  -DbSet<Reserva> Reservas
+  -DbSet<Lugar> Lugares
+  -DbSet<Parque> Parques
+  -DbSet<Freguesia> Freguesias
+}
+
+ClientesController ..> Cliente
+ClientesController ..> Context
+ReservasController ..> Reserva
+ReservasController ..> Context
+LugaresController ..> Lugar
+LugaresController ..> Context
+ParquesController ..> Parque
+ParquesController ..> Context
+FreguesiasController ..> Freguesia
+FreguesiasController ..> Context
+
+Context "1" --> "0..*" Cliente: tem
+Context "1" --> "0..*" Reserva: tem
+Context "1" --> "0..*" Lugar: tem
+Context "1" --> "0..*" Parque: tem
+Context "1" --> "0..*" Freguesia: tem
+
+Reserva "0..*" --> "1" Cliente: tem
+Reserva "0..*" --> "1" Lugar: tem
+Lugar "1..*" --> "1" Parque: tem
+Parque "0..*" --> "1" Freguesia: tem
+@enduml
