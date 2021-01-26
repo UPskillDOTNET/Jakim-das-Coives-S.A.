@@ -1,12 +1,19 @@
 @startuml
 autonumber
-actor "Cliente" as CL
+actor "Cliente" as UserNR
+actor ":API.Parque" as API
 
-activate CL
-CL -> ":API.Parque" : Inicia Reserva
-activate ":API.Parque"
-":API.Parque" --> CL: Operação bem sucedida\ncCia Reserva
-deactivate ":API.Parque"
+activate UserNR
+UserNR -> "API" : Inicia reserva
+activate "API"
+"API" --> UserNR : solicita dados reserva \n(nif, lugarId, inicio, fim)
+deactivate "API"
 
-deactivate CL
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
+
+"API" --> UserNR : operação bem sucedida
+deactivate "API"
+
+deactivate UserNR
 @enduml

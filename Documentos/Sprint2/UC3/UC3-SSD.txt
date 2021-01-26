@@ -1,13 +1,19 @@
 @startuml
 autonumber
-actor "Cliente" as SC
-participant ":API.Parque" as SA
+actor "Cliente" as UserNR
+actor ":API.Parque" as API
 
-activate SC
-SC --> SA : pede para cancelar uma reserva(id)
-activate SA
+activate UserNR
+UserNR -> "API" : inicia cancelamento de reserva
+activate "API"
+"API" --> UserNR : solicita dados cliente \n(id)
+deactivate "API"
 
-SA --> SC: operação bem sucedida
-deactivate SA
-deactivate SC
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
+
+"API" --> UserNR : operação bem sucedida
+deactivate "API"
+
+deactivate UserNR
 @enduml
