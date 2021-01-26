@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace PublicParkAPI.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: api/Reservas
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetReserva()
@@ -28,6 +30,7 @@ namespace PublicParkAPI.Controllers
             return await _context.Reservas.Include(l => l.Lugar).Include(u => u.User).ToListAsync();
         }
 
+        [Authorize]
         // GET: api/Reservas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Reserva>> GetReserva(int id)
@@ -42,6 +45,7 @@ namespace PublicParkAPI.Controllers
             return reserva;
         }
 
+        [Authorize]
         // PUT: api/Reservas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -73,6 +77,7 @@ namespace PublicParkAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         // POST: api/Reservas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -84,6 +89,7 @@ namespace PublicParkAPI.Controllers
             return CreatedAtAction("GetReserva", new { id = reserva.ReservaId }, reserva);
         }
 
+        [Authorize]
         // DELETE: api/Reservas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReserva(int id)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace PublicParkAPI.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: api/Lugares
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
@@ -28,6 +30,8 @@ namespace PublicParkAPI.Controllers
             return await _context.Lugares.ToListAsync();
         }
 
+
+        [Authorize]
         // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
@@ -42,6 +46,7 @@ namespace PublicParkAPI.Controllers
             return lugar;
         }
 
+        [Authorize]
         // PUT: api/Lugares/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -73,6 +78,7 @@ namespace PublicParkAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         // POST: api/Lugares
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -84,6 +90,7 @@ namespace PublicParkAPI.Controllers
             return CreatedAtAction("GetLugar", new { id = lugar.LugarId }, lugar);
         }
 
+        [Authorize]
         // DELETE: api/Lugares/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
