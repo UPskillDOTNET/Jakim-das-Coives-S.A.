@@ -11,17 +11,23 @@ namespace PublicParkAPI.Models
     {
 
         public int ReservaId { get; set; }
-
-        [ForeignKey("Nif")]
-        public User User { get; set; }
-
-        [ForeignKey("LugarId")]
-        public Lugar Lugar { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Required]
+        [ForeignKey("User")]
+        [Range(typeof(int), "100000000", "999999999")]
+        public int UserNIf { get; set; }
+        [Required]
+        [ForeignKey("Lugar")]
+        public int LugarId { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
         public DateTime Inicio { get; set; }
-        public int Duracao { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
+        public DateTime Fim { get; set; }
 
+        public virtual User User { get; set; }
+        public virtual Lugar Lugar { get; set; }
     }
 }

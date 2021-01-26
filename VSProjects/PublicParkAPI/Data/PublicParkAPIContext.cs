@@ -14,10 +14,10 @@ namespace PublicParkAPI.Data
         {
         }
 
-        public DbSet<PublicParkAPI.Models.User> User { get; set; }
+        public DbSet<PublicParkAPI.Models.User> Users { get; set; }
 
-        public DbSet<PublicParkAPI.Models.Lugar> Lugar { get; set; }
+        public DbSet<PublicParkAPI.Models.Lugar> Lugares { get; set; }
 
-        public DbSet<PublicParkAPI.Models.Reserva> Reserva { get; set; }
+        public DbSet<PublicParkAPI.Models.Reserva> Reservas { get; set; }
     }
 }

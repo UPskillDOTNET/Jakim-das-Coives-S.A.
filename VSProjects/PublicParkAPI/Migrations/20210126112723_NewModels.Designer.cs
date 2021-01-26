@@ -10,8 +10,8 @@ using PublicParkAPI.Data;
 namespace PublicParkAPI.Migrations
 {
     [DbContext(typeof(PublicParkAPIContext))]
-    [Migration("20210125170601_Initial_Migration")]
-    partial class Initial_Migration
+    [Migration("20210126112723_NewModels")]
+    partial class NewModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,17 +28,21 @@ namespace PublicParkAPI.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("Andar")
+                    b.Property<int?>("Andar")
                         .HasColumnType("int");
 
                     b.Property<string>("Fila")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Freguesia")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Numero")
                         .HasColumnType("int");
+
+                    b.Property<string>("Parque")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Preco")
                         .HasColumnType("float");
@@ -48,7 +52,7 @@ namespace PublicParkAPI.Migrations
 
                     b.HasKey("LugarId");
 
-                    b.ToTable("Lugar");
+                    b.ToTable("Lugares");
                 });
 
             modelBuilder.Entity("PublicParkAPI.Models.Reserva", b =>
@@ -58,35 +62,34 @@ namespace PublicParkAPI.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("Duracao")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("Fim")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Inicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LugarId")
+                    b.Property<int>("LugarId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Nif")
+                    b.Property<int>("UserNIf")
                         .HasColumnType("int");
 
                     b.HasKey("ReservaId");
 
                     b.HasIndex("LugarId");
 
-                    b.HasIndex("Nif");
+                    b.HasIndex("UserNIf");
 
-                    b.ToTable("Reserva");
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("PublicParkAPI.Models.User", b =>
                 {
                     b.Property<int>("Nif")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("CompanyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -97,18 +100,22 @@ namespace PublicParkAPI.Migrations
 
                     b.HasKey("Nif");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PublicParkAPI.Models.Reserva", b =>
                 {
                     b.HasOne("PublicParkAPI.Models.Lugar", "Lugar")
                         .WithMany()
-                        .HasForeignKey("LugarId");
+                        .HasForeignKey("LugarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PublicParkAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("Nif");
+                        .HasForeignKey("UserNIf")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Lugar");
 

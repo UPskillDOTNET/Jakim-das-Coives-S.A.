@@ -10,7 +10,7 @@ using PublicParkAPI.Models;
 
 namespace PublicParkAPI.Controllers
 {
-    [Route("api/lugares")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LugaresController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace PublicParkAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
         {
-            return await _context.Lugar.ToListAsync();
+            return await _context.Lugares.ToListAsync();
         }
 
         // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
 
             if (lugar == null)
             {
@@ -40,16 +40,6 @@ namespace PublicParkAPI.Controllers
             }
 
             return lugar;
-        }
-
-        // GET: api/lugares/available
-        [HttpGet("available/{time}")]
-        public async Task<ActionResult<IEnumerable<Lugar>>> GetAvailableLugaresAtTime(DateTime _time) //retornar lugares disponiveis a uma certa hora
-        {
-            throw new NotImplementedException();
-
-            var result = new List<Lugar>();
-
         }
 
         // PUT: api/Lugares/5
@@ -88,7 +78,7 @@ namespace PublicParkAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
         {
-            _context.Lugar.Add(lugar);
+            _context.Lugares.Add(lugar);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLugar", new { id = lugar.LugarId }, lugar);
@@ -98,13 +88,13 @@ namespace PublicParkAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
             if (lugar == null)
             {
                 return NotFound();
             }
 
-            _context.Lugar.Remove(lugar);
+            _context.Lugares.Remove(lugar);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -112,7 +102,7 @@ namespace PublicParkAPI.Controllers
 
         private bool LugarExists(int id)
         {
-            return _context.Lugar.Any(e => e.LugarId == id);
+            return _context.Lugares.Any(e => e.LugarId == id);
         }
     }
 }
