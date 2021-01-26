@@ -1,12 +1,12 @@
 @startuml
 autonumber
-actor "Sistema Central" as UserNR
+actor "Cliente" as CL
 
-activate UserNR
-UserNR -> ":API.Parque" : Inicia Reserva
+activate CL
+CL -> ":API.Parque" : Inicia Reserva
 activate ":API.Parque"
-":API.Parque" --> UserNR : Operação bem sucedida\ncCia Reserva
+":API.Parque" --> CL: Operação bem sucedida\ncCia Reserva
 deactivate ":API.Parque"
 
-deactivate UserNR
+deactivate CL
 @enduml

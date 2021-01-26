@@ -1,4 +1,4 @@
 UC-2 Efetuar Reserva
 
 Formato Breve
-O sistema central efectua um pedido de reserva. A API.Parque cria um registo de reserva e adiciona a mesma à base de dados. Informa do sucesso da operação.
+O Cliente efectua um pedido de reserva. A API.Parque cria um registo de reserva e adiciona a mesma à base de dados. Informa do sucesso da operação.

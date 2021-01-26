@@ -13,13 +13,13 @@ Formato Breve
 
 SSD
 
-    @startuml
-    autonumber
-    Actor "Sistema Central" as jdc
+@startuml
+autonumber
+    Actor "Cliente" as CL
     participant ":API.Parque" as api
-    jdc -> api : Envia as alterações
-    api -> jdc : Valida e informa o sucesso da operação
-    @enduml
+    CL -> api : Envia as alterações
+    api -> CL : Valida e informa o sucesso da operação
+@enduml
 
 --------------------------------------------------------------------------------------------------
 
@@ -63,14 +63,13 @@ Fluxos Alternativos
 
 SD
 
-    @startuml
-    utonumber
-    actor "Sistema Central" as SC
+@startuml
+actor "Cliente" as CL
     participant ":api/reservasController" as RC
     participant ":context" as C
 
-    activate SC
-    SC --> RC : pede para editar uma reserva(reserva)
+    activate CL
+    CL --> RC : pede para editar uma reserva(reserva)
     activate RC
 
     RC --> C : Entry(reserva).State = EntityState.Modified
@@ -79,7 +78,7 @@ SD
     C --> RC : SaveChangesAsync()
     deactivate C
 
-    RC --> SC: NoContent() operação bem sucedida
+    RC --> CL: NoContent() operação bem sucedida
     deactivate RC
-    deactivate SC
-    @enduml
+    deactivate CL
+@enduml

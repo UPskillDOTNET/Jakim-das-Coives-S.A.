@@ -1,19 +1,19 @@
 @startuml
 autonumber
-actor "Utilizador Não Registado" as UNR
-participant ":api/usersController" as UC
-participant ":api/user" as U
+actor "Cliente Não Registado" as UNR
+participant ":api/clientesController" as UC
+participant ":api/cliente" as U
 participant ":context" as C
 
 activate UNR
 UNR --> UC : solicita registo empresa
 activate UC
 
-UC --> U : Add(user)
+UC --> U : Add(cliente)
 activate U
 
 
-U --> C : Add(user)
+U --> C : Add(cliente)
 deactivate U
 activate C
 
