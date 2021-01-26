@@ -11,7 +11,11 @@ class APISistemaCentral {}
 
 class APPWeb {}
 
-class Utilizador {}
+class Cliente {
+ -int Nif
+ -string Nome
+ -string Email
+}
 
 class Reserva {}
 
@@ -19,11 +23,17 @@ class EmailDeConfirmação {}
 
 class Preço {}
 
-class ParqueDeEstacionamento {}
+class Custo {}
 
-class LugarDeEstacionamento {}
+class Parque {}
 
-class Localização {}
+class Lugar {}
+
+class Localização {
+ -int Numero
+ -int Fila
+ -int Andar
+}
 
 class SubAluguer {}
 
@@ -31,52 +41,53 @@ class MétodoDePagamento {}
 
 class APIQRCode {}
 
-class Preço {}
 
-class Duração {}
+class Duração {
+ -dateTime Inicio
+ -dateTime Fim
+}
 
-class Morada {}
+class Morada {
+ -string Rua
+ -string Freguesia
+}
 
-class Layout {}
 
 
 APISistemaCentral "1*" -- "1*" APIParque : usa >
 APISistemaCentral "1" -- "1" APPWeb : usa >
 APISistemaCentral "1" -- "0*" Reserva : possui >
-APISistemaCentral "1" -- "0*" Utilizador : possui >
+APISistemaCentral "1" -- "0*" Cliente : possui >
 APISistemaCentral "1" -- "1*" MétodoDePagamento : tem >
 APISistemaCentral "1" -- "1" APIQRCode : usa >
 APISistemaCentral "1" -- "0*" EmailDeConfirmação : envia >
 APISistemaCentral "1" -- "0*" SubAluguer : permite fazer >
 
-APIParque "1" -- "0*" Utilizador : possui >
-APIParque "1" -- "1" ParqueDeEstacionamento : é referente a >
+APIParque "1" -- "0*" Cliente : possui >
+APIParque "1" -- "1" Parque : é referente a >
 APIParque "1" -- "0*" Reserva : possui >
-APIParque "1" -- "1*" LugarDeEstacionamento : aluga >
+APIParque "1" -- "1*" Lugar : aluga >
 
-APPWeb "1" -- "0*" Utilizador : possui >
+APPWeb "1" -- "0*" Cliente : possui >
 APPWeb "1" -- "1*" Reserva : permite fazer e gerir >
 APPWeb "1" -- "1*" SubAluguer : permite fazer >
 
-Utilizador "1" -- "0*" Reserva : faz e gere >
-Utilizador "1" -- "0*" SubAluguer : faz >
+Cliente "1" -- "0*" Reserva : faz e gere >
+Cliente "1" -- "0*" SubAluguer : faz >
 
-Reserva "1" -- "1" LugarDeEstacionamento : é referente a >
-Reserva "1" -- "1" Preço : tem >
+Reserva "1" -- "1" Lugar : é referente a >
+Reserva "1" -- "1" Custo: tem >
 Reserva "1" -- "1" Duração : tem >
 
 EmailDeConfirmação "1" -- "1" Reserva : é referente a >
 
-Preço "1" -- "1" LugarDeEstacionamento : é referente a >
-Preço "1" -- "1" Duração : é referente a >
+Preço "1" -- "1" Lugar : tem <
 
-ParqueDeEstacionamento "1" -- "1*" LugarDeEstacionamento : tem >
-ParqueDeEstacionamento "1" -- "1" Morada : tem >
-ParqueDeEstacionamento "1" -- "1" Layout : tem >
+Parque "1" -- "1*" Lugar : tem >
+Parque "1" -- "1" Morada : tem >
 
-LugarDeEstacionamento "1" -- "1" Localização : tem >
+Lugar "1" -- "1" Localização : tem >
 
-Localização "1" -- "1" Layout : está inserida em >
 
 SubAluguer "1" -- "1" Reserva : é >
 
