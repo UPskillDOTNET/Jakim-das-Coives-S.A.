@@ -1,12 +1,12 @@
 @startuml
 autonumber
-actor "Sistema Central" as SC
+actor "Cliente" as CL
 participant ":api/reservasController" as RC
 participant ":api/reserva" as R
 participant ":context" as C
 
-activate SC
-SC --> RC : solicita reserva
+activate CL
+CL --> RC : solicita reserva
 activate RC
 
 RC --> R : Add(reserva)
@@ -21,7 +21,7 @@ activate C
 C --> RC : SaveChangesAsync()
 deactivate C
 
-RC --> SC: CreatedAtAction()\noperação bem sucedida
+RC --> CL: CreatedAtAction()\noperação bem sucedida
 deactivate RC
-deactivate SC
+deactivate CL
 @enduml
