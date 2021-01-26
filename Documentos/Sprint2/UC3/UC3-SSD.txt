@@ -1,6 +1,6 @@
 @startuml
 autonumber
-actor "Sistema Central" as SC
+actor "Cliente" as SC
 participant ":API.Parque" as SA
 
 activate SC
