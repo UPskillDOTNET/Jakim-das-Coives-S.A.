@@ -11,10 +11,11 @@ namespace PublicParkAPI.Models
     {
 
         public int ReservaId { get; set; }
+
         [Required]
         [ForeignKey("User")]
-        [Range(typeof(int), "100000000", "999999999")]
-        public int UserNIf { get; set; }
+        public string UserId { get; set; }
+
         [Required]
         [ForeignKey("Lugar")]
         public int LugarId { get; set; }

@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PublicParkAPI.Data;
+using PublicParkAPI.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace PublicParkAPI
 {
@@ -37,6 +39,10 @@ namespace PublicParkAPI
 
             services.AddDbContext<PublicParkAPIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PublicParkAPIContext")));
+
+            services.AddIdentity<User, IdentityRole>()
+               .AddEntityFrameworkStores<PublicParkAPIContext>()
+               .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,19 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace PublicParkAPI.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Range(typeof(int), "100000000", "999999999")]
         public int Nif { get; set; }
         [Required]
         public string CompanyName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
     }
 }
