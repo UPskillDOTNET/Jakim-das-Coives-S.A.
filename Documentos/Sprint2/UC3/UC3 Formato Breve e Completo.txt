@@ -6,22 +6,22 @@ Caso de Uso Simples
 
 Formato Breve
 
-    O Sistema Central à API.Parque um pedido de cancelamento de uma reserva.
-    A API.Parque apaga a reserva da sua base de dados e informa o Sistema Central do sucesso da operação.
+    O Cliente à API.Parque um pedido de cancelamento de uma reserva.
+    A API.Parque apaga a reserva da sua base de dados e informa o Cliente do sucesso da operação.
 
 --------------------------------------------------------------------------------------------------
 
 Formato Completo
 
 Ator principal
-    - Sistema Central
+    - Cliente
 
 Partes Interessadas
-    - Sistema Central: pretende cancelar a reserva na API.Parque para satisfazer o pedido do seu cliente
-    - API.Parque: pretende saber que a reserva que o Sistema Central fez para o seu cliente foi cancelada
+    - Cliente: pretende cancelar a reserva na API.Parque para satisfazer o pedido do seu cliente
+    - API.Parque: pretende saber que a reserva que o Cliente fez foi cancelada
 
 Pré-condições
-    - O cliente do Sistema Central procedeu ao cancelamento na aplicação do Sistema Central
+    - O cliente procedeu ao cancelamento na aplicação.
 
 Pós-condições
     - As alterações são gravadas na base de dados da API.Parque
@@ -29,14 +29,14 @@ Pós-condições
 
 Fluxo Básico
 
-    1. O Sistema Central envia à API.Parque o pedido de cancelamento
-    2. A API.Parque apaga a reserva da base de dados e informa o Sistema Central do sucesso.
+    1. O Cliente envia à API.Parque o pedido de cancelamento
+    2. A API.Parque apaga a reserva da base de dados e informa o Cliente do sucesso.
 
 Fluxos Alternativos
 
     2a - A reserva não existe na API
         A API informa o sistema de que a reserva não existe.
-        O sistema cancela o pedido.
+        O Cliente cancela o pedido.
         O caso de uso acaba.
 
 --------------------------------------------------------------------------------------------------
