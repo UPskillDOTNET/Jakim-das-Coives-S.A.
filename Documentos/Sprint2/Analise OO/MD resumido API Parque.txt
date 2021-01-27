@@ -1,0 +1,54 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide methods
+left to right direction
+
+class APIParque {}
+
+class Cliente {
+ -int Nif
+ -string Nome
+ -string Email
+}
+
+class Reserva {}
+
+class Preço {}
+
+class Parque {}
+
+class Lugar {}
+
+class Localização {
+ -int Numero
+ -int Fila
+ -int Andar
+}
+
+class Duração {
+ -dateTime Inicio
+ -dateTime Fim
+}
+
+class Morada {
+ -string Rua
+ -string Freguesia
+}
+
+APIParque "1" -- "0*" Cliente : possui >
+APIParque "1" -- "1*" Parque : é referente a >
+APIParque "1" -- "0*" Reserva : possui >
+APIParque "1" -- "0*" Lugar : aluga >
+
+Cliente "1" -- "0*" Reserva : faz e gere >
+
+Reserva "0*" -- "1" Lugar : é referente a >
+Reserva "1" -- "1" Duração : tem >
+
+Lugar "1" -- "1" Preço : tem >
+
+Parque "1" -- "1*" Lugar : tem >
+Parque "1" -- "1" Morada : tem >
+
+Lugar "1" -- "1" Localização : tem >
+@enduml

@@ -41,7 +41,6 @@ class MétodoDePagamento {}
 
 class APIQRCode {}
 
-
 class Duração {
  -dateTime Inicio
  -dateTime Fim
@@ -51,8 +50,6 @@ class Morada {
  -string Rua
  -string Freguesia
 }
-
-
 
 APISistemaCentral "1*" -- "1*" APIParque : usa >
 APISistemaCentral "1" -- "1" APPWeb : usa >
@@ -64,34 +61,33 @@ APISistemaCentral "1" -- "0*" EmailDeConfirmação : envia >
 APISistemaCentral "1" -- "0*" SubAluguer : permite fazer >
 
 APIParque "1" -- "0*" Cliente : possui >
-APIParque "1" -- "1" Parque : é referente a >
+APIParque "1" -- "1*" Parque : é referente a >
 APIParque "1" -- "0*" Reserva : possui >
-APIParque "1" -- "1*" Lugar : aluga >
+APIParque "1" -- "0*" Lugar : aluga >
 
 APPWeb "1" -- "0*" Cliente : possui >
-APPWeb "1" -- "1*" Reserva : permite fazer e gerir >
-APPWeb "1" -- "1*" SubAluguer : permite fazer >
+APPWeb "1" -- "0*" Reserva : permite fazer e gerir >
+APPWeb "1" -- "0*" SubAluguer : permite fazer >
 
 Cliente "1" -- "0*" Reserva : faz e gere >
 Cliente "1" -- "0*" SubAluguer : faz >
 
-Reserva "1" -- "1" Lugar : é referente a >
+Reserva "0*" -- "1" Lugar : é referente a >
 Reserva "1" -- "1" Custo: tem >
 Reserva "1" -- "1" Duração : tem >
 
 EmailDeConfirmação "1" -- "1" Reserva : é referente a >
 
-Preço "1" -- "1" Lugar : tem <
+Lugar "1" -- "1" Preço : tem >
 
 Parque "1" -- "1*" Lugar : tem >
 Parque "1" -- "1" Morada : tem >
 
 Lugar "1" -- "1" Localização : tem >
 
-
 SubAluguer "1" -- "1" Reserva : é >
 
-MétodoDePagamento "1" -- "1*" Reserva : paga >
+MétodoDePagamento "1" -- "0*" Reserva : paga >
 
-EmailDeConfirmação "1*" -- "1" APIQRCode : usa>
+EmailDeConfirmação "0*" -- "1" APIQRCode : usa>
 @enduml
