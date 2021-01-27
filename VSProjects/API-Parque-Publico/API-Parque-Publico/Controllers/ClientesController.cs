@@ -25,14 +25,14 @@ namespace API_Parque_Publico.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetCliente()
         {
-            return await _context.Cliente.ToListAsync();
+            return await _context.Clientes.ToListAsync();
         }
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
 
             if (cliente == null)
             {
@@ -78,7 +78,7 @@ namespace API_Parque_Publico.Controllers
         [HttpPost]
         public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
         {
-            _context.Cliente.Add(cliente);
+            _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCliente", new { id = cliente.Nif }, cliente);
@@ -88,13 +88,13 @@ namespace API_Parque_Publico.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            var cliente = await _context.Cliente.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
             {
                 return NotFound();
             }
 
-            _context.Cliente.Remove(cliente);
+            _context.Clientes.Remove(cliente);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace API_Parque_Publico.Controllers
 
         private bool ClienteExists(int id)
         {
-            return _context.Cliente.Any(e => e.Nif == id);
+            return _context.Clientes.Any(e => e.Nif == id);
         }
     }
 }

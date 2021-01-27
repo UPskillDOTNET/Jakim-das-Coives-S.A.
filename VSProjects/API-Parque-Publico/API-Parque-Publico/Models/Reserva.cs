@@ -19,8 +19,12 @@ namespace API_Parque_Publico.Models
         [ForeignKey("Lugar")]
         public int LugarId { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
         public DateTime Inicio { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
         public DateTime Fim { get; set; }
         public virtual Cliente Cliente { get; set; }
         public virtual Lugar Lugar { get; set; }
