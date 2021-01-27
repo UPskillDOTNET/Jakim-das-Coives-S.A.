@@ -12,23 +12,23 @@ namespace API_Parque_Publico.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LugarsController : ControllerBase
+    public class LugaresController : ControllerBase
     {
         private readonly API_Parque_PublicoContext _context;
 
-        public LugarsController(API_Parque_PublicoContext context)
+        public LugaresController(API_Parque_PublicoContext context)
         {
             _context = context;
         }
 
-        // GET: api/Lugars
+        // GET: api/Lugares
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
         {
             return await _context.Lugar.ToListAsync();
         }
 
-        // GET: api/Lugars/5
+        // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
         {
@@ -42,7 +42,7 @@ namespace API_Parque_Publico.Controllers
             return lugar;
         }
 
-        // PUT: api/Lugars/5
+        // PUT: api/Lugares/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLugar(int id, Lugar lugar)
@@ -73,7 +73,7 @@ namespace API_Parque_Publico.Controllers
             return NoContent();
         }
 
-        // POST: api/Lugars
+        // POST: api/Lugares
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
@@ -84,7 +84,7 @@ namespace API_Parque_Publico.Controllers
             return CreatedAtAction("GetLugar", new { id = lugar.LugarId }, lugar);
         }
 
-        // DELETE: api/Lugars/5
+        // DELETE: api/Lugares/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
         {

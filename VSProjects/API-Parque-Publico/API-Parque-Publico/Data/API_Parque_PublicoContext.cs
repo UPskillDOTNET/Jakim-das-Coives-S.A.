@@ -14,14 +14,14 @@ namespace API_Parque_Publico.Data
         {
         }
 
-        public DbSet<API_Parque_Publico.Models.Cliente> Cliente { get; set; }
+        public DbSet<API_Parque_Publico.Models.Cliente> Clientes { get; set; }
 
-        public DbSet<API_Parque_Publico.Models.Freguesia> Freguesia { get; set; }
+        public DbSet<API_Parque_Publico.Models.Freguesia> Freguesias { get; set; }
 
-        public DbSet<API_Parque_Publico.Models.Lugar> Lugar { get; set; }
+        public DbSet<API_Parque_Publico.Models.Lugar> Lugares { get; set; }
 
-        public DbSet<API_Parque_Publico.Models.Parque> Parque { get; set; }
+        public DbSet<API_Parque_Publico.Models.Parque> Parques { get; set; }
 
-        public DbSet<API_Parque_Publico.Models.Reserva> Reserva { get; set; }
+        public DbSet<API_Parque_Publico.Models.Reserva> Reservas { get; set; }
     }
 }
