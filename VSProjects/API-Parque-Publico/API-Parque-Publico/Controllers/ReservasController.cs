@@ -47,7 +47,7 @@ namespace API_Parque_Publico.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReserva(int id, Reserva reserva)
         {
-            if (id != reserva.ReservaId)
+            if (id != reserva.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace API_Parque_Publico.Controllers
             _context.Reservas.Add(reserva);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserva", new { id = reserva.ReservaId }, reserva);
+            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
         }
 
         // DELETE: api/Reservas/5
@@ -102,7 +102,7 @@ namespace API_Parque_Publico.Controllers
 
         private bool ReservaExists(int id)
         {
-            return _context.Reservas.Any(e => e.ReservaId == id);
+            return _context.Reservas.Any(e => e.Id == id);
         }
     }
 }

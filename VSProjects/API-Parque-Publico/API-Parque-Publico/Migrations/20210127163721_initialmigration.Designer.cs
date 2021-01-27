@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Parque_Publico.Migrations
 {
     [DbContext(typeof(API_Parque_PublicoContext))]
-    [Migration("20210127112025_inicial")]
-    partial class inicial
+    [Migration("20210127163721_initialmigration")]
+    partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,9 +24,7 @@ namespace API_Parque_Publico.Migrations
             modelBuilder.Entity("API_Parque_Publico.Models.Cliente", b =>
                 {
                     b.Property<int>("Nif")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -43,7 +41,7 @@ namespace API_Parque_Publico.Migrations
 
             modelBuilder.Entity("API_Parque_Publico.Models.Freguesia", b =>
                 {
-                    b.Property<int>("FreguesiaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -52,14 +50,14 @@ namespace API_Parque_Publico.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("FreguesiaId");
+                    b.HasKey("Id");
 
                     b.ToTable("Freguesias");
                 });
 
             modelBuilder.Entity("API_Parque_Publico.Models.Lugar", b =>
                 {
-                    b.Property<int>("LugarId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -80,7 +78,7 @@ namespace API_Parque_Publico.Migrations
                     b.Property<double>("Preco")
                         .HasColumnType("float");
 
-                    b.HasKey("LugarId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ParqueId");
 
@@ -89,7 +87,7 @@ namespace API_Parque_Publico.Migrations
 
             modelBuilder.Entity("API_Parque_Publico.Models.Parque", b =>
                 {
-                    b.Property<int>("ParqueId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -101,7 +99,7 @@ namespace API_Parque_Publico.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ParqueId");
+                    b.HasKey("Id");
 
                     b.HasIndex("FreguesiaId");
 
@@ -110,7 +108,7 @@ namespace API_Parque_Publico.Migrations
 
             modelBuilder.Entity("API_Parque_Publico.Models.Reserva", b =>
                 {
-                    b.Property<int>("ReservaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -127,7 +125,7 @@ namespace API_Parque_Publico.Migrations
                     b.Property<int>("NifCliente")
                         .HasColumnType("int");
 
-                    b.HasKey("ReservaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("LugarId");
 

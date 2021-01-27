@@ -47,7 +47,7 @@ namespace API_Parque_Publico.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFreguesia(int id, Freguesia freguesia)
         {
-            if (id != freguesia.FreguesiaId)
+            if (id != freguesia.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace API_Parque_Publico.Controllers
             _context.Freguesias.Add(freguesia);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFreguesia", new { id = freguesia.FreguesiaId }, freguesia);
+            return CreatedAtAction("GetFreguesia", new { id = freguesia.Id }, freguesia);
         }
 
         // DELETE: api/Freguesias/5
@@ -102,7 +102,7 @@ namespace API_Parque_Publico.Controllers
 
         private bool FreguesiaExists(int id)
         {
-            return _context.Freguesias.Any(e => e.FreguesiaId == id);
+            return _context.Freguesias.Any(e => e.Id == id);
         }
     }
 }

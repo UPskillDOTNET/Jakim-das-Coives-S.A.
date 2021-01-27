@@ -9,16 +9,14 @@ namespace API_Parque_Publico.Models
 {
     public class Parque
     {
-        [Required]
-        [Key]
-        public int ParqueId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Rua { get; set; }
         [Required]
-        [ForeignKey("Freguesia")]
         public int FreguesiaId { get; set; }
-        public virtual Freguesia Freguesia { get; set; }
 
 
+        [ForeignKey("FreguesiaId")]
+        public Freguesia Freguesia { get; set; }
     }
 }
