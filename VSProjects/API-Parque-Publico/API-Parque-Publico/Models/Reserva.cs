@@ -9,25 +9,24 @@ namespace API_Parque_Publico.Models
 {
     public class Reserva
     {
+        public int Id { get; set; }
         [Required]
-        [Key]
-        public int ReservaId { get; set; }
-        [Required]
-        [ForeignKey("Cliente")]
         public int NifCliente { get; set; }
         [Required]
-        [ForeignKey("Lugar")]
         public int LugarId { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Inicio { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd:hh}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Fim { get; set; }
-        public virtual Cliente Cliente { get; set; }
-        public virtual Lugar Lugar { get; set; }
 
+
+        [ForeignKey("NifCliente")]
+        public Cliente Cliente { get; set; }
+        [ForeignKey("LugarId")]
+        public Lugar Lugar { get; set; }
     }
 }

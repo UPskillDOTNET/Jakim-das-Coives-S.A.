@@ -9,13 +9,13 @@ namespace API_Parque_Publico.Models
 {
     public class Cliente
     {
-        [Required]
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Range(typeof(int), "100000000", "999999999")]
         public int Nif { get; set; }
         [Required]
         public string Nome { get; set; }
         [Required]
         public string Email { get; set; }
-
     }
 }

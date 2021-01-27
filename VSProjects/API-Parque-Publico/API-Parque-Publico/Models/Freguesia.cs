@@ -9,11 +9,8 @@ namespace API_Parque_Publico.Models
 {
     public class Freguesia
     {
-        [Required]
-        [Key]
-        public int FreguesiaId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Nome { get; set; }
-
     }
 }

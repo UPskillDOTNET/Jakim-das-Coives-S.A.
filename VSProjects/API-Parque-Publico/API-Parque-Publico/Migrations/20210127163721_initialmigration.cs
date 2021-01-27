@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API_Parque_Publico.Migrations
 {
-    public partial class inicial : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,8 +11,7 @@ namespace API_Parque_Publico.Migrations
                 name: "Clientes",
                 columns: table => new
                 {
-                    Nif = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nif = table.Column<int>(type: "int", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -25,32 +24,32 @@ namespace API_Parque_Publico.Migrations
                 name: "Freguesias",
                 columns: table => new
                 {
-                    FreguesiaId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Freguesias", x => x.FreguesiaId);
+                    table.PrimaryKey("PK_Freguesias", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Parques",
                 columns: table => new
                 {
-                    ParqueId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Rua = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FreguesiaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parques", x => x.ParqueId);
+                    table.PrimaryKey("PK_Parques", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Parques_Freguesias_FreguesiaId",
                         column: x => x.FreguesiaId,
                         principalTable: "Freguesias",
-                        principalColumn: "FreguesiaId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -58,7 +57,7 @@ namespace API_Parque_Publico.Migrations
                 name: "Lugares",
                 columns: table => new
                 {
-                    LugarId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParqueId = table.Column<int>(type: "int", nullable: false),
                     Numero = table.Column<int>(type: "int", nullable: false),
@@ -68,12 +67,12 @@ namespace API_Parque_Publico.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lugares", x => x.LugarId);
+                    table.PrimaryKey("PK_Lugares", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Lugares_Parques_ParqueId",
                         column: x => x.ParqueId,
                         principalTable: "Parques",
-                        principalColumn: "ParqueId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -81,7 +80,7 @@ namespace API_Parque_Publico.Migrations
                 name: "Reservas",
                 columns: table => new
                 {
-                    ReservaId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NifCliente = table.Column<int>(type: "int", nullable: false),
                     LugarId = table.Column<int>(type: "int", nullable: false),
@@ -90,7 +89,7 @@ namespace API_Parque_Publico.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservas", x => x.ReservaId);
+                    table.PrimaryKey("PK_Reservas", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Reservas_Clientes_NifCliente",
                         column: x => x.NifCliente,
@@ -101,7 +100,7 @@ namespace API_Parque_Publico.Migrations
                         name: "FK_Reservas_Lugares_LugarId",
                         column: x => x.LugarId,
                         principalTable: "Lugares",
-                        principalColumn: "LugarId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

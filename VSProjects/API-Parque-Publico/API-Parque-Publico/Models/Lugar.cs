@@ -10,11 +10,8 @@ namespace API_Parque_Publico.Models
 {
     public class Lugar
     {
+        public int Id { get; set; }
         [Required]
-        [Key]
-        public int LugarId { get; set; }
-        [Required]
-        [ForeignKey("Parque")]
         public int ParqueId { get; set; }
         [Required]
         public int Numero { get; set; }
@@ -25,8 +22,9 @@ namespace API_Parque_Publico.Models
         [Required]
         [DataType(DataType.Currency)]
         public double Preco { get; set; }
-        public virtual Parque Parque { get; set; }
 
 
+        [ForeignKey("ParqueId")]
+        public Parque Parque { get; set; }
     }
 }
