@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using API_Parque_Publico.Data;
 
 namespace API_Parque_Publico
 {
@@ -32,6 +34,9 @@ namespace API_Parque_Publico
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Parque_Publico", Version = "v1" });
             });
+
+            services.AddDbContext<API_Parque_PublicoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("API_Parque_PublicoContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
