@@ -10,7 +10,7 @@ using API_Parque_Publico.Models;
 
 namespace API_Parque_Publico.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/parques")]
     [ApiController]
     public class ParquesController : ControllerBase
     {
