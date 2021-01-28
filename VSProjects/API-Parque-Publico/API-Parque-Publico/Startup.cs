@@ -30,10 +30,10 @@ namespace API_Parque_Publico
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Parque_Publico", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<API_Parque_PublicoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("API_Parque_PublicoContext")));
