@@ -92,7 +92,7 @@ namespace UnitTest
                 Inicio = DateTime.Parse("2021-01-01 10:10:10"),
                 Fim = DateTime.Parse("2021-01-02 10:10:10")
             });
-
+            dbContext.SaveChangesAsync();
         }
     }
 }
