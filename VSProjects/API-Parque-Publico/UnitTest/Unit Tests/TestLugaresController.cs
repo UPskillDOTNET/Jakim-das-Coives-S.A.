@@ -91,6 +91,22 @@ namespace UnitTest.Unit_Tests
             var items = Assert.IsType<Lugar>(getResult.Value);
             Assert.IsType<NoContentResult>(Result);
         }
+        [Fact]
+        public void GetAvailableLugares()
+        {
+            //Arrange
+            var testContext = API_Parque_PublicoContextMocker.GetPubParkContext("GetLugaresAvailable");
+            var TestController = new LugaresController(testContext);
+
+            //Act
+            var Result = TestController.FindAvailable(1, DateTime.Parse("2021-01-01 10:10:10"), DateTime.Parse("2021-01-02 10:10:10"));
+
+            //Assert
+            var items = Assert.IsAssignableFrom<IEnumerable<Lugar>>(Result);
+            List<Lugar> lista = items.ToList();
+            Assert.Equal(2, lista.Count);
+
+        }
     }
 }
 

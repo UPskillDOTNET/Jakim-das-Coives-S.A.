@@ -76,6 +76,24 @@ namespace UnitTest
                 Andar = 1,
                 Preco = 1
             });
+            dbContext.Lugares.Add(new Lugar
+            {
+                Id =3,
+                ParqueId = 1,
+                Numero = 1,
+                Fila = "2",
+                Andar = 1,
+                Preco = 1
+            });
+            dbContext.Lugares.Add(new Lugar
+            {
+                Id = 4,
+                ParqueId = 1,
+                Numero = 1,
+                Fila = "2",
+                Andar = 1,
+                Preco = 1
+            });
             dbContext.Reservas.Add(new Reserva
             {
                 Id = 1,
@@ -88,7 +106,7 @@ namespace UnitTest
             {
                 Id = 2,
                 NifCliente = 987654321,
-                LugarId = 1,
+                LugarId = 2,
                 Inicio = DateTime.Parse("2021-01-01 10:10:10"),
                 Fim = DateTime.Parse("2021-01-02 10:10:10")
             });
