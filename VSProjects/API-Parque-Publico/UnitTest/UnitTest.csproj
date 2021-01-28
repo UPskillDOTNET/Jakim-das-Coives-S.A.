@@ -24,8 +24,4 @@
     <ProjectReference Include="..\API-Parque-Publico\API-Parque-Publico.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Unit Tests\" />
-  </ItemGroup>
-
 </Project>
