@@ -17,5 +17,8 @@ namespace API_Parque_Publico.Models
         public string Nome { get; set; }
         [Required]
         public string Email { get; set; }
+
+        //[InverseProperty("Cliente")]
+        //public ICollection<Reserva> Reservas { get; set; }
     }
 }
