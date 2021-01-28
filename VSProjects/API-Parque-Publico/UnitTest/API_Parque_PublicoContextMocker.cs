@@ -49,7 +49,7 @@ namespace UnitTest
             dbContext.Parques.Add(new Parque
             {
                 Id = 1,
-                Rua = "sao bento",
+                Rua = "Sao Bento",
                 FreguesiaId = 1
             });
             dbContext.Parques.Add(new Parque

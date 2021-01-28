@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using API_Parque_Publico.Controllers;
 using API_Parque_Publico.Models;
-
+using System.Threading;
 
 namespace UnitTest.Unit_Tests
 {
@@ -18,6 +18,8 @@ namespace UnitTest.Unit_Tests
 
         public async Task GetAllFreguesias()
         {
+            Thread.Sleep(2000);
+
             //Arrange
             var TestContext = API_Parque_PublicoContextMocker.GetPubParkContext("DBTest4GetAll");
             var TestController = new FreguesiasController(TestContext);
@@ -33,6 +35,8 @@ namespace UnitTest.Unit_Tests
         [Fact]
         public async Task GetFreguesiabyId()
         {
+            Thread.Sleep(2000);
+
             //Arrange
             var TestContext = API_Parque_PublicoContextMocker.GetPubParkContext("DBTestForGetId");
             var TestController = new FreguesiasController(TestContext);
@@ -49,6 +53,8 @@ namespace UnitTest.Unit_Tests
         [Fact]
         public async Task PostFreguesia_CreateNewFreguesia()
         {
+            Thread.Sleep(2000);
+
             //Arrange
             var testContext = API_Parque_PublicoContextMocker.GetPubParkContext("Post4Freguesia");
             var TestController = new FreguesiasController(testContext);
@@ -65,6 +71,8 @@ namespace UnitTest.Unit_Tests
         [Fact]
         public async Task DeleteFreguesiaById()
         {
+            Thread.Sleep(2000);
+
             //Arrange
             var testContext = API_Parque_PublicoContextMocker.GetPubParkContext("DeleteFreguesia");
             var TestController = new FreguesiasController(testContext);
@@ -82,6 +90,8 @@ namespace UnitTest.Unit_Tests
         [Fact]
         public async Task PutFreguesiaById()
         {
+            Thread.Sleep(2000);
+
             //Arrange
             var testContext = API_Parque_PublicoContextMocker.GetPubParkContext("PutFreguesia");
             var TestController = new FreguesiasController(testContext);
