@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PublicParkAPI
+namespace API_Parque_Privado2
 {
     public class Program
     {

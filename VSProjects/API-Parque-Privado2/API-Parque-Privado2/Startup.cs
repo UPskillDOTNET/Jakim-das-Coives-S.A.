@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PublicParkAPI.Data;
-using PublicParkAPI.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
-namespace PublicParkAPI
+namespace API_Parque_Privado2
 {
     public class Startup
     {
@@ -37,26 +30,8 @@ namespace PublicParkAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicParkAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Parque_Privado2", Version = "v1" });
             });
-
-            services.AddDbContext<PublicParkAPIContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PublicParkAPIContext")));
-
-            services.AddIdentity<User, IdentityRole>()
-               .AddEntityFrameworkStores<PublicParkAPIContext>()
-               .AddDefaultTokenProviders();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-         options.TokenValidationParameters = new TokenValidationParameters
-         {
-             ValidateIssuer = false,
-             ValidateAudience = false,
-             ValidateLifetime = true,
-             ValidateIssuerSigningKey = true,
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
-             ClockSkew = TimeSpan.Zero
-         });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +41,7 @@ namespace PublicParkAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PublicParkAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Parque_Privado2 v1"));
             }
 
             app.UseHttpsRedirection();
