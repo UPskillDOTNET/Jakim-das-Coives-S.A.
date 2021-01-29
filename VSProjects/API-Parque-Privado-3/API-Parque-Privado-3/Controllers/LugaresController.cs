@@ -42,6 +42,29 @@ namespace API_Parque_Privado_3.Controllers
             return lugar;
         }
 
+        [HttpGet("disponibilidade/{freguesiaId}/{inicio}/{fim}")]
+        public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
+        {
+            List<Lugar> todoslugares = new List<Lugar>();
+            var parques = _context.Parques.Where(p => p.FreguesiaId == freguesiaId);
+            foreach (Parque p in parques)
+            {
+                var ltemp = _context.Lugares.Where(l => l.ParqueId == p.Id);
+                todoslugares.AddRange(ltemp);
+            }
+
+            List<Lugar> ocupados = new List<Lugar>();
+            var reservas = _context.Reservas.Include(r => r.Lugar).Where(r => r.Inicio <= inicio && r.Fim >= fim);
+            foreach (Reserva r in reservas)
+            {
+                ocupados.Add(r.Lugar);
+            }
+
+            var disponiveis = todoslugares.Except(ocupados);
+
+            return disponiveis;
+        }
+
         // PUT: api/Lugares/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
