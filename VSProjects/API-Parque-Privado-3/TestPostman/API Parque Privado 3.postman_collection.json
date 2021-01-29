@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "80e3d9d3-2876-4f57-b078-bd84b09ccc08",
-		"name": "API Parque",
+		"_postman_id": "74eb3c7c-63e7-42f5-85fa-c51dcd50b8e2",
+		"name": "API Parque Privado 3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -9,13 +9,13 @@
 			"name": "Clientes",
 			"item": [
 				{
-					"name": "Check if Cliente 111111111 exists",
+					"name": "Check if Cliente exists",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Check if Cliente 111111111 exists\", function () {\r",
+									"pm.test(\"Check if Cliente exists\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
@@ -37,12 +37,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -53,13 +53,13 @@
 					"response": []
 				},
 				{
-					"name": "Create Cliente 111111111",
+					"name": "Create Cliente",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Create Cliente 111111111\", function () {\r",
+									"pm.test(\"Create Cliente\", function () {\r",
 									"    pm.response.to.have.status(201);\r",
 									"});"
 								],
@@ -90,12 +90,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/clientes",
+							"raw": "https://localhost:5004/api/clientes",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes"
@@ -105,13 +105,13 @@
 					"response": []
 				},
 				{
-					"name": "Check if Cliente 111111111 was created",
+					"name": "Check if Cliente was created",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Check if Cliente 111111111 was created\", function () {\r",
+									"pm.test(\"Check if Cliente was created\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
@@ -133,12 +133,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -149,13 +149,13 @@
 					"response": []
 				},
 				{
-					"name": "Update Cliente 111111111",
+					"name": "Update Cliente",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Update Cliente 111111111\", function () {\r",
+									"pm.test(\"Update Cliente\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
 									"});"
 								],
@@ -186,12 +186,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -202,13 +202,13 @@
 					"response": []
 				},
 				{
-					"name": "Check if Cliente 111111111 was updated",
+					"name": "Check if Cliente was updated",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Check if Cliente 111111111 was updated\", function () {\r",
+									"pm.test(\"Check if Cliente was updated\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
@@ -240,12 +240,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -256,13 +256,13 @@
 					"response": []
 				},
 				{
-					"name": "Delete Cliente 111111111",
+					"name": "Delete Cliente",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Delete Cliente 111111111\", function () {\r",
+									"pm.test(\"Delete Cliente\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
 									"});"
 								],
@@ -284,12 +284,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -300,13 +300,13 @@
 					"response": []
 				},
 				{
-					"name": "Check if Cliente 111111111 was deleted",
+					"name": "Check if Cliente was deleted",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Check if Cliente 111111111 was deleted\", function () {\r",
+									"pm.test(\"Check if Cliente was deleted\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
@@ -328,12 +328,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -377,12 +377,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -435,12 +435,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias",
+							"raw": "https://localhost:5004/api/freguesias",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias"
@@ -478,12 +478,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -531,12 +531,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -580,12 +580,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -624,12 +624,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -668,12 +668,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -717,12 +717,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -775,12 +775,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias",
+							"raw": "https://localhost:5004/api/freguesias",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias"
@@ -832,12 +832,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias",
+							"raw": "https://localhost:5004/api/freguesias",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias"
@@ -889,12 +889,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/parques",
+							"raw": "https://localhost:5004/api/parques",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques"
@@ -932,12 +932,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -985,12 +985,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1039,12 +1039,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1083,12 +1083,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1127,12 +1127,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia1}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia1}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -1171,12 +1171,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia2}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia2}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -1215,12 +1215,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1264,12 +1264,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1322,12 +1322,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias",
+							"raw": "https://localhost:5004/api/freguesias",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias"
@@ -1379,12 +1379,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/parques",
+							"raw": "https://localhost:5004/api/parques",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques"
@@ -1436,12 +1436,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/parques",
+							"raw": "https://localhost:5004/api/parques",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques"
@@ -1493,12 +1493,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/lugares",
+							"raw": "https://localhost:5004/api/lugares",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares"
@@ -1536,12 +1536,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1584,12 +1584,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1640,12 +1640,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1709,12 +1709,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1753,12 +1753,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1797,12 +1797,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque1}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque1}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1841,12 +1841,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque2}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque2}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -1885,12 +1885,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -1929,12 +1929,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -1978,12 +1978,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
@@ -2036,12 +2036,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias",
+							"raw": "https://localhost:5004/api/freguesias",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias"
@@ -2093,12 +2093,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/parques",
+							"raw": "https://localhost:5004/api/parques",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques"
@@ -2150,12 +2150,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/lugares",
+							"raw": "https://localhost:5004/api/lugares",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares"
@@ -2202,12 +2202,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/clientes",
+							"raw": "https://localhost:5004/api/clientes",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes"
@@ -2249,12 +2249,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -2310,12 +2310,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/reservas",
+							"raw": "https://localhost:5004/api/reservas",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas"
@@ -2353,12 +2353,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
@@ -2401,12 +2401,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -2462,12 +2462,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/lugares",
+							"raw": "https://localhost:5004/api/lugares",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares"
@@ -2514,12 +2514,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/clientes",
+							"raw": "https://localhost:5004/api/clientes",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes"
@@ -2566,12 +2566,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
@@ -2630,12 +2630,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
@@ -2674,12 +2674,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
@@ -2718,12 +2718,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111111",
+							"raw": "https://localhost:5004/api/clientes/111111111",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -2762,12 +2762,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/clientes/111111112",
+							"raw": "https://localhost:5004/api/clientes/111111112",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"clientes",
@@ -2806,12 +2806,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar1}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar1}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -2850,12 +2850,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/lugares/{{idLugar2}}",
+							"raw": "https://localhost:5004/api/lugares/{{idLugar2}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"lugares",
@@ -2894,12 +2894,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/parques/{{idParque}}",
+							"raw": "https://localhost:5004/api/parques/{{idParque}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"parques",
@@ -2938,12 +2938,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/freguesias/{{idFreguesia}}",
+							"raw": "https://localhost:5004/api/freguesias/{{idFreguesia}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"freguesias",
@@ -2982,12 +2982,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/api/reservas/{{idReserva}}",
+							"raw": "https://localhost:5004/api/reservas/{{idReserva}}",
 							"protocol": "https",
 							"host": [
 								"localhost"
 							],
-							"port": "5001",
+							"port": "5004",
 							"path": [
 								"api",
 								"reservas",
