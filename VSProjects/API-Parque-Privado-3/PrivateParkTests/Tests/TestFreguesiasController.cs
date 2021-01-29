@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
-using API_Parque_Privado.Controllers;
-using API_Parque_Privado.Models;
+using API_Parque_Privado_3.Controllers;
+using API_Parque_Privado_3.Models;
 using System.Threading;
 
 namespace UnitTest.Unit_Tests
@@ -12,7 +12,7 @@ namespace UnitTest.Unit_Tests
     {
         [Fact]
 
-        public async Task GetAllFreguesias_ShouldReturnOnlyOneFreguesia() // apenas deve retornar uma: a qual o parque pertence
+        public async Task GetAllFreguesias_ShouldReturnOnlyOneFreguesia()
         {
             //Arrange
             var TestContext = API_Parque_PrivadoContextMocker.GetPrivParkContext("DBTest4GetAllFreguesias");
@@ -23,7 +23,7 @@ namespace UnitTest.Unit_Tests
 
             //Assert
             var items = Assert.IsType<List<Freguesia>>(result.Value);
-            Assert.Single(items);
+            Assert.Equal(5, items.Count);
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace UnitTest.Unit_Tests
             var TestController = new FreguesiasController(testContext);
 
             //Act
-            var result = await TestController.PostFreguesia(new Freguesia { Id = 2, Nome = "Coives" });
-            var get = await TestController.GetFreguesia(2);
+            var result = await TestController.PostFreguesia(new Freguesia { Id = 6, Nome = "Coives" });
+            var get = await TestController.GetFreguesia(6);
 
             //Assert
             Assert.IsType<Freguesia>(get.Value);

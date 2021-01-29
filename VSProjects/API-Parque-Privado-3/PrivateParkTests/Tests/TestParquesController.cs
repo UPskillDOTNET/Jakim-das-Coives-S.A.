@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.AspNetCore.Mvc;
-using API_Parque_Privado.Controllers;
-using API_Parque_Privado.Models;
+using API_Parque_Privado_3.Controllers;
+using API_Parque_Privado_3.Models;
 
 namespace UnitTest.Unit_Tests
 {
