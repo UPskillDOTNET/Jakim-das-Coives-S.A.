@@ -1,5 +1,5 @@
-﻿using API_Parque_Privado.Controllers;
-using API_Parque_Privado.Models;
+﻿using API_Parque_Privado_3.Controllers;
+using API_Parque_Privado_3.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -24,11 +24,11 @@ namespace UnitTest.Unit_Tests
             //Assert
 
             var items = Assert.IsType<List<Cliente>>(result.Value);
-            Assert.Equal(4, items.Count);
+            Assert.Equal(5, items.Count);
         }
 
         [Fact]
-        public async Task GetClientesByNifAsync_ShouldReturnManelDosPCs() // deverá retornar o cliente "Manel dos PC's"
+        public async Task GetClientesByNifAsync_ShouldReturnSistemaCentral() // deverá retornar o cliente "Sistema Central" (Jakim das Coives)
         {
             //Arrange
 
@@ -37,13 +37,13 @@ namespace UnitTest.Unit_Tests
 
             //Act
 
-            var result = await TestController.GetCliente(444555666);
+            var result = await TestController.GetCliente(111222333);
 
             //Assert
 
             var item = Assert.IsType<Cliente>(result.Value);
-            Assert.Equal("Manel dos PC's", item.Nome);
-            Assert.Equal("maneldospcs@upskill.pt", item.Email);
+            Assert.Equal("Sistema Central", item.Nome);
+            Assert.Equal("jakimdascoives@upskill.pt", item.Email);
         }
 
         [Fact]
