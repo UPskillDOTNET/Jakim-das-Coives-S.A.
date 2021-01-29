@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using API_Parque_Privado_3.Data;
 
 namespace API_Parque_Privado_3
 {
@@ -28,6 +30,9 @@ namespace API_Parque_Privado_3
         {
 
             services.AddControllers();
+
+            services.AddDbContext<API_Parque_Privado_3Context>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("API_Parque_Privado_3Context")));
             /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Parque_Privado_3", Version = "v1" });
