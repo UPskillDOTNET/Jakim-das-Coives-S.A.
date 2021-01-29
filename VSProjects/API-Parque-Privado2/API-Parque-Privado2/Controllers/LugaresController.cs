@@ -10,7 +10,7 @@ using API_Parque_Privado2.Models;
 
 namespace API_Parque_Privado2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/lugares")]
     [ApiController]
     public class LugaresController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_Parque_Privado2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
         {
-            return await _context.Lugar.ToListAsync();
+            return await _context.Lugares.ToListAsync();
         }
 
         // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
 
             if (lugar == null)
             {
@@ -40,6 +40,29 @@ namespace API_Parque_Privado2.Controllers
             }
 
             return lugar;
+        }
+
+        [HttpGet("disponibilidade/{freguesiaId}/{inicio}/{fim}")]
+        public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
+        {
+            List<Lugar> todoslugares = new List<Lugar>();
+            var parques = _context.Parques.Where(p => p.FreguesiaId == freguesiaId);
+            foreach (Parque p in parques)
+            {
+                var ltemp = _context.Lugares.Where(l => l.ParqueId == p.Id);
+                todoslugares.AddRange(ltemp);
+            }
+
+            List<Lugar> ocupados = new List<Lugar>();
+            var reservas = _context.Reservas.Include(r => r.Lugar).Where(r => r.Inicio <= inicio && r.Fim >= fim);
+            foreach (Reserva r in reservas)
+            {
+                ocupados.Add(r.Lugar);
+            }
+
+            var disponiveis = todoslugares.Except(ocupados);
+
+            return disponiveis;
         }
 
         // PUT: api/Lugares/5
@@ -78,7 +101,7 @@ namespace API_Parque_Privado2.Controllers
         [HttpPost]
         public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
         {
-            _context.Lugar.Add(lugar);
+            _context.Lugares.Add(lugar);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLugar", new { id = lugar.Id }, lugar);
@@ -88,13 +111,13 @@ namespace API_Parque_Privado2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
             if (lugar == null)
             {
                 return NotFound();
             }
 
-            _context.Lugar.Remove(lugar);
+            _context.Lugares.Remove(lugar);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +125,7 @@ namespace API_Parque_Privado2.Controllers
 
         private bool LugarExists(int id)
         {
-            return _context.Lugar.Any(e => e.Id == id);
+            return _context.Lugares.Any(e => e.Id == id);
         }
     }
 }

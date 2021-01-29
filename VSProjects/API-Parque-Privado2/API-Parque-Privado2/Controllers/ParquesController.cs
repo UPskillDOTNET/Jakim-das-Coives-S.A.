@@ -10,7 +10,7 @@ using API_Parque_Privado2.Models;
 
 namespace API_Parque_Privado2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/parques")]
     [ApiController]
     public class ParquesController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_Parque_Privado2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Parque>>> GetParque()
         {
-            return await _context.Parque.ToListAsync();
+            return await _context.Parques.ToListAsync();
         }
 
         // GET: api/Parques/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Parque>> GetParque(int id)
         {
-            var parque = await _context.Parque.FindAsync(id);
+            var parque = await _context.Parques.FindAsync(id);
 
             if (parque == null)
             {
@@ -78,7 +78,7 @@ namespace API_Parque_Privado2.Controllers
         [HttpPost]
         public async Task<ActionResult<Parque>> PostParque(Parque parque)
         {
-            _context.Parque.Add(parque);
+            _context.Parques.Add(parque);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetParque", new { id = parque.Id }, parque);
@@ -88,13 +88,13 @@ namespace API_Parque_Privado2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParque(int id)
         {
-            var parque = await _context.Parque.FindAsync(id);
+            var parque = await _context.Parques.FindAsync(id);
             if (parque == null)
             {
                 return NotFound();
             }
 
-            _context.Parque.Remove(parque);
+            _context.Parques.Remove(parque);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace API_Parque_Privado2.Controllers
 
         private bool ParqueExists(int id)
         {
-            return _context.Parque.Any(e => e.Id == id);
+            return _context.Parques.Any(e => e.Id == id);
         }
     }
 }
