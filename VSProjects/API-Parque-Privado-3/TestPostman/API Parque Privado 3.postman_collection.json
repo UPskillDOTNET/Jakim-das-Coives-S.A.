@@ -1552,6 +1552,57 @@
 					"response": []
 				},
 				{
+					"name": "Check if Lugar is available",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if Lugar is available\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if result is the expected\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"api",
+								"lugares",
+								"disponibilidade",
+								"{{idFreguesia}}",
+								"2021-01-01T10:00:00",
+								"2021-01-01T11:00:00"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update Lugar",
 					"event": [
 						{
@@ -2114,63 +2165,6 @@
 					"response": []
 				},
 				{
-					"name": "Create Lugar 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Create Lugar 2\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Create id variable\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.globals.set(\"idLugar2\", jsonData.id);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"parqueId\":{{idParque}},\r\n    \"numero\":2,\r\n    \"Fila\":\"A\",\r\n    \"Andar\":0,\r\n    \"preco\":5.99\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://localhost:5004/api/lugares",
-							"protocol": "https",
-							"host": [
-								"localhost"
-							],
-							"port": "5004",
-							"path": [
-								"api",
-								"lugares"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create Cliente 1",
 					"event": [
 						{
@@ -2223,14 +2217,18 @@
 					"response": []
 				},
 				{
-					"name": "Create Cliente 2",
+					"name": "Check if Lugar is available before Reserva",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Create Cliente 2\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Check if Lugar is available\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if result is the expected\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2248,19 +2246,10 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"nif\":111111112,\r\n    \"nome\":\"Cliente Test 2\",\r\n    \"email\":\"cliente@test.pt\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "https://localhost:5004/api/clientes",
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
 							"protocol": "https",
 							"host": [
 								"localhost"
@@ -2268,7 +2257,11 @@
 							"port": "5004",
 							"path": [
 								"api",
-								"clientes"
+								"lugares",
+								"disponibilidade",
+								"{{idFreguesia}}",
+								"2021-01-01T10:00:00",
+								"2021-01-01T11:00:00"
 							]
 						}
 					},
@@ -2370,6 +2363,166 @@
 								"api",
 								"reservas",
 								"{{idReserva}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if Lugar is not available after Reserva",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if Lugar is not available\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if result is the expected\", function () {\r",
+									"    pm.response.to.have.body(\"[]\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5004/api/lugares/disponibilidade/{{idFreguesia}}/2021-01-01T10:00:00/2021-01-01T11:00:00",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"api",
+								"lugares",
+								"disponibilidade",
+								"{{idFreguesia}}",
+								"2021-01-01T10:00:00",
+								"2021-01-01T11:00:00"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Lugar 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create Lugar 2\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Create id variable\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.globals.set(\"idLugar2\", jsonData.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"parqueId\":{{idParque}},\r\n    \"numero\":2,\r\n    \"Fila\":\"A\",\r\n    \"Andar\":0,\r\n    \"preco\":5.99\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5004/api/lugares",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"api",
+								"lugares"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Cliente 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create Cliente 2\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nif\":111111112,\r\n    \"nome\":\"Cliente Test 2\",\r\n    \"email\":\"cliente@test.pt\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5004/api/clientes",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5004",
+							"path": [
+								"api",
+								"clientes"
 							]
 						}
 					},
