@@ -17,6 +17,7 @@ namespace API_Parque_Privado2.Data
             }
 
             context.Clientes.AddRange(  //privados podem ter vários clientes
+                new Cliente { Nif = 111222333, Nome = "Sistema Central", Email = "jakimdascoives@upskill.pt" },
                 new Cliente { Nif = 123456789, Nome = "Joao", Email = "joao@upskill.pt" },
                 new Cliente { Nif = 987654321, Nome = "Jose", Email = "jose@upskill.pt" },
                 new Cliente { Nif = 112233445, Nome = "Raphael", Email = "raphael@upskill.pt" },
