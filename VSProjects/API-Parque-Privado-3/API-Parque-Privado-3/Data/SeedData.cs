@@ -26,11 +26,7 @@ namespace API_Parque_Privado_3.Data
             context.SaveChanges();
 
             context.Freguesias.AddRange(
-                new Freguesia { Nome = "Porto" },
-                new Freguesia { Nome = "Lisboa" },
-                new Freguesia { Nome = "Braga" },
-                new Freguesia { Nome = "Portimão" },
-                new Freguesia { Nome = "Évora" }
+                new Freguesia { Nome = "Porto" }
             );
             context.SaveChanges();
 
