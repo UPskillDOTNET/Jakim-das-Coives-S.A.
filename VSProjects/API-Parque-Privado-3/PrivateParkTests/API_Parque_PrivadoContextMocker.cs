@@ -35,11 +35,7 @@ namespace UnitTest
             dbContext.SaveChanges();
 
             dbContext.Freguesias.AddRange(
-                new Freguesia { Nome = "Porto" },
-                new Freguesia { Nome = "Lisboa" },
-                new Freguesia { Nome = "Braga" },
-                new Freguesia { Nome = "Portimão" },
-                new Freguesia { Nome = "Évora" }
+                new Freguesia { Nome = "Porto" }
             );
             dbContext.SaveChanges();
 

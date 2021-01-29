@@ -23,7 +23,7 @@ namespace UnitTest.Unit_Tests
 
             //Assert
             var items = Assert.IsType<List<Freguesia>>(result.Value);
-            Assert.Equal(5, items.Count);
+            Assert.Single(items);
         }
 
         [Fact]
