@@ -78,10 +78,17 @@ namespace API_Parque_Privado.Controllers
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {
-            _context.Reservas.Add(reserva);
-            await _context.SaveChangesAsync();
+            if (!IsNotAvailable(reserva.LugarId, reserva.Inicio, reserva.Fim))
+            {
+                _context.Reservas.Add(reserva);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+                return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            }
+            else
+            {
+                return Conflict(new { message = $"Este lugar não se encontra disponível" });
+            }
         }
 
         // DELETE: api/Reservas/5
@@ -103,6 +110,10 @@ namespace API_Parque_Privado.Controllers
         private bool ReservaExists(int id)
         {
             return _context.Reservas.Any(e => e.Id == id);
+        }
+        private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
+        {
+            return _context.Reservas.Any(e => e.LugarId == lugarId && e.Inicio <= inicio && e.Fim >= fim);
         }
     }
 }
