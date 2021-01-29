@@ -16,6 +16,7 @@ namespace API_Parque_Privado2.Models
         [Required]
         public string Nome { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
     }
 }
