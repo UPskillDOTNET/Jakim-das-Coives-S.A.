@@ -23,7 +23,7 @@ namespace UnitTest.Unit_Tests
 
             //Assert
             var items = Assert.IsType<List<Reserva>>(result.Value);
-            Assert.Equal(4, items.Count);
+            Assert.Equal(5, items.Count);
         }
 
         [Fact]
@@ -50,8 +50,8 @@ namespace UnitTest.Unit_Tests
             var TestController = new ReservasController(testContext);
 
             //Act
-            var result = await TestController.PostReserva(new Reserva { Id = 5, NifCliente = 111222333, LugarId = 5, Inicio = DateTime.Parse("2021-01-01 10:10:10"), Fim = DateTime.Parse("2031-01-01 10:10:10") });
-            var get = await TestController.GetReserva(5);
+            var result = await TestController.PostReserva(new Reserva { Id = 6, NifCliente = 111222333, LugarId = 5, Inicio = DateTime.Parse("2021-01-01 10:10:10"), Fim = DateTime.Parse("2031-01-01 10:10:10") });
+            var get = await TestController.GetReserva(6);
 
             //Assert
             Assert.IsType<Reserva>(get.Value);
