@@ -16,6 +16,7 @@ namespace API_Parque_Publico.Models
         [Required]
         public string Nome { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         //[InverseProperty("Cliente")]
