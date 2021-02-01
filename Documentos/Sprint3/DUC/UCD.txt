@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+
+actor "Utilizador Não Registado" as C
+actor "Utilizador" as SC
+
+usecase "UC1\nRegistar Utilizador no Sistema Central da Jakim das Coives" as UC1
+usecase "UC2\nPesquisar lugares disponiveis" as UC2
+usecase "UC3\nEfetuar reserva" as UC3
+usecase "UC4\nSub-alugar reserva" as UC4
+usecase "UC5\nCancelar reserva" as UC5
+usecase "UC6\nActualizar reserva" as UC6
+
+C --> UC1
+SC --> UC2
+SC --> UC3
+SC --> UC4
+SC --> UC5
+SC --> UC6
+@enduml
