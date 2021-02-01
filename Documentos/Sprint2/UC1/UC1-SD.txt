@@ -9,14 +9,14 @@ activate UNR
 UNR --> UC : solicita registo empresa
 activate UC
 
-UC --> U : Add(cliente)
+UC --> U : valida cliente
 activate U
 
-
-U --> C : Add(cliente)
+U --> UC : cliente validado
 deactivate U
-activate C
 
+UC --> C : Add(cliente)
+activate C
 
 C --> UC : SaveChangesAsync()
 deactivate C

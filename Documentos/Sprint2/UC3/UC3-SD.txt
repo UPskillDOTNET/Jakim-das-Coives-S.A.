@@ -2,7 +2,6 @@
 autonumber
 actor "Cliente" as SC
 participant ":api/reservasController" as RC
-participant ":api/reserva" as R
 participant ":context" as C
 
 activate SC
@@ -12,14 +11,8 @@ activate RC
 RC --> C : FindAsync(id)
 activate C
 
-
-C --> R : return(reserva)
+C --> RC : return(reserva)
 deactivate C
-activate R
-
-
-R --> RC : recebe (reserva)
-deactivate R
 
 RC --> C : Remove(reserva)
 activate C

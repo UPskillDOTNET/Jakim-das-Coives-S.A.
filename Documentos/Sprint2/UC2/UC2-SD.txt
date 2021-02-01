@@ -9,14 +9,14 @@ activate CL
 CL --> RC : solicita reserva
 activate RC
 
-RC --> R : Add(reserva)
+RC --> R : valida reserva
 activate R
 
-
-R --> C : Add(reserva)
+R --> RC : reserva validada
 deactivate R
-activate C
 
+RC --> C : Add(reserva)
+activate C
 
 C --> RC : SaveChangesAsync()
 deactivate C
