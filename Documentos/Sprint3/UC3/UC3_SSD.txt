@@ -6,7 +6,7 @@ actor "Sistema Central" as API
 activate UserNR
 UserNR -> "API" : inicia cancelamento de reserva
 activate "API"
-"API" --> UserNR : solicita dados cliente \n(id)
+"API" --> UserNR : solicita dados(id)
 deactivate "API"
 
 UserNR -> "API" : introduz os dados solicitados

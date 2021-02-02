@@ -21,7 +21,7 @@ Partes Interessadas
     - Sistema Central: pretende saber que a reserva que o Utilizador fez foi cancelada.
 
 Pré-condições
-    - O utilizador procedeu ao cancelamento na aplicação.
+    - O utilizador procedeu ao cancelamento.
 
 Pós-condições
     - As alterações são gravadas na base de dados da Sistema Central.
