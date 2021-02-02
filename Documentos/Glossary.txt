@@ -1,17 +1,15 @@
 Cliente : Nome genérico das aplicações que integram as APIs dos parques. São clientes do parque.
 
-API.Parque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
+Cliente não registado: É o programador da APISistemaCentral que pretende integrar as API dos parques no seu sistema e necessita de se registar na API para identificar as suas Reservas no parque.
 
-Cliente não registado: É o programador de uma aplicação Web que pretende integrar a API dos parques no seu sistema e necessita de se registar na API para identificar as suas reservas no parque.
+Utilizador: É um utilizador humano registado na aplicação APISistemaCentral que pretende fazer reservas de Lugares de estacionamento.
 
-api/reservasController : É o Controller da API responsável pelo CRUD das reservas.
+Utilizador não registado: É um utilizador humano que pretende registar-se na APISistemaCentral para utilizar a aplicação.
 
-api/reserva : É o Model da reserva na API.
+APIParque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
 
-context : É o nome da base de dados da API.
+APISistemaCentral: Refere-se à API que centraliza a gestão de Reservas em todas as APIParque. Devolve uma lista de Lugares de estacionamento disponíveis para aluguer, e permite efectuar Reservas e Sub-alugueres.
 
-api/clientesController : É o Controller da API responsável pelo CRUD de clientes.
+Reserva: Identifica o aluguer de um Lugar de estacionamento num determinado Parque efectuado por um Cliente ou Utilizador.
 
-api/cliente : É o Model do user na API.
-
-CRUD: Acrónimo de C (create), R (read), U (update) e D (delete)
+Sub-aluguer: Um Utilizador efectua um aluguer de um Lugar disponibilizado e previamente reservado por outro Utilizador.
