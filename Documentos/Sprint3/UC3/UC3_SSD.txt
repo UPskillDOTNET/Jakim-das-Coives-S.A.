@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+actor "Sistema Central" as API
+
+activate UserNR
+UserNR -> "API" : inicia cancelamento de reserva
+activate "API"
+"API" --> UserNR : solicita dados cliente \n(id)
+deactivate "API"
+
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
+
+"API" --> UserNR : operação bem sucedida
+deactivate "API"
+
+deactivate UserNR
+@enduml

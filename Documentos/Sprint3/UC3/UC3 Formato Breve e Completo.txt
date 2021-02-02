@@ -1,0 +1,45 @@
+Caso de Uso Simples
+
+    - Cancelar uma reserva feita por um utilizador
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz ao Sistema Central um pedido de cancelamento de uma reserva.
+    O O Sistema Central apaga a reserva da sua base de dados e informa o Utilizador do sucesso da operação.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende cancelar a reserva no Sistema Central.
+    - Sistema Central: pretende saber que a reserva que o Utilizador fez foi cancelada.
+
+Pré-condições
+    - O utilizador procedeu ao cancelamento na aplicação.
+
+Pós-condições
+    - As alterações são gravadas na base de dados da Sistema Central.
+
+
+Fluxo Básico
+
+    1. O Utilizador inicia o pedido de cancelamento.
+    2. O sistema Central pede os dados da reserva (id).
+    3. O Utilizador insere os dados pedidos.
+    2. O Sistema Central apaga a reserva da base de dados e informa o Utilizador do sucesso.
+
+Fluxos Alternativos
+
+    2a - A reserva não existe no Sistema Central.
+        O Sistema Central informa o Utilizador que a reserva não existe.
+        O Utilizador cancela o pedido.
+        O caso de uso acaba.
+
+--------------------------------------------------------------------------------------------------
+
