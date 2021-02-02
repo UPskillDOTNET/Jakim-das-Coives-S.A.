@@ -7,6 +7,8 @@ class APISistemaCentral {}
 
 class APIParque {}
 
+class APISubAluguer {}
+
 class Cliente {
  -int Nif
  -string Nome
@@ -17,10 +19,15 @@ class Utilizador {
  -int Nif
  -string Nome
  -string Email
- -string Método de pagamento
+ -double Carteira
+ -int MétodoId
 }
 
 class Reserva {}
+
+class Transacao {}
+
+class ReservaSistemaCentral {}
 
 class EmailDeConfirmação {}
 
@@ -38,9 +45,7 @@ class Localização {
  -int Andar
 }
 
-class SubAluguer {}
-
-class MétodoDePagamento {}
+class APIMetodoDePagamento {}
 
 class APIQRCode {}
 
@@ -54,39 +59,46 @@ class Morada {
  -string Freguesia
 }
 
-APISistemaCentral "1" -- "1" Cliente : é >
-APISistemaCentral "1" -- "0*" Reserva : possui >
-APISistemaCentral "1" -- "0*" Utilizador : possui >
-APISistemaCentral "1" -- "1*" MétodoDePagamento : tem >
 APISistemaCentral "1" -- "1" APIQRCode : usa >
+APISistemaCentral "1" -- "1" Cliente : é >
+APISistemaCentral "1" -- "0*" ReservaSistemaCentral : possui >
+APISistemaCentral "1" -- "0*" Utilizador : possui >
+APISistemaCentral "1" -- "1*" APIMetodoDePagamento : tem >
 APISistemaCentral "1" -- "0*" EmailDeConfirmação : envia >
-APISistemaCentral "1" -- "0*" SubAluguer : permite fazer >
 
-APIParque "1" -- "1*" Parque : é referente a >
+APISubAluguer "1" -- "0*" Reserva : possui >
+APISubAluguer "1" -- "1*" Lugar : possui >
+
 APIParque "1" -- "0*" Reserva : possui >
+
+Transacao"1" -- "1" ReservaSistemaCentral : é referente a >
+Transacao"0*" -- "1" Utilizador : foi efectuada por >
 
 Cliente "1" -- "0*" Reserva : gere >
 Cliente "0*" -- "1" APIParque : possui <
+Cliente "0*" -- "1" APISubAluguer : possui <
 
-Utilizador "1" -- "0*" Reserva : gere >
-Utilizador "1" -- "0*" SubAluguer : faz >
+Utilizador "1" -- "0*" ReservaSistemaCentral : gere >
 
-Reserva "0*" -- "1" Lugar : é referente a >
-Reserva "1" -- "1" Custo: tem >
 Reserva "1" -- "1" Duração : tem >
+
+ReservaSistemaCentral "1" -- "1" Custo: tem >
+ReservaSistemaCentral "1" -- "1" Reserva: é referente a >
+ReservaSistemaCentral "0*" -- "1" Parque: é referente a >
 
 EmailDeConfirmação "1" -- "1" Reserva : é referente a >
 
+APIQRCode "1" -- "0*" EmailDeConfirmação : usa <
+
+Lugar "1" -- "0*" Reserva : é referente a <
 Lugar "1" -- "1" Preço : tem >
-
-Parque "1" -- "1*" Lugar : tem >
-Parque "1" -- "1" Morada : tem >
-
 Lugar "1" -- "1" Localização : tem >
 
-SubAluguer "1" -- "1" Reserva : é >
+Parque "1" -- "1*" Lugar : tem >
+Parque"0*" -- "1" APISubAluguer : tem <
 
-MétodoDePagamento "1" -- "0*" Utilizador : é usado por >
+Morada "1" -- "1" Parque : tem <
 
-EmailDeConfirmação "0*" -- "1" APIQRCode : usa>
+APIMetodoDePagamento "1" -- "0*" Transacao: usa <
+APIMetodoDePagamento "1" -- "0*" Utilizador : é usado por >
 @enduml
