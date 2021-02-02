@@ -1,0 +1,92 @@
+@startuml
+skinparam classAttributeIconSize 0
+hide methods
+left to right direction
+
+class APISistemaCentral {}
+
+class APIParque {}
+
+class Cliente {
+ -int Nif
+ -string Nome
+ -string Email
+}
+
+class Utilizador {
+ -int Nif
+ -string Nome
+ -string Email
+ -string Método de pagamento
+}
+
+class Reserva {}
+
+class EmailDeConfirmação {}
+
+class Preço {}
+
+class Custo {}
+
+class Parque {}
+
+class Lugar {}
+
+class Localização {
+ -int Numero
+ -int Fila
+ -int Andar
+}
+
+class SubAluguer {}
+
+class MétodoDePagamento {}
+
+class APIQRCode {}
+
+class Duração {
+ -dateTime Inicio
+ -dateTime Fim
+}
+
+class Morada {
+ -string Rua
+ -string Freguesia
+}
+
+APISistemaCentral "1" -- "1" Cliente : é >
+APISistemaCentral "1" -- "0*" Reserva : possui >
+APISistemaCentral "1" -- "0*" Utilizador : possui >
+APISistemaCentral "1" -- "1*" MétodoDePagamento : tem >
+APISistemaCentral "1" -- "1" APIQRCode : usa >
+APISistemaCentral "1" -- "0*" EmailDeConfirmação : envia >
+APISistemaCentral "1" -- "0*" SubAluguer : permite fazer >
+
+APIParque "1" -- "1*" Parque : é referente a >
+APIParque "1" -- "0*" Reserva : possui >
+
+Cliente "1" -- "0*" Reserva : gere >
+Cliente "0*" -- "1" APIParque : possui <
+
+Utilizador "1" -- "0*" Reserva : gere >
+Utilizador "1" -- "0*" SubAluguer : faz >
+
+Reserva "0*" -- "1" Lugar : é referente a >
+Reserva "1" -- "1" Custo: tem >
+Reserva "1" -- "1" Duração : tem >
+
+EmailDeConfirmação "1" -- "1" Reserva : é referente a >
+
+Lugar "1" -- "1" Preço : tem >
+
+Parque "1" -- "1*" Lugar : tem >
+Parque "1" -- "1" Morada : tem >
+
+Lugar "1" -- "1" Localização : tem >
+
+SubAluguer "1" -- "1" Reserva : é >
+
+MétodoDePagamento "1" -- "0*" Utilizador : é usado por >
+
+EmailDeConfirmação "0*" -- "1" APIQRCode : usa>
+@enduml
