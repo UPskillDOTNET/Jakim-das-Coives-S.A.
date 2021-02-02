@@ -1,0 +1,27 @@
+@startuml
+autonumber
+actor "Cliente Não Registado" as UNR
+participant ":api/clientesController" as UC
+participant ":api/cliente" as U
+participant ":context" as C
+
+activate UNR
+UNR --> UC : solicita registo empresa
+activate UC
+
+UC --> U : valida cliente
+activate U
+
+U --> UC : cliente validado
+deactivate U
+
+UC --> C : Add(cliente)
+activate C
+
+C --> UC : SaveChangesAsync()
+deactivate C
+
+UC --> UNR: CreatedAtAction()\noperação bem sucedida
+deactivate UC
+deactivate UNR
+@enduml

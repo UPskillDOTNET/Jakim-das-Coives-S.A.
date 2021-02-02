@@ -1,18 +1,19 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UserNR
+actor ":Sistema Central" as SC
 
 activate UserNR
-UserNR -> ":Sistema" : regista utilizador
-activate ":Sistema"
-":Sistema" --> UserNR : solicita dados utilizador \n(email, password, nome, NIF, método pagamento)
-deactivate ":Sistema"
+UserNR -> SC : regista utilizador
+activate SC
+SC --> UserNR : solicita dados cliente \n(nome, NIF, email, método pagamento preferencial)
+deactivate SC
 
-UserNR -> ":Sistema" : introduz os dados solicitados
-activate ":Sistema"
+UserNR -> SC : introduz os dados solicitados
+activate SC
 
-":Sistema" --> UserNR : operação bem sucedida \ncria conta de utilizador
-deactivate ":Sistema"
+SC --> UserNR : operação bem sucedida
+deactivate SC
 
 deactivate UserNR
 @enduml
