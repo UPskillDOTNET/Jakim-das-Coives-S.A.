@@ -1,21 +1,21 @@
 @startuml
 autonumber
-actor "Cliente Não Registado" as UNR
-participant ":api/clientesController" as UC
-participant ":api/cliente" as U
+actor "Utilizador Não Registado" as UNR
+participant ":api/utilizadoresController" as UC
+participant ":api/utilizador" as U
 participant ":context" as C
 
 activate UNR
-UNR --> UC : solicita registo empresa
+UNR --> UC : solicita registo
 activate UC
 
-UC --> U : valida cliente
+UC --> U : valida utilizador
 activate U
 
-U --> UC : cliente validado
+U --> UC : utilizador validado
 deactivate U
 
-UC --> C : Add(cliente)
+UC --> C : Add(utilizador)
 activate C
 
 C --> UC : SaveChangesAsync()
