@@ -3,13 +3,15 @@ left to right direction
 
 actor "Utilizador Não Registado" as C
 actor "Utilizador" as SC
+actor "Sistema Central" as S
 
-usecase "UC1\nRegistar Utilizador no Sistema Central da Jakim das Coives" as UC1
-usecase "UC2\nPesquisar lugares disponiveis" as UC2
-usecase "UC3\nEfetuar reserva" as UC3
-usecase "UC4\nSub-alugar reserva" as UC4
-usecase "UC5\nCancelar reserva" as UC5
-usecase "UC6\nActualizar reserva" as UC6
+usecase "UC1\nRegistar Utilizador no Sistema Central" as UC1
+usecase "UC2\nEfetuar reserva" as UC2
+usecase "UC3\nCancelar reserva" as UC3
+usecase "UC4\nEditar reserva" as UC4
+usecase "UC5\nPesquisar disponibilidade" as UC5
+usecase "UC6\nSub-alugar reserva" as UC6
+usecase "UC7\nEnviar Confirmações" as UC7
 
 C --> UC1
 SC --> UC2
@@ -17,4 +19,5 @@ SC --> UC3
 SC --> UC4
 SC --> UC5
 SC --> UC6
+S --> UC7
 @enduml
