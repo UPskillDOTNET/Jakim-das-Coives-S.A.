@@ -1,7 +1,7 @@
 @startuml
 autonumber
 actor "Utilizador" as User
-actor ":API.SubAluguer" as API
+participant ":API.SubAluguer" as API
 
 activate User
 User -> API : inicia pedido de sub-aluguer

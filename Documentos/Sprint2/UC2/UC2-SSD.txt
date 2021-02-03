@@ -1,7 +1,7 @@
 @startuml
 autonumber
 actor "Cliente" as UserNR
-actor ":API.Parque" as API
+participant ":API.Parque" as API
 
 activate UserNR
 UserNR -> "API" : Inicia reserva

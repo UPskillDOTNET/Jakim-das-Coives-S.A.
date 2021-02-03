@@ -1,7 +1,7 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UserNR
-actor ":Sistema Central" as SC
+participant ":Sistema Central" as SC
 
 activate UserNR
 UserNR -> SC : regista utilizador
