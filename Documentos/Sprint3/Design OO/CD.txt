@@ -29,7 +29,6 @@ class ReservasController {
   +Get GetReserva()
   +Get GetReservaById(id)
   +Post PostReserva()
-  +Put PutReserva(id, reserva)
   +Delete DeleteReserva(id)
   +FindAvailable(freguesia, inicio, fim)
 }
@@ -81,6 +80,7 @@ class Transacao {
   -Int Id PK
   -Int nifPagador FK
   -Int nifRecepiente FK
+  -Double valor
   -DateTime dataHora
   -Int metodoId FK
 }
@@ -110,7 +110,7 @@ abstract PayPal:Credencial {
 
 abstract Cartao:Credencial {
   -Int Id PK
-  -Int nrCartao
+  -Int numero
   -String nome
   -DateTime dataValidade
   -Int cvc
@@ -143,6 +143,49 @@ class Context {
   -DbSet<Paypal> Paypal
   -DbSet<Cartao> Cartoes
   -DbSet<DebitoDireto> DebitosDiretos
+}
+
+}
+
+package DTOs <<Folder>> {
+
+class ReservaDTO {
+  -String RuaParque
+  -Int NumeroLugar
+  -String FilaLugar
+  -Int AndarLugar
+  -DateTime inicio
+  -DateTime fim
+}
+
+class paypalDTO {
+  -String email
+  -String password
+  -Double custo
+  -String emailDestinatario
+  -DateTime data
+}
+
+class cartaoDTO {
+  -Int numero
+  -String nome
+  -DateTime dataValidade
+  -Int cvc
+  -String password
+  -Double custo
+  -Int nifDestinatario
+  -DateTime data
+}
+
+class debitoDiretoDTO {
+  -String iban
+  -String nome
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -Double custo
+  -Int nifDestinatario
+  -DateTime data
 }
 
 }
