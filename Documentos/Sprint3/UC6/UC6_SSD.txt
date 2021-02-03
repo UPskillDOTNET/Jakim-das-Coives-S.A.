@@ -12,6 +12,12 @@ deactivate API
 User -> API : introduz os dados solicitados
 activate API
 
+API --> User : solicita novo custo do lugar
+deactivate API
+
+User -> API : introduz novo custo do lugar
+activate API
+
 API --> User : operação bem sucedida
 
 deactivate API
