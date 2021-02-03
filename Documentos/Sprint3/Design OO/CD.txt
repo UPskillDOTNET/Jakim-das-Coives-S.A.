@@ -171,7 +171,6 @@ class cartaoDTO {
   -String nome
   -DateTime dataValidade
   -Int cvc
-  -String password
   -Double custo
   -Int nifDestinatario
   -DateTime data
