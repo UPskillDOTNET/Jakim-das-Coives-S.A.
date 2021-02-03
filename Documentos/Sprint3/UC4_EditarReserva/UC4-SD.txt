@@ -1,0 +1,33 @@
+@startuml
+actor "Utilizador" as U
+    participant ":api/reservasController" as RC
+    participant ":api/reserva" as R
+    participant ":context" as C
+    participant ":api/paymentService" as PS
+
+    activate U
+    U--> RC : pede para editar uma reserva(reserva)
+    activate RC
+
+    RC--> R : valida reserva
+    activate R
+
+    R --> RC: reserva validada
+    deactivate R
+
+    RC --> C : Entry(reserva).State = EntityState.Modified
+    activate C
+
+    C --> RC : SaveChangesAsync()
+    deactivate C
+
+    RC--> PS : cobrar / devolver diferença
+    activate PS 
+
+    PS --> RC: diferença cobrada / devolvida
+    deactivate PS 
+
+    RC --> U: NoContent() operação bem sucedida
+    deactivate RC
+    deactivate U
+@enduml

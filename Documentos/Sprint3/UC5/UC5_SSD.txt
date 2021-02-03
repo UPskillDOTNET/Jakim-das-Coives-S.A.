@@ -1,7 +1,7 @@
 @startuml
 autonumber
 actor "Cliente" as UserNR
-actor ":API.SistemaCentral" as API
+participant ":API.SistemaCentral" as API
 
 activate UserNR
 UserNR -> "API" : inicia pesquisa de disponibilidade
