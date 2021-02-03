@@ -1,0 +1,25 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class CartoesController {
+  +Get GetCartao()
+  +Post PostCartao()
+}
+
+class Cartao {
+  -Int id PK
+  -String nome
+  -Int nrCartao
+  -DateTime dataValidade
+  -Int cvc
+  -Int metodoId FK
+}
+
+class Context {
+  -DbSet<Cartao> Cartoes
+}
+
+CartoesController ..> Cartao
+CartoesController ..> Context
+Context "1" --> "0..*" Cartao: tem
+@enduml
