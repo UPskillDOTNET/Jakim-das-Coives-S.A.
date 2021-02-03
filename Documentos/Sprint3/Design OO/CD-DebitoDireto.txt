@@ -13,11 +13,13 @@ class DebitoDireto{
   -String rua
   -String codigoPostal
   -String freguesia
-  -DateTime dataSubscricao
+  -DateTime data
+  -Int nifDestinatario
+  -Double custo
 }
 
 class Context {
-  -DbSet<DebitoDireto> DebitoDiretos
+  -DbSet<DebitoDireto> DebitosDiretos
 }
 
 DebitoDiretoController ..> DebitoDireto
