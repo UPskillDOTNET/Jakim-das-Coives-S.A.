@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class DebitoDiretoController {
+  +Get GetDebitoDireto()
+  +Post PostDebitoDireto()
+}
+
+class DebitoDireto{
+  -Int id PK
+  -String iban
+  -String nome
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -DateTime dataSubscricao
+}
+
+class Context {
+  -DbSet<DebitoDireto> DebitoDiretos
+}
+
+DebitoDiretoController ..> DebitoDireto
+DebitoDiretoController ..> Context
+Context "1" --> "0..*" DebitoDireto: tem
+@enduml
