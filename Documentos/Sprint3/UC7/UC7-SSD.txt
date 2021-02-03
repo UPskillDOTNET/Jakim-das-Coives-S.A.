@@ -1,0 +1,15 @@
+@startuml
+autonumber
+actor ":API.SistemaCentral" as API
+participant "API.QRCode" as U
+
+activate API
+API -> U : faz um pedido de criação de QR-Code(reservaDTO)
+activate U
+U --> API : devolve QR-Code
+deactivate U
+
+API -> API : Envia email ao utilizador
+
+deactivate API
+@enduml

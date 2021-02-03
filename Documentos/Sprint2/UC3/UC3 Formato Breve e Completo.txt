@@ -32,11 +32,11 @@ Fluxo Básico
     1. O Cliente inicia o pedido de cancelamento.
     2. A API.Parque pede os dados da reserva (id).
     3. O Cliente insere os dados pedidos.
-    2. A API.Parque apaga a reserva da base de dados e informa o Cliente do sucesso.
+    4. A API.Parque apaga a reserva da base de dados e informa o Cliente do sucesso.
 
 Fluxos Alternativos
 
-    2a - A reserva não existe na API
+    4a - A reserva não existe na API
         A API informa o Cliente que a reserva não existe.
         O Cliente cancela o pedido.
         O caso de uso acaba.

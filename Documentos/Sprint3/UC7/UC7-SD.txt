@@ -1,0 +1,21 @@
+@startuml
+autonumber
+participant ":api/reservasController" as RC
+participant ":api/reservaDTO" as R
+participant "API.QRCode" as U
+
+activate RC
+RC -> R : cria uma DTO da reverva (reserva)
+activate R
+R --> RC : (reservaDTO)
+deactivate R
+
+RC -> U : faz um pedido de criação de QR-Code (reservaDTO)
+activate U
+U --> RC : devolve QR-Code
+deactivate U
+
+RC -> RC : Envia QR-Code por email ao utilizador
+
+deactivate RC
+@enduml

@@ -36,7 +36,7 @@ Fluxo Básico
 
 Fluxos Alternativos
 
-    2a - Não existem lugares disponiveis para os requisitos pedidos.
+    4a - Não existem lugares disponiveis para os requisitos pedidos.
         A API informa o cliente que não existem lugares disponiveis.
         O caso de uso acaba.
 
