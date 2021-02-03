@@ -1,0 +1,20 @@
+@startuml
+autonumber
+actor "Utilizador" as SC
+participant ":api/LugaresController" as RC
+participant ":context" as C
+
+activate SC
+SC --> RC : inicia pesquisa de disponibilidade(localidade, inicio, fim)
+activate RC
+
+RC --> C : FindAvailable(localidade, inicio, fim)
+activate C
+
+C --> RC : List<Lugar> disponiveis
+deactivate C
+
+RC --> SC: return(List<Lugar> disponiveis) operação bem sucedida
+deactivate RC
+deactivate SC
+@enduml
