@@ -1,27 +1,26 @@
 @startuml
 autonumber
-actor "Utilizador Não Registado" as UNR
-participant ":api/utilizadoresController" as UC
-participant ":api/utilizador" as U
+actor "Utilizador" as U
+participant ":api/lugaresController" as RC
 participant ":context" as C
 
-activate UNR
-UNR --> UC : solicita registo
-activate UC
-
-UC --> U : valida utilizador
 activate U
+U --> RC : inicia pedido sub-aluguer
+activate RC
 
-U --> UC : utilizador validado
-deactivate U
+RC --> U : solicita dados (reservaId, preço)
+deactivate RC
 
-UC --> C : Add(utilizador)
+U --> RC : introduz dados solicitados
+activate RC
+
+RC --> C : Add(lugar)
 activate C
 
-C --> UC : SaveChangesAsync()
+C --> RC : SaveChangesAsync()
 deactivate C
 
-UC --> UNR: CreatedAtAction()\noperação bem sucedida
-deactivate UC
-deactivate UNR
+RC --> U: CreatedAtAction()\noperação bem sucedida
+deactivate RC
+deactivate U
 @enduml
