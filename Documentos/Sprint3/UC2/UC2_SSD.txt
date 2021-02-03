@@ -1,0 +1,18 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+
+activate U
+U -> ":Sistema" : Efetua a Reserva
+activate ":Sistema"
+":Sistema" --> U : solicita dados da reserva \n(lugar, parque, janela de tempo)
+deactivate ":Sistema"
+
+U -> ":Sistema" : introduz os dados solicitados
+activate ":Sistema"
+
+":Sistema" --> U : operação bem sucedida \nsistema confirma o sucesso da mesma
+deactivate ":Sistema"
+
+deactivate U
+@enduml

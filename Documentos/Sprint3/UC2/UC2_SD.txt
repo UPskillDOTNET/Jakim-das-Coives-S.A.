@@ -1,0 +1,35 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":api/ReservaController" as RC
+participant ":context" as C
+
+activate U
+U --> RC: solicita lugares disponiveis
+
+activate RC
+RC --> C : findAvaiable(lugarId, Data/Hora)
+
+activate C
+C --> RC : returnAvaiable
+
+deactivate C
+RC --> U : Retorna Lugares Disponiveis
+deactivate RC
+
+U --> RC: Escolhe lugar a reservar
+activate RC
+
+
+RC --> C : Add(Reserva)
+activate C
+
+C --> RC : SaveChangesAsync()
+deactivate C
+
+
+RC --> U : Criação bem sucedida
+deactivate RC
+
+deactivate U
+@enduml
