@@ -7,10 +7,12 @@ class PaypalController {
 }
 
 class Paypal {
-  -Int id PK
+  -Int id
   -String email
   -String password
-  -Int metodoId FK
+  -Double custo
+  -String emailDestinatario
+  -DateTime data
 }
 
 class Context {
