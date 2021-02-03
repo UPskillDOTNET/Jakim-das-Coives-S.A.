@@ -1,6 +1,22 @@
 @startuml
 skinparam classAttributeIconSize 0
 
+package Services <<Folder>> {
+
+class PagamentoService {
+  - Pagar()
+  - Receber()
+}
+
+class EmailService {
+  - ObterQRCode()
+  - EnviarEmail()
+}
+
+}
+
+package Controllers <<Folder>> {
+
 class UtilizadoresController {
   +Get GetUtilizador()
   +Get GetUtilizadorById(nif)
@@ -9,20 +25,47 @@ class UtilizadoresController {
   +Delete DeleteUtilizador(nif)
 }
 
-class Utilizador{
-  -Int nif PK
-  -String nome
-  -String email
-  -Double carteira
-  -Int credencialId
-}
-
 class ReservasController {
   +Get GetReserva()
   +Get GetReservaById(id)
   +Post PostReserva()
   +Put PutReserva(id, reserva)
   +Delete DeleteReserva(id)
+  +FindAvailable(freguesia, inicio, fim)
+}
+
+class TransacoesController {
+  +Get GetTransacao()
+  +Get GetTransacaoById(id)
+  +Post PostTransacao()
+}
+
+class ParquesController {
+  +Get GetParque()
+  +Get GetParqueById(id)
+  +Post PostParque()
+  +Put PutParque(id, parque)
+  +Delete DeleteParque(id)
+}
+
+class MetodoPagamentosController {
+  +Get GetMetodoPagamento()
+  +Get GetMetodoPagamentoById(id)
+  +Post PostMetodoPagamento()
+  +Put PutMetodoPagamento(id, metodoPagamento)
+  +Delete DeleteMetodoPagamento(id)
+}
+
+}
+
+package Models <<Folder>> {
+
+class Utilizador{
+  -Int nif PK
+  -String nome
+  -String email
+  -Double carteira
+  -Int credencialId
 }
 
 class Reserva {
@@ -34,12 +77,6 @@ class Reserva {
   -Int reservaParqueId
 }
 
-class TransacoesController {
-  +Get GetTransacao()
-  +Get GetTransacaoById(id)
-  +Post PostTransacao()
-}
-
 class Transacao {
   -Int Id PK
   -Int nifPagador FK
@@ -48,26 +85,9 @@ class Transacao {
   -Int metodoId FK
 }
 
-class ParquesController {
-  +Get GetParque()
-  +Get GetParqueById(id)
-  +Post PostParque()
-  +Put PutParque(id, parque)
-  +Delete DeleteParque(id)
-}
-
 class Parque {
   -Int Id PK
   -String api_url
-
-}
-
-class MetodoPagamentosController {
-  +Get GetMetodoPagamento()
-  +Get GetMetodoPagamentoById(id)
-  +Post PostMetodoPagamento()
-  +Put PutMetodoPagamento(id, metodoPagamento)
-  +Delete DeleteMetodoPagamento(id)
 }
 
 class MetodoPagamento {
@@ -76,17 +96,19 @@ class MetodoPagamento {
   -String api_url
 }
 
+package "Abstract Class Credencial" <<Frame>> {
+
 abstract class Credencial {
 }
 
-class PayPal:Credencial {
+abstract PayPal:Credencial {
   -Int Id PK
   -String email
   -String password
   -Int metodoID FK
 }
 
-class Cartao:Credencial {
+abstract Cartao:Credencial {
   -Int Id PK
   -Int nrCartao
   -String nome
@@ -95,7 +117,7 @@ class Cartao:Credencial {
   -Int metodoID FK
 }
 
-class DebitoDireto:Credencial {
+abstract DebitoDireto:Credencial {
   -Int Id PK
   -String iban
   -String nome
@@ -106,20 +128,31 @@ class DebitoDireto:Credencial {
   -Int metodoID FK
 }
 
+}
 
+}
+
+package Data <<Folder>> {
 
 class Context {
   -DbSet<Utilizador> Utilizadores
   -DbSet<Reserva> Reservas
   -DbSet<Transacao> Transacoes
   -DbSet<Parque> Parques
-  -DbSet<MetodoPagamento> MetodoPagamentos
+  -DbSet<MetodoPagamento> MetodosPagamento
+  -DbSet<Paypal> Paypal
+  -DbSet<Cartao> Cartoes
+  -DbSet<DebitoDireto> DebitosDiretos
+}
+
 }
 
 UtilizadoresController ..> Utilizador
 UtilizadoresController ..> Context
 ReservasController ..> Reserva
 ReservasController ..> Context
+ReservasController ..> PagamentoService
+ReservasController ..> EmailService
 TransacoesController ..> Transacao
 TransacoesController ..> Context
 ParquesController ..> Parque
@@ -132,9 +165,19 @@ Context "1" --> "0..*" Reserva: tem
 Context "1" --> "0..*" Transacao: tem
 Context "1" --> "0..*" Parque: tem
 Context "1" --> "0..*" MetodoPagamento: tem
+Context "1" --> "0..*" "PayPal:Credencial": tem
+Context "1" --> "0..*" "Cartao:Credencial": tem
+Context "1" --> "0..*" "DebitoDireto:Credencial": tem
 
 Reserva "0..*" --> "1" Utilizador: tem
 Reserva "0..*" --> "1" Transacao: tem
 Transacao"1..*" --> "1" Parque: tem
 Parque "0..*" --> "1" MetodoPagamento: tem
+Utilizador "1" --> "1" Credencial: tem
+Credencial --> "PayPal:Credencial": pode ser
+Credencial --> "Cartao:Credencial": pode ser
+Credencial --> "DebitoDireto:Credencial": pode ser
+"PayPal:Credencial" "0..*" --> "1" MetodoPagamento: tem
+"Cartao:Credencial" "0..*" --> "1" MetodoPagamento: tem
+"DebitoDireto:Credencial" "0..*" --> "1" MetodoPagamento: tem
 @enduml
