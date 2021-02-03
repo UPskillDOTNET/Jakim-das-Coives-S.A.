@@ -8,11 +8,13 @@ class CartoesController {
 
 class Cartao {
   -Int id PK
+  -Int numero
   -String nome
-  -Int nrCartao
   -DateTime dataValidade
   -Int cvc
-  -Int metodoId FK
+  -Double custo
+  -Int nifDestinatario
+  -DateTime data
 }
 
 class Context {
