@@ -1,0 +1,23 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class PaypalController {
+  +Get GetPaypal()
+  +Post PostPaypal()
+}
+
+class Paypal {
+  -Int id PK
+  -String email
+  -String password
+  -Int metodoId FK
+}
+
+class Context {
+  -DbSet<Paypal> Paypal
+}
+
+PaypalController ..> Paypal
+PaypalController ..> Context
+Context "1" --> "0..*" Paypal: tem
+@enduml
