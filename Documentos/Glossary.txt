@@ -6,9 +6,11 @@ Utilizador: É um utilizador humano registado na aplicação APISistemaCentral q
 
 Utilizador não registado: É um utilizador humano que pretende registar-se na APISistemaCentral para utilizar a aplicação.
 
-APIParque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
+API.Parque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
 
-APISistemaCentral: Refere-se à API que centraliza a gestão de Reservas em todas as APIParque. Devolve uma lista de Lugares de estacionamento disponíveis para aluguer, e permite efectuar Reservas e Sub-alugueres.
+API.SistemaCentral: Refere-se à API que centraliza a gestão de Reservas em todas as APIParque. Devolve uma lista de Lugares de estacionamento disponíveis para aluguer, e permite efectuar Reservas e Sub-alugueres.
+
+API.SubAluguer : Refere-se à API responsável por disponibilizar e permitir reservar os Lugares de estacionamento que os Utilizadores da APISistemaCentral pretendem sub-alugar.
 
 Reserva: Identifica o aluguer de um Lugar de estacionamento num determinado Parque efectuado por um Cliente ou Utilizador.
 
