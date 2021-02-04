@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using APICartao.Data;
 
 namespace APICartao
 {
@@ -32,6 +34,9 @@ namespace APICartao
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APICartao", Version = "v1" });
             });
+
+            services.AddDbContext<APICartaoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("APICartaoContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
