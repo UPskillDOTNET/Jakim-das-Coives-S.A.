@@ -13,15 +13,18 @@ class EmailService {
   - EnviarEmail()
 }
 
+class TokenService {
+  - BuildToken()
+}
+
 }
 
 package Controllers <<Folder>> {
 
 class UtilizadoresController {
   +Get GetUtilizador()
-  +Get GetUtilizadorById(nif)
-  +Post PostUtilizador()
-  +Put PutUtilizador(nif, Utilizador)
+  +Post RegistarUtilizador()
+  +Post Login()
   +Delete DeleteUtilizador(nif)
 }
 
@@ -59,30 +62,29 @@ class MetodoPagamentosController {
 
 package Models <<Folder>> {
 
-class Utilizador{
+class Utilizador:IdentityUser{
   -Int nif PK
   -String nome
-  -String email
   -Double carteira
-  -Int credencialId
+  -Int credencialId FK
 }
 
 class Reserva {
   -Int id PK
   -Int nifUtilizador FK
   -Int parqueId FK
-  -Double custo
   -Int transacaoID FK
+  -Double custo
   -Int reservaParqueId
 }
 
 class Transacao {
   -Int Id PK
   -Int nifPagador FK
-  -Int nifRecepiente FK
+  -Int nifRecipiente FK
+  -Int metodoId FK
   -Double valor
   -DateTime dataHora
-  -Int metodoId FK
 }
 
 class Parque {
@@ -213,8 +215,8 @@ Context "1" --> "0..*" "DebitoDireto:Credencial": tem
 
 Reserva "0..*" --> "1" Utilizador: tem
 Reserva "0..*" --> "1" Transacao: tem
-Transacao"1..*" --> "1" Parque: tem
-Parque "0..*" --> "1" MetodoPagamento: tem
+Transacao"0..*" --> "1" MetodoPagamento: tem
+Parque "1" --> "0..*" Reserva: tem
 Utilizador "1" --> "1" Credencial: tem
 Credencial --> "PayPal:Credencial": pode ser
 Credencial --> "Cartao:Credencial": pode ser
