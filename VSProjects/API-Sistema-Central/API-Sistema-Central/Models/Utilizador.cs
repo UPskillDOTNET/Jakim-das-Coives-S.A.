@@ -10,10 +10,6 @@ namespace API_Sistema_Central.Models
 {
     public class Utilizador : IdentityUser
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
-        public override string Id { get; set; }
         public string Nome { get; set; }
         [DataType(DataType.Currency)]
         [Range(typeof(double), "0", "1000000")]
