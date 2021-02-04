@@ -18,7 +18,7 @@ namespace APICartao.Models
         public string Nome { get; set; }
 
         [Required]
-        [RegularExpression(@"^\d{2}/\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
+        [RegularExpression(@"^(0[1-9]|1[0-2])[/]\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
         public string DataValidade { get; set; }
 
         [Required]
