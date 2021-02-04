@@ -10,7 +10,7 @@ using API_SubAluguer.Models;
 
 namespace API_SubAluguer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/reservas")]
     [ApiController]
     public class ReservasController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetReserva()
         {
-            return await _context.Reserva.ToListAsync();
+            return await _context.Reservas.ToListAsync();
         }
 
         // GET: api/Reservas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Reserva>> GetReserva(int id)
         {
-            var reserva = await _context.Reserva.FindAsync(id);
+            var reserva = await _context.Reservas.FindAsync(id);
 
             if (reserva == null)
             {
@@ -78,23 +78,30 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {
-            _context.Reserva.Add(reserva);
-            await _context.SaveChangesAsync();
+            if (!IsNotAvailable(reserva.LugarId, reserva.Inicio, reserva.Fim))
+            {
+                _context.Reservas.Add(reserva);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+                return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            }
+            else
+            {
+                return Conflict(new { message = $"Este lugar não se encontra disponível" });
+            }
         }
 
         // DELETE: api/Reservas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReserva(int id)
         {
-            var reserva = await _context.Reserva.FindAsync(id);
+            var reserva = await _context.Reservas.FindAsync(id);
             if (reserva == null)
             {
                 return NotFound();
             }
 
-            _context.Reserva.Remove(reserva);
+            _context.Reservas.Remove(reserva);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +109,11 @@ namespace API_SubAluguer.Controllers
 
         private bool ReservaExists(int id)
         {
-            return _context.Reserva.Any(e => e.Id == id);
+            return _context.Reservas.Any(e => e.Id == id);
+        }
+        private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
+        {
+            return _context.Reservas.Any(e => e.LugarId == lugarId && e.Inicio <= inicio && e.Fim >= fim);
         }
     }
 }

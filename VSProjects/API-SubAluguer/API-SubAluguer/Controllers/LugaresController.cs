@@ -10,7 +10,7 @@ using API_SubAluguer.Models;
 
 namespace API_SubAluguer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/lugares")]
     [ApiController]
     public class LugaresController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
         {
-            return await _context.Lugar.ToListAsync();
+            return await _context.Lugares.ToListAsync();
         }
 
         // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
 
             if (lugar == null)
             {
@@ -78,7 +78,7 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
         {
-            _context.Lugar.Add(lugar);
+            _context.Lugares.Add(lugar);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLugar", new { id = lugar.Id }, lugar);
@@ -88,13 +88,13 @@ namespace API_SubAluguer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
         {
-            var lugar = await _context.Lugar.FindAsync(id);
+            var lugar = await _context.Lugares.FindAsync(id);
             if (lugar == null)
             {
                 return NotFound();
             }
 
-            _context.Lugar.Remove(lugar);
+            _context.Lugares.Remove(lugar);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace API_SubAluguer.Controllers
 
         private bool LugarExists(int id)
         {
-            return _context.Lugar.Any(e => e.Id == id);
+            return _context.Lugares.Any(e => e.Id == id);
         }
     }
 }

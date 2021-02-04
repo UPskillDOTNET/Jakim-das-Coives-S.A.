@@ -14,16 +14,16 @@ namespace API_SubAluguer.Data
         {
         }
 
-        public DbSet<API_SubAluguer.Models.Cliente> Cliente { get; set; }
+        public DbSet<API_SubAluguer.Models.Cliente> Clientes { get; set; }
 
-        public DbSet<API_SubAluguer.Models.Freguesia> Freguesia { get; set; }
+        public DbSet<API_SubAluguer.Models.Freguesia> Freguesias { get; set; }
 
-        public DbSet<API_SubAluguer.Models.Lugar> Lugar { get; set; }
+        public DbSet<API_SubAluguer.Models.Lugar> Lugares { get; set; }
 
-        public DbSet<API_SubAluguer.Models.Parque> Parque { get; set; }
+        public DbSet<API_SubAluguer.Models.Parque> Parques { get; set; }
 
-        public DbSet<API_SubAluguer.Models.Reserva> Reserva { get; set; }
+        public DbSet<API_SubAluguer.Models.Reserva> Reservas { get; set; }
 
-        public DbSet<API_SubAluguer.Models.Disponibilidade> Disponibilidade { get; set; }
+        public DbSet<API_SubAluguer.Models.Disponibilidade> Disponibilidades { get; set; }
     }
 }

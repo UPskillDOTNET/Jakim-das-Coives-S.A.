@@ -10,7 +10,7 @@ using API_SubAluguer.Models;
 
 namespace API_SubAluguer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/freguesias")]
     [ApiController]
     public class FreguesiasController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Freguesia>>> GetFreguesia()
         {
-            return await _context.Freguesia.ToListAsync();
+            return await _context.Freguesias.ToListAsync();
         }
 
         // GET: api/Freguesias/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Freguesia>> GetFreguesia(int id)
         {
-            var freguesia = await _context.Freguesia.FindAsync(id);
+            var freguesia = await _context.Freguesias.FindAsync(id);
 
             if (freguesia == null)
             {
@@ -78,7 +78,7 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Freguesia>> PostFreguesia(Freguesia freguesia)
         {
-            _context.Freguesia.Add(freguesia);
+            _context.Freguesias.Add(freguesia);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFreguesia", new { id = freguesia.Id }, freguesia);
@@ -88,13 +88,13 @@ namespace API_SubAluguer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFreguesia(int id)
         {
-            var freguesia = await _context.Freguesia.FindAsync(id);
+            var freguesia = await _context.Freguesias.FindAsync(id);
             if (freguesia == null)
             {
                 return NotFound();
             }
 
-            _context.Freguesia.Remove(freguesia);
+            _context.Freguesias.Remove(freguesia);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace API_SubAluguer.Controllers
 
         private bool FreguesiaExists(int id)
         {
-            return _context.Freguesia.Any(e => e.Id == id);
+            return _context.Freguesias.Any(e => e.Id == id);
         }
     }
 }

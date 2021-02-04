@@ -10,7 +10,7 @@ using API_SubAluguer.Models;
 
 namespace API_SubAluguer.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/disponibilidades")]
     [ApiController]
     public class DisponibilidadesController : ControllerBase
     {
@@ -25,14 +25,14 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Disponibilidade>>> GetDisponibilidade()
         {
-            return await _context.Disponibilidade.ToListAsync();
+            return await _context.Disponibilidades.ToListAsync();
         }
 
         // GET: api/Disponibilidades/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Disponibilidade>> GetDisponibilidade(int id)
         {
-            var disponibilidade = await _context.Disponibilidade.FindAsync(id);
+            var disponibilidade = await _context.Disponibilidades.FindAsync(id);
 
             if (disponibilidade == null)
             {
@@ -78,7 +78,7 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Disponibilidade>> PostDisponibilidade(Disponibilidade disponibilidade)
         {
-            _context.Disponibilidade.Add(disponibilidade);
+            _context.Disponibilidades.Add(disponibilidade);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDisponibilidade", new { id = disponibilidade.Id }, disponibilidade);
@@ -88,13 +88,13 @@ namespace API_SubAluguer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDisponibilidade(int id)
         {
-            var disponibilidade = await _context.Disponibilidade.FindAsync(id);
+            var disponibilidade = await _context.Disponibilidades.FindAsync(id);
             if (disponibilidade == null)
             {
                 return NotFound();
             }
 
-            _context.Disponibilidade.Remove(disponibilidade);
+            _context.Disponibilidades.Remove(disponibilidade);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace API_SubAluguer.Controllers
 
         private bool DisponibilidadeExists(int id)
         {
-            return _context.Disponibilidade.Any(e => e.Id == id);
+            return _context.Disponibilidades.Any(e => e.Id == id);
         }
     }
 }
