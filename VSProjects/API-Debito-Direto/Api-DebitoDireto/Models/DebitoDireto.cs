@@ -9,25 +9,28 @@ namespace Api_DebitoDireto.Models
     public class DebitoDireto
     {
         [Required]
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string iban { get; set; }
+        [RegularExpression(@"^[P][T][5][0]\d{21}$", ErrorMessage = "IBAN inválido")]
+        public string Iban { get; set; }
         [Required]
-        public string nome { get; set; }
+        public string Nome { get; set; }
         [Required]
-        public string rua { get; set; }
+        public string Rua { get; set; }
         [Required]
-        public string codigoPostal { get; set; }
+        [RegularExpression(@"^\d{4}-\d{3}$", ErrorMessage = "Código postal inválido")]
+        public string CodigoPostal { get; set; }
         [Required]
-        public string freguesia { get; set; }
+        public string Freguesia { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime data { get; set; }
+        public DateTime Data { get; set; }
         [Required]
-        public int nifDestinatario { get; set; }
+        [Range(typeof(int), "100000000", "999999999")]
+        public int NifDestinatario { get; set; }
         [Required]
-        public double custo { get; set; }
+        public double Custo { get; set; }
 
 
     }
