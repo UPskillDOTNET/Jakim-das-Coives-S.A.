@@ -4,14 +4,16 @@ using APICartao.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace APICartao.Migrations
 {
     [DbContext(typeof(APICartaoContext))]
-    partial class APICartaoContextModelSnapshot : ModelSnapshot
+    [Migration("20210204144420_DateTimeValidade")]
+    partial class DateTimeValidade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,17 +31,14 @@ namespace APICartao.Migrations
                     b.Property<double>("Custo")
                         .HasColumnType("float");
 
-                    b.Property<string>("Cvv")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
+                    b.Property<int>("Cvc")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DataValidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DataValidade")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("NifDestinatario")
                         .HasColumnType("int");
@@ -48,10 +47,8 @@ namespace APICartao.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasMaxLength(16)
-                        .HasColumnType("nvarchar(16)");
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -9,20 +9,25 @@ namespace APICartao.Models
     public class Cartao
     {
         public int Id { get; set; }
+
         [Required]
-        public int Numero { get; set; }
+        [MinLength(16)]
+        [MaxLength(16)]
+        public string Numero { get; set; }
         [Required]
         public string Nome { get; set; }
 
         [Required]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime DataValidade { get; set; }
+        [RegularExpression(@"^\d{2}/\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
+        public string DataValidade { get; set; }
 
         [Required]
-        public int Cvc { get; set; }
+        [MinLength(3)]
+        [MaxLength(3)]
+        public string Cvv { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public double Custo { get; set; }
         
         [Required]

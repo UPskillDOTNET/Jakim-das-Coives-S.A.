@@ -42,37 +42,6 @@ namespace APICartao.Controllers
             return cartao;
         }
 
-        // PUT: api/Cartoes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCartao(int id, Cartao cartao)
-        {
-            if (id != cartao.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cartao).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartaoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Cartoes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,22 +51,6 @@ namespace APICartao.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCartao", new { id = cartao.Id }, cartao);
-        }
-
-        // DELETE: api/Cartoes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCartao(int id)
-        {
-            var cartao = await _context.Cartao.FindAsync(id);
-            if (cartao == null)
-            {
-                return NotFound();
-            }
-
-            _context.Cartao.Remove(cartao);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         private bool CartaoExists(int id)
