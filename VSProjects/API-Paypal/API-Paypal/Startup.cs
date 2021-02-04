@@ -33,10 +33,10 @@ namespace API_Paypal
             /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Paypal", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<API_PaypalContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("API_PaypalContext")));*/
+                    options.UseSqlServer(Configuration.GetConnectionString("API_PaypalContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
