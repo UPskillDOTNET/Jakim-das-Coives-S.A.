@@ -10,22 +10,17 @@ namespace API_Sistema_Central.Models
     public class Transacao
     {
         public int Id { get; set; }
-        [Required]
-        [Range(typeof(int), "100000000", "999999999")]
-        public int NifPagador { get; set; }
-        [Required]
-        [Range(typeof(int), "100000000", "999999999")]
-        public int NifRecipiente { get; set; }
-        [Required]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+        public string NifPagador { get; set; }
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+        public string NifRecipiente { get; set; }
         [DataType(DataType.Currency)]
         [Range(typeof(double), "0", "10000")]
         public double Valor { get; set; }
-        [Required]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime dataHora;
         public DateTime DataHora { get { return dataHora; } set => dataHora = DateTime.Now; }
-        [Required]
         public int MetodoId { get; set; }
 
         [ForeignKey("NifPagador")]

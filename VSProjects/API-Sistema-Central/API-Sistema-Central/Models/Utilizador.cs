@@ -12,15 +12,12 @@ namespace API_Sistema_Central.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Range(typeof(int), "100000000", "999999999")]
-        public string Nif { get; set; }
-        [Required]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+        public override string Id { get; set; }
         public string Nome { get; set; }
-        [Required]
         [DataType(DataType.Currency)]
         [Range(typeof(double), "0", "1000000")]
         public double Carteira { get; set; }
-        [Required]
         public int CredencialId { get; set; }
 
         [ForeignKey("CredencialId")]

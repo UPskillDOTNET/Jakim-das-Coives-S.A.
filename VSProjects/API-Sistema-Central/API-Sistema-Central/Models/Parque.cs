@@ -9,7 +9,6 @@ namespace API_Sistema_Central.Models
     public class Parque
     {
         public int Id { get; set; }
-        [Required]
         public string ApiUrl { get; set; }
     }
 }

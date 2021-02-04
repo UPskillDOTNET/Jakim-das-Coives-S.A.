@@ -15,6 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.Data;
 using Microsoft.AspNetCore.Identity;
 using API_Sistema_Central.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API_Sistema_Central
 {
@@ -43,6 +46,17 @@ namespace API_Sistema_Central
             services.AddIdentity<Utilizador, IdentityRole>()
                 .AddEntityFrameworkStores<SCContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
+                    ClockSkew = TimeSpan.Zero
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +72,8 @@ namespace API_Sistema_Central
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

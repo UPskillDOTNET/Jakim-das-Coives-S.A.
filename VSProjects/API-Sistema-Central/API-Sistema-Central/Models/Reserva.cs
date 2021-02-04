@@ -10,18 +10,13 @@ namespace API_Sistema_Central.Models
     public class Reserva
     {
         public int Id { get; set; }
-        [Required]
-        [Range(typeof(int), "100000000", "999999999")]
-        public int NifUtilizador { get; set; }
-        [Required]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+        public string NifUtilizador { get; set; }
         public int ParqueId { get; set; }
-        [Required]
         [DataType(DataType.Currency)]
         [Range(typeof(double), "0", "10000")]
         public double Custo { get; set; }
-        [Required]
         public int TransacaoId { get; set; }
-        [Required]
         public int ReservaParqueId { get; set; }
 
         [ForeignKey("NifUtilizador")]
