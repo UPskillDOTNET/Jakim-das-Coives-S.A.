@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace API_Sistema_Central.Models
 {
-    public class Utilizador
+    public class Utilizador : IdentityUser
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Range(typeof(int), "100000000", "999999999")]
-        public int Nif { get; set; }
+        public string Nif { get; set; }
         [Required]
         public string Nome { get; set; }
         [Required]

@@ -9,7 +9,7 @@ namespace API_Sistema_Central.Models
 {
     public class PayPal : Credencial
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }

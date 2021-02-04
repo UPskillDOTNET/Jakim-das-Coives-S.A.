@@ -7,5 +7,6 @@ namespace API_Sistema_Central.Models
 {
     public abstract class Credencial
     {
+        public abstract int Id { get; set; }
     }
 }

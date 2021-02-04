@@ -9,7 +9,7 @@ namespace API_Sistema_Central.Models
 {
     public class DebitoDireto : Credencial
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         [Required]
         [RegularExpression(@"^[P][T][5][0]\d{21}$", ErrorMessage = "IBAN inválido")]
         public string Iban { get; set; }

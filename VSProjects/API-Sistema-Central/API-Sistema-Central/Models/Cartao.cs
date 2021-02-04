@@ -9,14 +9,14 @@ namespace API_Sistema_Central.Models
 {
     public class Cartao : Credencial
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         [Required]
         [RegularExpression(@"^\d{16}$", ErrorMessage = "Numero do cartão de crédito inválido")]
         public string Numero { get; set; }
         [Required]
         public string Nome { get; set; }
         [Required]
-        [RegularExpression(@"^\d{2}/\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
+        [RegularExpression(@"^(0[1-9]|1[0-2])[/]\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
         public string DataValidade { get; set; }
         [Required]
         [RegularExpression(@"^\d{3}$", ErrorMessage = "CVV do cartão de crédito inválido")]

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using API_Sistema_Central.Data;
+using Microsoft.AspNetCore.Identity;
+using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central
 {
@@ -32,6 +36,13 @@ namespace API_Sistema_Central
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Sistema_Central", Version = "v1" });
             });
+
+            services.AddDbContext<SCContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
+
+            services.AddIdentity<Utilizador, IdentityRole>()
+                .AddEntityFrameworkStores<SCContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
