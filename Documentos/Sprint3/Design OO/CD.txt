@@ -89,13 +89,13 @@ class Transacao {
 
 class Parque {
   -Int Id PK
-  -String api_url
+  -String apiUrl
 }
 
 class MetodoPagamento {
   -Int Id PK
   -String nome
-  -String api_url
+  -String apiUrl
 }
 
 package "Abstract Class Credencial" <<Frame>> {
@@ -112,10 +112,10 @@ abstract PayPal:Credencial {
 
 abstract Cartao:Credencial {
   -Int Id PK
-  -Int numero
+  -String numero
   -String nome
-  -DateTime dataValidade
-  -Int cvc
+  -String dataValidade
+  -String cvv
   -Int metodoID FK
 }
 
@@ -137,7 +137,6 @@ abstract DebitoDireto:Credencial {
 package Data <<Folder>> {
 
 class Context {
-  -DbSet<Utilizador> Utilizadores
   -DbSet<Reserva> Reservas
   -DbSet<Transacao> Transacoes
   -DbSet<Parque> Parques
@@ -169,10 +168,10 @@ class paypalDTO {
 }
 
 class cartaoDTO {
-  -Int numero
+  -String numero
   -String nome
-  -DateTime dataValidade
-  -Int cvc
+  -String dataValidade
+  -String cvv
   -Double custo
   -Int nifDestinatario
   -DateTime data
@@ -191,7 +190,7 @@ class debitoDiretoDTO {
 
 }
 
-UtilizadoresController ..> Utilizador
+UtilizadoresController ..> "Utilizador:IdentityUser"
 UtilizadoresController ..> Context
 ReservasController ..> Reserva
 ReservasController ..> Context
@@ -204,7 +203,7 @@ ParquesController ..> Context
 MetodoPagamentosController ..> MetodoPagamento
 MetodoPagamentosController ..> Context
 
-Context "1" --> "0..*" Utilizador: tem
+Context "1" --> "0..*" "Utilizador:IdentityUser": tem
 Context "1" --> "0..*" Reserva: tem
 Context "1" --> "0..*" Transacao: tem
 Context "1" --> "0..*" Parque: tem
@@ -213,11 +212,11 @@ Context "1" --> "0..*" "PayPal:Credencial": tem
 Context "1" --> "0..*" "Cartao:Credencial": tem
 Context "1" --> "0..*" "DebitoDireto:Credencial": tem
 
-Reserva "0..*" --> "1" Utilizador: tem
+Reserva "0..*" --> "1" "Utilizador:IdentityUser": tem
 Reserva "0..*" --> "1" Transacao: tem
 Transacao"0..*" --> "1" MetodoPagamento: tem
 Parque "1" --> "0..*" Reserva: tem
-Utilizador "1" --> "1" Credencial: tem
+"Utilizador:IdentityUser" "1" --> "1" Credencial: tem
 Credencial --> "PayPal:Credencial": pode ser
 Credencial --> "Cartao:Credencial": pode ser
 Credencial --> "DebitoDireto:Credencial": pode ser
