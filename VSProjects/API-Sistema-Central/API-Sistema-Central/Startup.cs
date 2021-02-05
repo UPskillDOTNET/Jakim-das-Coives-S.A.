@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API_Sistema_Central.Services;
+using API_Sistema_Central.Repositories;
 
 namespace API_Sistema_Central
 {
@@ -61,6 +62,8 @@ namespace API_Sistema_Central
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUtilizadorService, UtilizadorService>();
+            services.AddScoped<ICartaoService, CartaoService>();
+            services.AddScoped<ICartaoRepository, CartaoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

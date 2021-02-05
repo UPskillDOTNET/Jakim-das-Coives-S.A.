@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.Data;
 using API_Sistema_Central.Models;
+using API_Sistema_Central.Services;
 
 namespace API_Sistema_Central.Controllers
 {
@@ -15,20 +16,20 @@ namespace API_Sistema_Central.Controllers
     public class CartoesController : ControllerBase
     {
         private readonly SCContext _context;
+        private readonly ICartaoService _service;
 
-        public CartoesController(SCContext context)
+        public CartoesController(SCContext context, ICartaoService service)
         {
             _context = context;
+            _service = service;
         }
 
-        // GET: api/Cartoes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cartao>>> GetCartao()
         {
-            return await _context.Cartoes.ToListAsync();
+            return await _service.GetAllCartao();
         }
 
-        // GET: api/Cartoes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cartao>> GetCartao(int id)
         {
@@ -42,8 +43,6 @@ namespace API_Sistema_Central.Controllers
             return cartao;
         }
 
-        // PUT: api/Cartoes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCartao(int id, Cartao cartao)
         {
@@ -73,8 +72,6 @@ namespace API_Sistema_Central.Controllers
             return NoContent();
         }
 
-        // POST: api/Cartoes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Cartao>> PostCartao(Cartao cartao)
         {
