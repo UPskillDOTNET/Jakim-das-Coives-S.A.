@@ -29,20 +29,6 @@ namespace Api_DebitoDireto.Controllers
             return await _service.GetAllDebitoDireto();
         }
 
-        // GET: api/DebitosDiretos/5
- /*       [HttpGet("{id}")]
-        public async Task<ActionResult<DebitoDireto>> GetDebitoDireto(int id)
-        {
-            var debitoDireto = await _context.DebitoDireto.FindAsync(id);
-
-            if (debitoDireto == null)
-            {
-                return NotFound();
-            }
-
-            return debitoDireto;
-        }*/
-
 
         // POST: api/DebitosDiretos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -55,9 +41,6 @@ namespace Api_DebitoDireto.Controllers
         }
 
 
-        private bool DebitoDiretoExists(int id)
-        {
-            return _service.DebitoDireto.Any(e => e.Id == id);
-        }
+
     }
 }
