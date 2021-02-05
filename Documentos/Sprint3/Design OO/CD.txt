@@ -13,15 +13,18 @@ class EmailService {
   - EnviarEmail()
 }
 
+class TokenService {
+  - BuildToken()
+}
+
 }
 
 package Controllers <<Folder>> {
 
 class UtilizadoresController {
   +Get GetUtilizador()
-  +Get GetUtilizadorById(nif)
-  +Post PostUtilizador()
-  +Put PutUtilizador(nif, Utilizador)
+  +Post RegistarUtilizador()
+  +Post Login()
   +Delete DeleteUtilizador(nif)
 }
 
@@ -59,73 +62,73 @@ class MetodoPagamentosController {
 
 package Models <<Folder>> {
 
-class Utilizador{
-  -Int nif PK
+class Utilizador:IdentityUser{
   -String nome
-  -String email
   -Double carteira
-  -Int credencialId
+  -Int credencialId FK
 }
 
 class Reserva {
   -Int id PK
-  -Int nifUtilizador FK
+  -String nifUtilizador FK
   -Int parqueId FK
-  -Double custo
   -Int transacaoID FK
+  -Double custo
   -Int reservaParqueId
 }
 
 class Transacao {
   -Int Id PK
-  -Int nifPagador FK
-  -Int nifRecepiente FK
+  -String nifPagador FK
+  -String nifRecipiente FK
+  -Int metodoId FK
   -Double valor
   -DateTime dataHora
-  -Int metodoId FK
 }
 
 class Parque {
   -Int Id PK
-  -String api_url
+  -String apiUrl
 }
 
 class MetodoPagamento {
   -Int Id PK
   -String nome
-  -String api_url
+  -String apiUrl
 }
 
 package "Abstract Class Credencial" <<Frame>> {
 
 abstract class Credencial {
+  -Int Id PK
+  -Int metodoId
 }
 
 abstract PayPal:Credencial {
-  -Int Id PK
+  -Override Int Id PK
   -String email
   -String password
-  -Int metodoID FK
+  -Override Int metodoId FK
 }
 
 abstract Cartao:Credencial {
-  -Int Id PK
-  -Int numero
+  -Override Int Id PK
+  -String numero
   -String nome
-  -DateTime dataValidade
-  -Int cvc
-  -Int metodoID FK
+  -String dataValidade
+  -String cvv
+  -Override Int metodoId FK
 }
 
 abstract DebitoDireto:Credencial {
-  -Int Id PK
+  -Override Int Id PK
   -String iban
   -String nome
   -String rua
   -String codigoPostal
   -String freguesia
   -DateTime dataSubscricao
-  -Int metodoID FK
+  -Override Int metodoId FK
 }
 
 }
@@ -135,7 +138,6 @@ abstract DebitoDireto:Credencial {
 package Data <<Folder>> {
 
 class Context {
-  -DbSet<Utilizador> Utilizadores
   -DbSet<Reserva> Reservas
   -DbSet<Transacao> Transacoes
   -DbSet<Parque> Parques
@@ -158,7 +160,7 @@ class ReservaDTO {
   -DateTime fim
 }
 
-class paypalDTO {
+class PayPalDTO {
   -String email
   -String password
   -Double custo
@@ -166,17 +168,17 @@ class paypalDTO {
   -DateTime data
 }
 
-class cartaoDTO {
-  -Int numero
+class CartaoDTO {
+  -String numero
   -String nome
-  -DateTime dataValidade
-  -Int cvc
+  -String dataValidade
+  -String cvv
   -Double custo
   -Int nifDestinatario
   -DateTime data
 }
 
-class debitoDiretoDTO {
+class DebitoDiretoDTO {
   -String iban
   -String nome
   -String rua
@@ -187,9 +189,27 @@ class debitoDiretoDTO {
   -DateTime data
 }
 
+class InfoUtilizadorDTO {
+  -String email
+  -String password
 }
 
-UtilizadoresController ..> Utilizador
+class RegistarUtilizadorDTO {
+  -String nif
+  -String nome
+  -String email
+  -String password
+  -String credencialId
+}
+
+class TokenUtilizadorDTO {
+  -String token
+  -DateTime expiration
+}
+
+}
+
+UtilizadoresController ..> "Utilizador:IdentityUser"
 UtilizadoresController ..> Context
 ReservasController ..> Reserva
 ReservasController ..> Context
@@ -202,7 +222,7 @@ ParquesController ..> Context
 MetodoPagamentosController ..> MetodoPagamento
 MetodoPagamentosController ..> Context
 
-Context "1" --> "0..*" Utilizador: tem
+Context "1" --> "0..*" "Utilizador:IdentityUser": tem
 Context "1" --> "0..*" Reserva: tem
 Context "1" --> "0..*" Transacao: tem
 Context "1" --> "0..*" Parque: tem
@@ -211,11 +231,11 @@ Context "1" --> "0..*" "PayPal:Credencial": tem
 Context "1" --> "0..*" "Cartao:Credencial": tem
 Context "1" --> "0..*" "DebitoDireto:Credencial": tem
 
-Reserva "0..*" --> "1" Utilizador: tem
+Reserva "0..*" --> "1" "Utilizador:IdentityUser": tem
 Reserva "0..*" --> "1" Transacao: tem
-Transacao"1..*" --> "1" Parque: tem
-Parque "0..*" --> "1" MetodoPagamento: tem
-Utilizador "1" --> "1" Credencial: tem
+Transacao"0..*" --> "1" MetodoPagamento: tem
+Parque "1" --> "0..*" Reserva: tem
+"Utilizador:IdentityUser" "1" --> "1" Credencial: tem
 Credencial --> "PayPal:Credencial": pode ser
 Credencial --> "Cartao:Credencial": pode ser
 Credencial --> "DebitoDireto:Credencial": pode ser
