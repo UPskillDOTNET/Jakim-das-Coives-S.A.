@@ -30,16 +30,12 @@ namespace API_Sistema_Central.Controllers
             _signInManager = signInManager;
             _configuration = configuration;
         }
-        [HttpGet]
-        public ActionResult<string> Get()
-        {
-            return " << Controlador UsuariosController :: WebApiUsuarios >> ";
-        }
+
         [HttpPost("Registar")]
         public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO model)
         {
             var info = new InfoUtilizadorDTO { Email = model.Email, Password = model.Password };
-            var user = new Utilizador { Id = model.Nif, UserName = model.Nome, Nome = model.Nome, Email = model.Email };
+            var user = new Utilizador { Id = model.Nif, UserName = model.Nome, Nome = model.Nome, Email = model.Email, CredencialId = model.CredencialId };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
@@ -50,6 +46,7 @@ namespace API_Sistema_Central.Controllers
                 return BadRequest("Utilizador ou password inválidos");
             }
         }
+
         [HttpPost("Login")]
         public async Task<ActionResult<TokenUtilizadorDTO>> Login([FromBody] InfoUtilizadorDTO InfoUtilizadorDTO)
         {
@@ -66,6 +63,7 @@ namespace API_Sistema_Central.Controllers
                 return BadRequest(ModelState);
             }
         }
+
         private TokenUtilizadorDTO BuildToken(InfoUtilizadorDTO InfoUtilizadorDTO)
         {
             var claims = new[]

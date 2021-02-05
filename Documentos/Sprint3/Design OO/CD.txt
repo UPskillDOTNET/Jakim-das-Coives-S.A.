@@ -63,7 +63,6 @@ class MetodoPagamentosController {
 package Models <<Folder>> {
 
 class Utilizador:IdentityUser{
-  -Int nif PK
   -String nome
   -Double carteira
   -Int credencialId FK
@@ -71,7 +70,7 @@ class Utilizador:IdentityUser{
 
 class Reserva {
   -Int id PK
-  -Int nifUtilizador FK
+  -String nifUtilizador FK
   -Int parqueId FK
   -Int transacaoID FK
   -Double custo
@@ -80,8 +79,8 @@ class Reserva {
 
 class Transacao {
   -Int Id PK
-  -Int nifPagador FK
-  -Int nifRecipiente FK
+  -String nifPagador FK
+  -String nifRecipiente FK
   -Int metodoId FK
   -Double valor
   -DateTime dataHora
@@ -101,33 +100,35 @@ class MetodoPagamento {
 package "Abstract Class Credencial" <<Frame>> {
 
 abstract class Credencial {
+  -Int Id PK
+  -Int metodoId
 }
 
 abstract PayPal:Credencial {
-  -Int Id PK
+  -Override Int Id PK
   -String email
   -String password
-  -Int metodoID FK
+  -Override Int metodoId FK
 }
 
 abstract Cartao:Credencial {
-  -Int Id PK
+  -Override Int Id PK
   -String numero
   -String nome
   -String dataValidade
   -String cvv
-  -Int metodoID FK
+  -Override Int metodoId FK
 }
 
 abstract DebitoDireto:Credencial {
-  -Int Id PK
+  -Override Int Id PK
   -String iban
   -String nome
   -String rua
   -String codigoPostal
   -String freguesia
   -DateTime dataSubscricao
-  -Int metodoID FK
+  -Override Int metodoId FK
 }
 
 }
@@ -159,7 +160,7 @@ class ReservaDTO {
   -DateTime fim
 }
 
-class paypalDTO {
+class PayPalDTO {
   -String email
   -String password
   -Double custo
@@ -167,7 +168,7 @@ class paypalDTO {
   -DateTime data
 }
 
-class cartaoDTO {
+class CartaoDTO {
   -String numero
   -String nome
   -String dataValidade
@@ -177,7 +178,7 @@ class cartaoDTO {
   -DateTime data
 }
 
-class debitoDiretoDTO {
+class DebitoDiretoDTO {
   -String iban
   -String nome
   -String rua
@@ -186,6 +187,24 @@ class debitoDiretoDTO {
   -Double custo
   -Int nifDestinatario
   -DateTime data
+}
+
+class InfoUtilizadorDTO {
+  -String email
+  -String password
+}
+
+class RegistarUtilizadorDTO {
+  -String nif
+  -String nome
+  -String email
+  -String password
+  -String credencialId
+}
+
+class TokenUtilizadorDTO {
+  -String token
+  -DateTime expiration
 }
 
 }
