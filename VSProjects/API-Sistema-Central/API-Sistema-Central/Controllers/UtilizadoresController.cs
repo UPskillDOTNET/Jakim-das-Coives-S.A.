@@ -11,26 +11,23 @@ namespace API_Sistema_Central.Controllers
     [ApiController]
     public class UtilizadoresController : ControllerBase
     {
-        private readonly UserManager<Utilizador> _userManager;
-        private readonly SignInManager<Utilizador> _signInManager;
         private readonly ITokenService _tokenService;
-        public UtilizadoresController(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ITokenService tokenService)
+        private readonly IUtilizadorService _utilizadorService;
+        public UtilizadoresController(ITokenService tokenService, IUtilizadorService utilizadorService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _tokenService = tokenService;
+            _utilizadorService = utilizadorService;
         }
 
         [HttpPost("Registar")]
-        public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO model)
+        public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = model.Email, Password = model.Password };
-            var user = new Utilizador { Id = model.Nif, UserName = model.Email, Nome = model.Nome, Email = model.Email, CredencialId = model.CredencialId };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            TokenUtilizadorDTO token = _tokenService.BuildToken(infoUtilizadorDTO);
+            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.Email, Password = registarUtilizadorDTO.Password };
+            var result = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO);
+
             if (result.Succeeded)
             {
-                return  token;
+                return _tokenService.BuildToken(infoUtilizadorDTO);
             }
             else
             {
@@ -41,18 +38,15 @@ namespace API_Sistema_Central.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<TokenUtilizadorDTO>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
         {
-            var result = await _signInManager.PasswordSignInAsync(infoUtilizadorDTO.Email, infoUtilizadorDTO.Password,
-                 isPersistent: false, lockoutOnFailure: false);
-            TokenUtilizadorDTO token = _tokenService.BuildToken(infoUtilizadorDTO);
+            var result = await _utilizadorService.Login(infoUtilizadorDTO);
 
             if (result.Succeeded)
             {
-                return token;
+                return _tokenService.BuildToken(infoUtilizadorDTO);
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "login inválido.");
-                return BadRequest(ModelState);
+                return BadRequest("Login inválido");
             }
         }
     }
