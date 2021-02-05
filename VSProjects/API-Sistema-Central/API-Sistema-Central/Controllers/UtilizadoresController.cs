@@ -25,7 +25,7 @@ namespace API_Sistema_Central.Controllers
         public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO model)
         {
             var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = model.Email, Password = model.Password };
-            var user = new Utilizador { Id = model.Nif, UserName = model.Nome, Nome = model.Nome, Email = model.Email, CredencialId = model.CredencialId };
+            var user = new Utilizador { Id = model.Nif, UserName = model.Email, Nome = model.Nome, Email = model.Email, CredencialId = model.CredencialId };
             var result = await _userManager.CreateAsync(user, model.Password);
             TokenUtilizadorDTO token = _tokenService.BuildToken(infoUtilizadorDTO);
             if (result.Succeeded)
