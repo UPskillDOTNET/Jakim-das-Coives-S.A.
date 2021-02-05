@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api_DebitoDireto.Data;
 using Api_DebitoDireto.Models;
+using Api_DebitoDireto.Services;
 
 namespace Api_DebitoDireto.Controllers
 {
@@ -14,22 +15,22 @@ namespace Api_DebitoDireto.Controllers
     [ApiController]
     public class DebitosDiretosController : ControllerBase
     {
-        private readonly Api_DebitoDiretoContext _context;
+        private readonly IDebitoDiretoService _service;
 
-        public DebitosDiretosController(Api_DebitoDiretoContext context)
+        public DebitosDiretosController(IDebitoDiretoService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/DebitosDiretos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DebitoDireto>>> GetDebitoDireto()
+        public async Task<ActionResult<IEnumerable<DebitoDireto>>> GetAllDebitoDireto()
         {
-            return await _context.DebitoDireto.ToListAsync();
+            return await _service.GetAllDebitoDireto();
         }
 
         // GET: api/DebitosDiretos/5
-        [HttpGet("{id}")]
+ /*       [HttpGet("{id}")]
         public async Task<ActionResult<DebitoDireto>> GetDebitoDireto(int id)
         {
             var debitoDireto = await _context.DebitoDireto.FindAsync(id);
@@ -40,7 +41,7 @@ namespace Api_DebitoDireto.Controllers
             }
 
             return debitoDireto;
-        }
+        }*/
 
 
         // POST: api/DebitosDiretos
@@ -48,16 +49,15 @@ namespace Api_DebitoDireto.Controllers
         [HttpPost]
         public async Task<ActionResult<DebitoDireto>> PostDebitoDireto(DebitoDireto debitoDireto)
         {
-            _context.DebitoDireto.Add(debitoDireto);
-            await _context.SaveChangesAsync();
+            await _service.PostDebitoDireto(debitoDireto);
 
-            return CreatedAtAction("GetDebitoDireto", new { id = debitoDireto.id }, debitoDireto);
+            return CreatedAtAction("GetDebitoDireto", new { id = debitoDireto.Id }, debitoDireto);
         }
 
 
         private bool DebitoDiretoExists(int id)
         {
-            return _context.DebitoDireto.Any(e => e.id == id);
+            return _service.DebitoDireto.Any(e => e.Id == id);
         }
     }
 }
