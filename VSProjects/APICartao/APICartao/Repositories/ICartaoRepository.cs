@@ -9,6 +9,6 @@ namespace APICartao.Repositories
 {
     public interface ICartaoRepository : IRepositoryBase<Cartao>
     {
-        Task<ActionResult<IEnumerable<Cartao>>> GetCartaoByNumeroAsync();
+        Task<ActionResult<IEnumerable<Cartao>>> GetCartoesByNumeroAsync(string numero);
     }
 }
