@@ -63,7 +63,10 @@ namespace API_Sistema_Central
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IUtilizadorService, UtilizadorService>();
             services.AddTransient<ICartaoService, CartaoService>();
+
             services.AddScoped<ICartaoRepository, CartaoRepository>();
+            services.AddScoped<IDebitoDiretoRepository, DebitoDiretoRepository>();
+            services.AddScoped<IMetodosPagamentoRepository, MetodosPagamentoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

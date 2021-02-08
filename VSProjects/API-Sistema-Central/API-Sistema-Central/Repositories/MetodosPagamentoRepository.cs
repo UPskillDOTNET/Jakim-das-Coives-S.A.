@@ -7,9 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
-    public class CartaoRepository : RepositoryBase<Cartao>, ICartaoRepository
+    public class MetodosPagamentoRepository : RepositoryBase<MetodoPagamento>, IMetodosPagamentoRepository
     {
-        public CartaoRepository(SCContext context):base(context)
+        public MetodosPagamentoRepository(SCContext context) : base(context)
         {
         }
     }
