@@ -69,6 +69,7 @@ namespace API_Sistema_Central
             services.AddScoped<IMetodoPagamentoRepository, MetodoPagamentoRepository>();
             services.AddScoped<IParqueRepository, ParqueRepository>();
             services.AddScoped<IPayPalRepository, PayPalRepository>();
+            services.AddScoped<IReservaRepository, ReservaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
