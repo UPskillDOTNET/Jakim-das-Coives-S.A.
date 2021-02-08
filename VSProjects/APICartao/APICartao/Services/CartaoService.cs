@@ -19,7 +19,7 @@ namespace APICartao.Services
             return await this._repo.FindAllAsync();
         }
 
-        public async Task<ActionResult<Cartao>> GetCartaoById(int id)
+        public async Task<ActionResult<Cartao>> GetCartaoById(long id)
         {
             return await _repo.FindById(id);
         }

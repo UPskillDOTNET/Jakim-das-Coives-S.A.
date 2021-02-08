@@ -8,7 +8,7 @@ namespace APICartao.Models
 {
     public class Cartao
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [MinLength(16)]

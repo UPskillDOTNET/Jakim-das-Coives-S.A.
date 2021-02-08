@@ -21,9 +21,9 @@ namespace APICartao.Migrations
 
             modelBuilder.Entity("APICartao.Models.Cartao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .UseIdentityColumn();
 
                     b.Property<double>("Custo")

@@ -32,7 +32,7 @@ namespace APICartao.Controllers
 
         // GET: api/Cartoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cartao>> GetCartao(int id)
+        public async Task<ActionResult<Cartao>> GetCartao(long id)
         {
             var cartao = await _service.GetCartaoById(id);
 
@@ -44,7 +44,7 @@ namespace APICartao.Controllers
             return cartao;
         }
 
-        [HttpGet("nr/{numero}")]
+        [HttpGet("nr/{n}")]
         public async Task<ActionResult<IEnumerable<Cartao>>> GetCartoesByNumero(string n)
         {
             return await _service.GetCartoesByNumero(n);
