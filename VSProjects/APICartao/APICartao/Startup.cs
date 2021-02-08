@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using APICartao.Data;
+using APICartao.Repositories;
+using APICartao.Services;
 
 namespace APICartao
 {
@@ -30,6 +32,8 @@ namespace APICartao
         {
 
             services.AddControllers();
+            services.AddScoped<ICartaoRepository, CartaoRepository>();
+            services.AddTransient<CartaoService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APICartao", Version = "v1" });
