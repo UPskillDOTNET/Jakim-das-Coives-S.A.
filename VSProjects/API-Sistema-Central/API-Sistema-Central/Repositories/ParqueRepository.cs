@@ -7,9 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
-    public class MetodosPagamentoRepository : RepositoryBase<MetodoPagamento>, IMetodosPagamentoRepository
+    public class ParqueRepository : RepositoryBase<Parque>, IParqueRepository
     {
-        public MetodosPagamentoRepository(SCContext context) : base(context)
+        public ParqueRepository(SCContext context) : base(context)
         {
         }
     }
