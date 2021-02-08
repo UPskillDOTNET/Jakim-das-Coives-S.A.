@@ -6,7 +6,7 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
-    public interface ICartaoRepository : IRepositoryBase<Cartao>
+    public interface IParqueRepository : IRepositoryBase<Parque>
     {
     }
 }
