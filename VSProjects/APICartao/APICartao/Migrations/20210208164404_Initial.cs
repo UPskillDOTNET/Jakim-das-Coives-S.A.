@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace APICartao.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,12 +11,12 @@ namespace APICartao.Migrations
                 name: "Cartao",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Numero = table.Column<int>(type: "int", nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataValidade = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Cvc = table.Column<int>(type: "int", nullable: false),
+                    DataValidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cvv = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Custo = table.Column<double>(type: "float", nullable: false),
                     NifDestinatario = table.Column<int>(type: "int", nullable: false),
                     Data = table.Column<DateTime>(type: "datetime2", nullable: false)

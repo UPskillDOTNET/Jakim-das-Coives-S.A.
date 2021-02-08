@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APICartao.Migrations
 {
     [DbContext(typeof(APICartaoContext))]
-    [Migration("20210204122828_FirstMigration")]
-    partial class FirstMigration
+    [Migration("20210208164404_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,22 +23,25 @@ namespace APICartao.Migrations
 
             modelBuilder.Entity("APICartao.Models.Cartao", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .UseIdentityColumn();
 
                     b.Property<double>("Custo")
                         .HasColumnType("float");
 
-                    b.Property<int>("Cvc")
-                        .HasColumnType("int");
+                    b.Property<string>("Cvv")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataValidade")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DataValidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NifDestinatario")
                         .HasColumnType("int");
@@ -47,8 +50,10 @@ namespace APICartao.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.HasKey("Id");
 
