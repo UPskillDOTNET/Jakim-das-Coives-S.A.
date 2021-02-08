@@ -9,18 +9,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API_Sistema_Central.Repositories
 {
-    public class CartaoRepository : ICartaoRepository
+    public class CartaoRepository : RepositoryBase<Cartao>, ICartaoRepository
     {
-        private readonly SCContext _context;
-
-        public CartaoRepository(SCContext context)
+        public CartaoRepository(SCContext context):base(context)
         {
-            _context = context;
-        }
-
-        public async Task<ActionResult<IEnumerable<Cartao>>> GetAllCartao()
-        {
-            return await _context.Cartoes.ToListAsync();
         }
     }
 }

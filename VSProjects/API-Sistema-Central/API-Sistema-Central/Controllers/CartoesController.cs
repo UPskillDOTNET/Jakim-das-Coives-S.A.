@@ -11,29 +11,27 @@ using API_Sistema_Central.Services;
 
 namespace API_Sistema_Central.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cartoes")]
     [ApiController]
     public class CartoesController : ControllerBase
     {
-        private readonly SCContext _context;
         private readonly ICartaoService _service;
 
-        public CartoesController(SCContext context, ICartaoService service)
+        public CartoesController(ICartaoService service)
         {
-            _context = context;
             _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cartao>>> GetCartao()
+        public async Task<ActionResult<IEnumerable<Cartao>>> GetAllCartao()
         {
-            return await _service.GetAllCartao();
+            return await _service.GetAllAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Cartao>> GetCartao(int id)
         {
-            var cartao = await _context.Cartoes.FindAsync(id);
+            var cartao = await _service.GetByIdAsync(id);
 
             if (cartao == null)
             {
@@ -50,23 +48,13 @@ namespace API_Sistema_Central.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(cartao).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(cartao);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!CartaoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -75,31 +63,22 @@ namespace API_Sistema_Central.Controllers
         [HttpPost]
         public async Task<ActionResult<Cartao>> PostCartao(Cartao cartao)
         {
-            _context.Cartoes.Add(cartao);
-            await _context.SaveChangesAsync();
+            await _service.PostAsync(cartao);
 
             return CreatedAtAction("GetCartao", new { id = cartao.Id }, cartao);
         }
 
-        // DELETE: api/Cartoes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCartao(int id)
         {
-            var cartao = await _context.Cartoes.FindAsync(id);
+            var cartao = await _service.GetByIdAsync(id);
             if (cartao == null)
             {
                 return NotFound();
             }
-
-            _context.Cartoes.Remove(cartao);
-            await _context.SaveChangesAsync();
+            await _service.DeleteAsync(id);
 
             return NoContent();
-        }
-
-        private bool CartaoExists(int id)
-        {
-            return _context.Cartoes.Any(e => e.Id == id);
         }
     }
 }

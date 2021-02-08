@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Repositories
 {
-    public interface ICartaoRepository
+    public interface ICartaoRepository : IRepositoryBase<Cartao>
     {
-        public Task<ActionResult<IEnumerable<Cartao>>> GetAllCartao();
     }
 }

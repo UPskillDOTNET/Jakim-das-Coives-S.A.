@@ -60,9 +60,9 @@ namespace API_Sistema_Central
                     ClockSkew = TimeSpan.Zero
                 });
 
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUtilizadorService, UtilizadorService>();
-            services.AddScoped<ICartaoService, CartaoService>();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUtilizadorService, UtilizadorService>();
+            services.AddTransient<ICartaoService, CartaoService>();
             services.AddScoped<ICartaoRepository, CartaoRepository>();
         }
 
