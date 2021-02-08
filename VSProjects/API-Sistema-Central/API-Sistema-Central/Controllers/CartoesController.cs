@@ -7,32 +7,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.Data;
 using API_Sistema_Central.Models;
+using API_Sistema_Central.Services;
 
 namespace API_Sistema_Central.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cartoes")]
     [ApiController]
     public class CartoesController : ControllerBase
     {
-        private readonly SCContext _context;
+        private readonly ICartaoService _service;
 
-        public CartoesController(SCContext context)
+        public CartoesController(ICartaoService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Cartoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cartao>>> GetCartao()
+        public async Task<ActionResult<IEnumerable<Cartao>>> GetAllCartao()
         {
-            return await _context.Cartoes.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Cartoes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cartao>> GetCartao(int id)
         {
-            var cartao = await _context.Cartoes.FindAsync(id);
+            var cartao = await _service.GetByIdAsync(id);
 
             if (cartao == null)
             {
@@ -42,8 +41,6 @@ namespace API_Sistema_Central.Controllers
             return cartao;
         }
 
-        // PUT: api/Cartoes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCartao(int id, Cartao cartao)
         {
@@ -51,58 +48,37 @@ namespace API_Sistema_Central.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(cartao).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(cartao);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CartaoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Cartoes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Cartao>> PostCartao(Cartao cartao)
-        {
-            _context.Cartoes.Add(cartao);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCartao", new { id = cartao.Id }, cartao);
-        }
-
-        // DELETE: api/Cartoes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCartao(int id)
-        {
-            var cartao = await _context.Cartoes.FindAsync(id);
-            if (cartao == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Cartoes.Remove(cartao);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool CartaoExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Cartao>> PostCartao(Cartao cartao)
         {
-            return _context.Cartoes.Any(e => e.Id == id);
+            await _service.PostAsync(cartao);
+
+            return CreatedAtAction("GetCartao", new { id = cartao.Id }, cartao);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCartao(int id)
+        {
+            var cartao = await _service.GetByIdAsync(id);
+            if (cartao == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }
