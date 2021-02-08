@@ -22,7 +22,7 @@ namespace API_Sistema_Central.Controllers
         [HttpPost("Registar")]
         public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.Email, Password = registarUtilizadorDTO.Password };
+            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.EmailUtilizador, Password = registarUtilizadorDTO.PasswordUtilizador };
             var result = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO);
 
             if (result.Succeeded)
