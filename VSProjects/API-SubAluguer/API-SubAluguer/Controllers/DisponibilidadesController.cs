@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class DisponibilidadesController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly IDisponibilidadeService _service;
 
-        public DisponibilidadesController(API_SubAluguerContext context)
+        public DisponibilidadesController(IDisponibilidadeService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Disponibilidades
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Disponibilidade>>> GetDisponibilidade()
+        public async Task<ActionResult<IEnumerable<Disponibilidade>>> GetAllDisponibilidade()
         {
-            return await _context.Disponibilidades.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Disponibilidades/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Disponibilidade>> GetDisponibilidade(int id)
         {
-            var disponibilidade = await _context.Disponibilidades.FindAsync(id);
+            var disponibilidade = await _service.GetByIdAsync(id);
 
             if (disponibilidade == null)
             {
@@ -42,8 +41,6 @@ namespace API_SubAluguer.Controllers
             return disponibilidade;
         }
 
-        // PUT: api/Disponibilidades/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDisponibilidade(int id, Disponibilidade disponibilidade)
         {
@@ -51,58 +48,37 @@ namespace API_SubAluguer.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(disponibilidade).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(disponibilidade);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DisponibilidadeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Disponibilidades
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Disponibilidade>> PostDisponibilidade(Disponibilidade disponibilidade)
-        {
-            _context.Disponibilidades.Add(disponibilidade);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDisponibilidade", new { id = disponibilidade.Id }, disponibilidade);
-        }
-
-        // DELETE: api/Disponibilidades/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDisponibilidade(int id)
-        {
-            var disponibilidade = await _context.Disponibilidades.FindAsync(id);
-            if (disponibilidade == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Disponibilidades.Remove(disponibilidade);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool DisponibilidadeExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Disponibilidade>> PostDisponibilidade(Disponibilidade disponibilidade)
         {
-            return _context.Disponibilidades.Any(e => e.Id == id);
+            await _service.PostAsync(disponibilidade);
+
+            return CreatedAtAction("GetDisponibilidade", new { id = disponibilidade.Id }, disponibilidade);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDisponibilidade(int id)
+        {
+            var disponibilidade = await _service.GetByIdAsync(id);
+            if (disponibilidade == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }
