@@ -22,7 +22,7 @@ namespace API_Sistema_Central.Services
             _client = new HttpClient();
         }
 
-        public async Task<IEnumerable<LugarDTO>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+        public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
             var listaLugares = new List<LugarDTO>();
             Parque parque = _parqueRepository.GetByIdAsync(4).Result;
@@ -59,11 +59,6 @@ namespace API_Sistema_Central.Services
         public async Task<Reserva> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
-        }
-
-        public async Task PutAsync(Reserva reserva)
-        {
-            await _repository.PutAsync(reserva);
         }
 
         public async Task<Reserva> PostAsync(Reserva reserva)

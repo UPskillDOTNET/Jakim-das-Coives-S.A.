@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-Sistema-Central", "API-Sistema-Central\API-Sistema-Central.csproj", "{324B8C48-8333-48F1-8717-1F37FA0B1643}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-Sistema-Central", "API-Sistema-Central\API-Sistema-Central.csproj", "{324B8C48-8333-48F1-8717-1F37FA0B1643}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API-Parque-Privado-3", "..\API-Parque-Privado-3\API-Parque-Privado-3\API-Parque-Privado-3.csproj", "{26229E3E-7811-4A5C-8F74-74FF3526D67E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{324B8C48-8333-48F1-8717-1F37FA0B1643}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{324B8C48-8333-48F1-8717-1F37FA0B1643}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{324B8C48-8333-48F1-8717-1F37FA0B1643}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26229E3E-7811-4A5C-8F74-74FF3526D67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26229E3E-7811-4A5C-8F74-74FF3526D67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26229E3E-7811-4A5C-8F74-74FF3526D67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26229E3E-7811-4A5C-8F74-74FF3526D67E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
