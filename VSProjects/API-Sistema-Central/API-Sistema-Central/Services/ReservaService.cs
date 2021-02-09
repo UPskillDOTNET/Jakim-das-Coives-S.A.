@@ -16,9 +16,10 @@ namespace API_Sistema_Central.Services
         private readonly IParqueRepository _parqueRepository;
         private readonly HttpClient _client;
 
-        public ReservaService(IReservaRepository repository)
+        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository)
         {
             _repository = repository;
+            _parqueRepository = parqueRepository;
             _client = new HttpClient();
         }
 
@@ -29,7 +30,7 @@ namespace API_Sistema_Central.Services
             using (_client)
             {
                 var listaFreguesias = new List<FreguesiaDTO>();
-                string endpoint1 = parque.ApiUrl + "freguesias";
+                string endpoint1 = parque.ApiUrl + "api/freguesias";
                 var response1 = await _client.GetAsync(endpoint1);
                 response1.EnsureSuccessStatusCode();
                 listaFreguesias = await response1.Content.ReadAsAsync<List<FreguesiaDTO>>();
@@ -39,7 +40,7 @@ namespace API_Sistema_Central.Services
                     break;
                 }*/
 
-                string endpoint2 = parque.ApiUrl + "lugares/disponibilidade/" + f.Id + "/" + inicio + "/" + fim;
+                string endpoint2 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddThh:mm:ss") + " / " + fim.ToString("yyyy-MM-ddThh:mm:ss");
                 var response2 = await _client.GetAsync(endpoint2);
                 response2.EnsureSuccessStatusCode();
                 listaLugares = await response2.Content.ReadAsAsync<List<LugarDTO>>();

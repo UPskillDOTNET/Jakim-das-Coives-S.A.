@@ -23,7 +23,7 @@ namespace API_Sistema_Central.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("disponibilidade/{freguesiaNome}/{inicio}/{fim}")]
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
             return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
