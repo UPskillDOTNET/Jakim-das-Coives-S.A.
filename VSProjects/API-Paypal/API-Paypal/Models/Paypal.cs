@@ -9,26 +9,21 @@ namespace API_Paypal.Models
      public class Paypal
     {
 
-        [Required]
         public int Id { get; set; }
 
-        [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required]
+        [DataType(DataType.EmailAddress)]
         public string EmailDestinatario { get; set; }
 
-        [Required]
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Data { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 8)]
         public string Password { get; set; }
-
-        [Required]
         public double Custo { get; set; }     
 
     }

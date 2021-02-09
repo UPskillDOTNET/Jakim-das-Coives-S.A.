@@ -17,10 +17,10 @@ namespace API_Paypal.Data
              }
 
             context.Paypal.AddRange(  //privados podem ter vários clientes
-                new Paypal { Custo = 111222333, Password = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Parse("2021-01-30 11:00:00") },
-                new Paypal { Custo = 111222333, Password = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Parse("2021-01-30 11:00:00") },
-                new Paypal { Custo = 111222333, Password = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Parse("2021-01-30 11:00:00") },
-                new Paypal { Custo = 111222333, Password = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Parse("2021-01-30 11:00:00") }
+                new Paypal { Custo = 11, Password = "Jak&mCo&ves", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Now},
+                new Paypal { Custo = 11, Password = "Jak&mCo&ves", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Now},
+                new Paypal { Custo = 11, Password = "Jak&mCo&ves", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Now},
+                new Paypal { Custo = 11, Password = "Jak&mCo&ves", Email = "jakimdascoives@upskill.pt", EmailDestinatario = "jakimdascoives@upskill.pt", Data = DateTime.Now}
             );
             context.SaveChanges();
           }

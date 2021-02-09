@@ -7,46 +7,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Paypal.Data;
 using API_Paypal.Models;
+using API_Paypal.Services;
 
 namespace API_Paypal.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/paypal")]
     [ApiController]
     public class PaypalController : ControllerBase
     {
-        private readonly API_PaypalContext _context;
+        private readonly IPaypalService _service;
 
-        public PaypalController(API_PaypalContext context)
+        public PaypalController(IPaypalService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Paypal
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Paypal>>> GetPaypal()
+        public async Task<ActionResult<IEnumerable<Paypal>>> GetAllPaypal()
         {
-            return await _context.Paypal.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // POST: api/Paypal
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Paypal>> PostPaypal(Paypal paypal)
-        {
-            _context.Paypal.Add(paypal);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPaypal", new { id = paypal.Id }, paypal);
-        }
-
-
-
-
-        /*GET: api/Paypal/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Paypal>> GetPaypal(int id)
         {
-            var paypal = await _context.Paypal.FindAsync(id);
+            var paypal = await _service.GetByIdAsync(id);
 
             if (paypal == null)
             {
@@ -54,6 +39,46 @@ namespace API_Paypal.Controllers
             }
 
             return paypal;
-        }*/
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutPaypal(int id, Paypal paypal)
+        {
+            if (id != paypal.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _service.PutAsync(paypal);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Paypal>> PostPaypal(Paypal paypal)
+        {
+            await _service.PostAsync(paypal);
+
+            return CreatedAtAction("GetPaypal", new { id = paypal.Id }, paypal);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePaypal(int id)
+        {
+            var paypal = await _service.GetByIdAsync(id);
+            if (paypal == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
