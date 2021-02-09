@@ -23,15 +23,15 @@ namespace API_SubAluguer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetAllCartao()
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetAllClientes()
         {
             return await _service.GetAllAsync();
         }
 
-        [HttpGet("{nif}")]
-        public async Task<ActionResult<Cliente>> GetCliente(int nif)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _service.GetByIdAsync(nif);
+            var cliente = await _service.GetByIdAsync(id);
 
             if (cliente == null)
             {
@@ -41,10 +41,10 @@ namespace API_SubAluguer.Controllers
             return cliente;
         }
 
-        [HttpPut("{nif}")]
-        public async Task<IActionResult> PutCliente(int nif, Cliente cliente)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
         {
-            if (nif != cliente.Nif)
+            if (id != cliente.Id)
             {
                 return BadRequest();
             }
@@ -65,18 +65,18 @@ namespace API_SubAluguer.Controllers
         {
             await _service.PostAsync(cliente);
 
-            return CreatedAtAction("GetCliente", new { nif = cliente.Nif }, cliente);
+            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
         }
 
-        [HttpDelete("{nif}")]
-        public async Task<IActionResult> DeleteCliente(int nif)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCliente(int id)
         {
-            var cartao = await _service.GetByIdAsync(nif);
-            if (cartao == null)
+            var cliente = await _service.GetByIdAsync(id);
+            if (cliente == null)
             {
                 return NotFound();
             }
-            await _service.DeleteAsync(nif);
+            await _service.DeleteAsync(id);
 
             return NoContent();
         }
