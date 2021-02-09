@@ -49,9 +49,9 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
+        public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reservaDTO)
         {
-            await _service.PostAsync(reserva);
+            Reserva reserva = await _service.PostAsync(reservaDTO);
 
             return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
         }

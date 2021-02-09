@@ -18,9 +18,8 @@ namespace API_Sistema_Central.Models
         [Range(typeof(double), "0", "10000")]
         public double Valor { get; set; }
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime dataHora;
-        public DateTime DataHora { get { return dataHora; } set => dataHora = DateTime.Now; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime DataHora { get; set; }
         public int MetodoId { get; set; }
 
         [ForeignKey("NifPagador")]

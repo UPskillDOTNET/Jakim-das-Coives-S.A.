@@ -15,6 +15,7 @@ namespace API_Sistema_Central.DTOs
         public int Andar { get; set; }
         [DataType(DataType.Currency)]
         public double Preco { get; set; }
+        public int ParqueIdSC { get; set; }
         public string ApiUrl { get; set; }
     }
 }

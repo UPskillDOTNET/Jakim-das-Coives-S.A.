@@ -13,7 +13,7 @@ namespace API_Sistema_Central.Services
         public Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim);
         public Task<ActionResult<IEnumerable<Reserva>>> GetAllAsync();
         public Task<Reserva> GetByIdAsync(int id);
-        public Task<Reserva> PostAsync(Reserva reserva);
+        public Task<Reserva> PostAsync(ReservaDTO reservaDTO);
         public Task DeleteAsync(int id);
     }
 }

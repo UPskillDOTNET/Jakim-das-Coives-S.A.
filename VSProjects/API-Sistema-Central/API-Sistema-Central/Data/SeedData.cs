@@ -22,6 +22,8 @@ namespace API_Sistema_Central.Data
             context.SaveChanges();
             context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Paypal", ApiUrl = "https://localhost:5020/" });
             context.SaveChanges();
+            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Carteira"});
+            context.SaveChanges();
 
             context.Cartoes.Add(new Cartao { Numero = "0000000000000000", Nome = "Administrador", MetodoId = 1, Cvv = "000", DataValidade = "12/99" });
             context.SaveChanges();
