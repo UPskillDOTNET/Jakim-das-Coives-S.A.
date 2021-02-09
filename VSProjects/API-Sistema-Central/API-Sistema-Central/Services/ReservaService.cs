@@ -14,39 +14,39 @@ namespace API_Sistema_Central.Services
     {
         private readonly IReservaRepository _repository;
         private readonly IParqueRepository _parqueRepository;
-        private readonly HttpClient _client;
 
         public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
-            _client = new HttpClient();
         }
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
             var listaLugares = new List<LugarDTO>();
-            Parque parque = _parqueRepository.GetByIdAsync(4).Result;
-            using (_client)
+            var listaParques = _parqueRepository.GetAllAsync().Result;
+            foreach (Parque parque in listaParques.Value)
             {
-                var listaFreguesias = new List<FreguesiaDTO>();
-                string endpoint1 = parque.ApiUrl + "api/freguesias";
-                var response1 = await _client.GetAsync(endpoint1);
-                response1.EnsureSuccessStatusCode();
-                listaFreguesias = await response1.Content.ReadAsAsync<List<FreguesiaDTO>>();
-                FreguesiaDTO f = listaFreguesias.Find(z => z.Nome == freguesiaNome);
-                /*if (f == null)
+                using (HttpClient client = new HttpClient())
                 {
-                    break;
-                }*/
-
-                string endpoint2 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddThh:mm:ss") + " / " + fim.ToString("yyyy-MM-ddThh:mm:ss");
-                var response2 = await _client.GetAsync(endpoint2);
-                response2.EnsureSuccessStatusCode();
-                listaLugares = await response2.Content.ReadAsAsync<List<LugarDTO>>();
-                foreach (LugarDTO l in listaLugares)
-                {
-                    l.ApiUrl = parque.ApiUrl;
+                    var listaFreguesias = new List<FreguesiaDTO>();
+                    string endpoint1 = parque.ApiUrl + "api/freguesias";
+                    var response1 = await client.GetAsync(endpoint1);
+                    response1.EnsureSuccessStatusCode();
+                    listaFreguesias = await response1.Content.ReadAsAsync<List<FreguesiaDTO>>();
+                    FreguesiaDTO f = listaFreguesias.Find(z => z.Nome == freguesiaNome);
+                    if (f != null)
+                    {
+                        string endpoint2 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddThh:mm:ss") + " / " + fim.ToString("yyyy-MM-ddThh:mm:ss");
+                        var response2 = await client.GetAsync(endpoint2);
+                        response2.EnsureSuccessStatusCode();
+                        List<LugarDTO> temp = await response2.Content.ReadAsAsync<List<LugarDTO>>();
+                        foreach (LugarDTO l in temp)
+                        {
+                            l.ApiUrl = parque.ApiUrl;
+                            listaLugares.Add(l);
+                        }
+                    };
                 }
             }
             return listaLugares;   
