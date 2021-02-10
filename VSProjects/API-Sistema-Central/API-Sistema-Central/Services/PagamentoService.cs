@@ -1,6 +1,7 @@
 ﻿using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace API_Sistema_Central.Services
     public class PagamentoService : IPagamentoService
     {
         private readonly IMetodoPagamentoRepository _repository;
+        private readonly UserManager<Utilizador> _userManager;
         private HttpClient _client;
 
         public PagamentoService(IMetodoPagamentoRepository repository)
@@ -23,14 +25,28 @@ namespace API_Sistema_Central.Services
             _client = new HttpClient();
         }
 
-        public void Pay(PagamentoDTO payDTO)
+        public async void Pay(PagamentoDTO payDTO)
         {
             var method = payDTO.MetodoId;
+
+            Utilizador payingUser = await _userManager.FindByIdAsync(payDTO.NifPagador);
+
+            Credencial userCredentials = payingUser.Credencial;
 
             switch (method)
             {
                 case 1:
                     //cartao
+                    if (userCredentials is not Cartao) throw new InvalidOperationException();
+                    Cartao convUser = (Cartao)userCredentials;
+                    CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
+                    try {
+                        PayWithCartao(dto);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
                     break;
 
                 case 2:
@@ -50,7 +66,9 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        async void IPagamentoService.PayWithCartao(CartaoDTO dTO)
+        #region Payment Methods
+
+        public async void PayWithCartao(CartaoDTO dTO)
         {
             MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
             _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
@@ -64,12 +82,12 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
-        void IPagamentoService.PayWithCarteira(string nif)
+        public void PayWithCarteira(string nif)
         {
             throw new NotImplementedException();
         }
 
-        async void IPagamentoService.PayWithDebitoDireto(DebitoDiretoDTO dTO)
+        public async void PayWithDebitoDireto(DebitoDiretoDTO dTO)
         {
             MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
             _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
@@ -83,7 +101,7 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
-        async void IPagamentoService.PayWithPayPal(PayPalDTO dTO)
+        public async void PayWithPayPal(PayPalDTO dTO)
         {
             MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
             _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
@@ -96,5 +114,29 @@ namespace API_Sistema_Central.Services
             HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
             response.EnsureSuccessStatusCode();
         }
+
+        #endregion
+
+        #region DTO Builders
+
+        private CartaoDTO CartaoDTOBuilder (Cartao cCred, int nifDest, double custo)
+        {
+            CartaoDTO createdDTO = new CartaoDTO
+            {
+                Numero = cCred.Numero,
+                Nome = cCred.Nome,
+                DataValidade = cCred.DataValidade,
+                Cvv = cCred.Cvv,
+                Custo = custo,
+                NifDestinatario = nifDest,
+                Data = DateTime.Now
+            };
+            return createdDTO;
+        }
+
+        #endregion
+
+
+
     }
 }
