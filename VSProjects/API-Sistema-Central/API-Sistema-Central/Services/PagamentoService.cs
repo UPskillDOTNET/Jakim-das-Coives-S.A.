@@ -23,6 +23,33 @@ namespace API_Sistema_Central.Services
             _client = new HttpClient();
         }
 
+        public void Pay(PagamentoDTO payDTO)
+        {
+            var method = payDTO.MetodoId;
+
+            switch (method)
+            {
+                case 1:
+                    //cartao
+                    break;
+
+                case 2:
+                    //debito direto
+                    break;
+
+                case 3:
+                    //paypal
+                    break;
+
+                case 4:
+                    //carteira
+                    break;
+
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+        }
+
         async void IPagamentoService.PayWithCartao(CartaoDTO dTO)
         {
             MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);

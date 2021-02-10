@@ -9,6 +9,8 @@ namespace API_Sistema_Central.Services
 {
     public interface IPagamentoService
     {
+
+        public void Pay(PagamentoDTO payDTO);
         public void PayWithCarteira(string nif);
         public void PayWithCartao(CartaoDTO dTO);
         public void PayWithPayPal(PayPalDTO dTO);
