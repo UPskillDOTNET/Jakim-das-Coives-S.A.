@@ -52,6 +52,7 @@ namespace API_Sistema_Central.Services
                         }
                         break;
                     }
+
                 case 2:
                     {
                         //debito direto
@@ -68,9 +69,25 @@ namespace API_Sistema_Central.Services
                         }
                         break;
                     }
+
                 case 3:
-                    //paypal
-                    break;
+                    {
+                        //paypal
+                        if (userCredentials is not PayPal) throw new InvalidOperationException();
+                        PayPal convUser = (PayPal)userCredentials;
+                        Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        string receiverEmail = receivingUser.Email;
+                        PayPalDTO dto = PayPalDTOBuilder(convUser, receiverEmail, payDTO.Valor);
+                        try
+                        {
+                            PayWithPayPal(dto);
+                        }
+                        catch
+                        {
+                            throw;
+                        }
+                        break;
+                    }
 
                 case 4:
                     //carteira
@@ -160,6 +177,19 @@ namespace API_Sistema_Central.Services
                 Freguesia = dDCred.Freguesia,
                 Custo = custo,
                 NifDestinatario = nifDest,
+                Data = DateTime.Now
+            };
+            return createdDTO;
+        }
+
+        private PayPalDTO PayPalDTOBuilder(PayPal pCred, string emailDest, double custo)
+        {
+            PayPalDTO createdDTO = new PayPalDTO
+            {
+                Email = pCred.Password,
+                Custo = custo,
+                Password = pCred.Password,
+                EmailDestinatario = emailDest,
                 Data = DateTime.Now
             };
             return createdDTO;
