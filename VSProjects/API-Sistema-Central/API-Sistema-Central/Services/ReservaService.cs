@@ -19,13 +19,15 @@ namespace API_Sistema_Central.Services
         private readonly IParqueRepository _parqueRepository;
         private readonly ITransacaoRepository _transacaoRepository;
         private readonly UserManager<Utilizador> _userManager;
+        private readonly IPagamentoService _payment;
 
-        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager)
+        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IPagamentoService paymentService)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
             _transacaoRepository = transacaoRepository;
             _userManager = userManager;
+            _payment = paymentService;
         }
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
