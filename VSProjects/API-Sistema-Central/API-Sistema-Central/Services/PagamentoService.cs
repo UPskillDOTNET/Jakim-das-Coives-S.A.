@@ -19,9 +19,10 @@ namespace API_Sistema_Central.Services
         private readonly UserManager<Utilizador> _userManager;
         private HttpClient _client;
 
-        public PagamentoService(IMetodoPagamentoRepository repository)
+        public PagamentoService(IMetodoPagamentoRepository repository, UserManager<Utilizador> userManager)
         {
             _repository = repository;
+            _userManager = userManager;
             _client = new HttpClient();
         }
 
@@ -36,23 +37,37 @@ namespace API_Sistema_Central.Services
             switch (method)
             {
                 case 1:
-                    //cartao
-                    if (userCredentials is not Cartao) throw new InvalidOperationException();
-                    Cartao convUser = (Cartao)userCredentials;
-                    CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
-                    try {
-                        PayWithCartao(dto);
-                    }
-                    catch
                     {
-                        throw;
+                        //cartao
+                        if (userCredentials is not Cartao) throw new InvalidOperationException();
+                        Cartao convUser = (Cartao)userCredentials;
+                        CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
+                        try
+                        {
+                            PayWithCartao(dto);
+                        }
+                        catch
+                        {
+                            throw;
+                        }
+                        break;
                     }
-                    break;
-
                 case 2:
-                    //debito direto
-                    break;
-
+                    {
+                        //debito direto
+                        if (userCredentials is not DebitoDireto) throw new InvalidOperationException();
+                        DebitoDireto convUser = (DebitoDireto)userCredentials;
+                        DebitoDiretoDTO dto = DebitoDiretoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
+                        try
+                        {
+                            PayWithDebitoDireto(dto);
+                        }
+                        catch
+                        {
+                            throw;
+                        }
+                        break;
+                    }
                 case 3:
                     //paypal
                     break;
@@ -127,6 +142,22 @@ namespace API_Sistema_Central.Services
                 Nome = cCred.Nome,
                 DataValidade = cCred.DataValidade,
                 Cvv = cCred.Cvv,
+                Custo = custo,
+                NifDestinatario = nifDest,
+                Data = DateTime.Now
+            };
+            return createdDTO;
+        }
+
+        private DebitoDiretoDTO DebitoDiretoDTOBuilder(DebitoDireto dDCred, int nifDest, double custo)
+        {
+            DebitoDiretoDTO createdDTO = new DebitoDiretoDTO
+            {
+                Iban = dDCred.Iban,
+                Nome = dDCred.Nome,
+                Rua = dDCred.Rua,
+                CodigoPostal = dDCred.CodigoPostal,
+                Freguesia = dDCred.Freguesia,
                 Custo = custo,
                 NifDestinatario = nifDest,
                 Data = DateTime.Now
