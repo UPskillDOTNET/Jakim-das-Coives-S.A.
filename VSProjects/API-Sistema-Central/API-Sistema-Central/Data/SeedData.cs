@@ -56,7 +56,7 @@ namespace API_Sistema_Central.Data
 
         public static async Task SeedUtilizadoresAsync(UserManager<Utilizador> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var administrador = new Utilizador { Id = "999999999", Nome = "Administrador", UserName = "administrador@upskill.pt", Email = "administrador@upskill.pt", CredencialId = 1 };
+            var administrador = new Utilizador { Id = "999999999", Nome = "Administrador", UserName = "sistemacentraljakim@gmail.com", Email = "sistemacentraljakim@gmail.com", CredencialId = 1 };
             if (userManager.Users.All(u => u.Id != administrador.Id))
             {
                 var user = await userManager.FindByEmailAsync(administrador.Email);
@@ -67,7 +67,7 @@ namespace API_Sistema_Central.Data
                 }
             }
 
-            var teste1 = new Utilizador { Id = "111111111", Nome = "Teste Cartão de Crédito", UserName = "testecartao@upskill.pt", Email = "testecartao@upskill.pt", CredencialId = 2, Carteira = 1000 };
+            var teste1 = new Utilizador { Id = "111111111", Nome = "Teste Cartão de Crédito", UserName = "testecartaojakim@gmail.com", Email = "testecartaojakim@gmail.com", CredencialId = 2, Carteira = 1000 };
             if (userManager.Users.All(u => u.Id != teste1.Id))
             {
                 var user = await userManager.FindByEmailAsync(teste1.Email);
@@ -77,7 +77,7 @@ namespace API_Sistema_Central.Data
                 }
             }
 
-            var teste2 = new Utilizador { Id = "111111112", Nome = "Teste Débito Direto", UserName = "testedebitodireto@upskill.pt", Email = "testedebitodireto@upskill.pt", CredencialId = 3, Carteira = 1000 };
+            var teste2 = new Utilizador { Id = "111111112", Nome = "Teste Débito Direto", UserName = "testedebitodiretojakim@gmail.com", Email = "testedebitodiretojakim@gmail.com", CredencialId = 3, Carteira = 1000 };
             if (userManager.Users.All(u => u.Id != teste2.Id))
             {
                 var user = await userManager.FindByEmailAsync(teste2.Email);
@@ -87,7 +87,7 @@ namespace API_Sistema_Central.Data
                 }
             }
 
-            var teste3 = new Utilizador { Id = "111111113", Nome = "Teste Paypal", UserName = "testepaypal@upskill.pt", Email = "testepaypal@upskill.pt", CredencialId = 4, Carteira = 1000 };
+            var teste3 = new Utilizador { Id = "111111113", Nome = "Teste Paypal", UserName = "testepaypaljakim@gmail.com", Email = "testepaypaljakim@gmail.com", CredencialId = 4, Carteira = 1000 };
             if (userManager.Users.All(u => u.Id != teste3.Id))
             {
                 var user = await userManager.FindByEmailAsync(teste3.Email);
