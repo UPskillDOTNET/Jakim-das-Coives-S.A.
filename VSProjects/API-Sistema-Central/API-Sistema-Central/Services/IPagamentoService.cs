@@ -9,9 +9,9 @@ namespace API_Sistema_Central.Services
 {
     public interface IPagamentoService
     {
-        public Task<ActionResult> PayWithCarteira(string nif);
-        public Task<ActionResult> PayWithCartao(CartaoDTO dTO);
-        public Task<ActionResult> PayWithPayPal(PayPalDTO dTO);
-        public Task<ActionResult> PayWithDebitoDireto(DebitoDiretoDTO dTO);
+        public void PayWithCarteira(string nif);
+        public void PayWithCartao(CartaoDTO dTO);
+        public void PayWithPayPal(PayPalDTO dTO);
+        public void PayWithDebitoDireto(DebitoDiretoDTO dTO);
     }
 }

@@ -23,7 +23,7 @@ namespace API_Sistema_Central.Services
             _client = new HttpClient();
         }
 
-        async Task<ActionResult> IPagamentoService.PayWithCartao(CartaoDTO dTO)
+        async void IPagamentoService.PayWithCartao(CartaoDTO dTO)
         {
             MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
             _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
@@ -33,29 +33,30 @@ namespace API_Sistema_Central.Services
 
             var cartaoURI = "Cartoes";
 
-            try
-            {
-                var response = _client.PostAsJsonAsync(cartaoURI, dTO);
-
-            } catch
-            {
-                throw;
-            }
-
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
+            response.EnsureSuccessStatusCode();
         }
 
-        Task<ActionResult> IPagamentoService.PayWithCarteira(string nif)
+        void IPagamentoService.PayWithCarteira(string nif)
         {
             throw new NotImplementedException();
         }
 
-        Task<ActionResult> IPagamentoService.PayWithDebitoDireto(DebitoDiretoDTO dTO)
+        async void IPagamentoService.PayWithDebitoDireto(DebitoDiretoDTO dTO)
         {
-            throw new NotImplementedException();
+            MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
+            _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var debitoDiretoURI = "DebitosDiretos";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
+            response.EnsureSuccessStatusCode();
         }
 
-        Task<ActionResult> IPagamentoService.PayWithPayPal(PayPalDTO dTO)
+        void IPagamentoService.PayWithPayPal(PayPalDTO dTO)
         {
             throw new NotImplementedException();
         }
