@@ -9,7 +9,9 @@ namespace API_Sistema_Central.DTOs
     public class ReservaDTO
     {
         //Para usar na reserva da API-Sistema-Central
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifUtilizador { get; set; }
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifVendedor { get; set; }
         public int ParqueId { get; set; }
         public string ApiUrl { get; set; }
