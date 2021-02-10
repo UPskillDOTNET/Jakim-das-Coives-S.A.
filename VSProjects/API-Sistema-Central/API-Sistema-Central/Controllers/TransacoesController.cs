@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.Data;
 using API_Sistema_Central.Models;
+using API_Sistema_Central.Services;
 
 namespace API_Sistema_Central.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_Sistema_Central.Controllers
     [ApiController]
     public class TransacoesController : ControllerBase
     {
-        private readonly SCContext _context;
+        private readonly ITransacaoService _service;
 
-        public TransacoesController(SCContext context)
+        public TransacoesController(ITransacaoService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Transacoes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacao()
+        [HttpGet("{nif}")]
+        public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacaoByNif(string nif)
         {
-            return await _context.Transacao.ToListAsync();
+            return await _service.GetByNifAsync(nif);
         }
 
-        // GET: api/Transacoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transacao>> GetTransacao(int id)
+        public async Task<ActionResult<Transacao>> GetTransacaoById(int id)
         {
-            var transacao = await _context.Transacao.FindAsync(id);
+            var transacao = await _service.GetByIdAsync(id);
 
             if (transacao == null)
             {
@@ -40,69 +39,6 @@ namespace API_Sistema_Central.Controllers
             }
 
             return transacao;
-        }
-
-        // PUT: api/Transacoes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransacao(int id, Transacao transacao)
-        {
-            if (id != transacao.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(transacao).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TransacaoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Transacoes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Transacao>> PostTransacao(Transacao transacao)
-        {
-            _context.Transacao.Add(transacao);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTransacao", new { id = transacao.Id }, transacao);
-        }
-
-        // DELETE: api/Transacoes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTransacao(int id)
-        {
-            var transacao = await _context.Transacao.FindAsync(id);
-            if (transacao == null)
-            {
-                return NotFound();
-            }
-
-            _context.Transacao.Remove(transacao);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool TransacaoExists(int id)
-        {
-            return _context.Transacao.Any(e => e.Id == id);
         }
     }
 }
