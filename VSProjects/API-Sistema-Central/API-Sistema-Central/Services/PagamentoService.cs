@@ -31,7 +31,7 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var cartaoURI = "Cartoes";
+            var cartaoURI = "api/Cartoes";
 
             HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
             response.EnsureSuccessStatusCode();
@@ -50,15 +50,24 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var debitoDiretoURI = "DebitosDiretos";
+            var debitoDiretoURI = "api/DebitosDiretos";
 
             HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
             response.EnsureSuccessStatusCode();
         }
 
-        void IPagamentoService.PayWithPayPal(PayPalDTO dTO)
+        async void IPagamentoService.PayWithPayPal(PayPalDTO dTO)
         {
-            throw new NotImplementedException();
+            MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
+            _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var payPalURI = "api/paypal";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
+            response.EnsureSuccessStatusCode();
         }
     }
 }
