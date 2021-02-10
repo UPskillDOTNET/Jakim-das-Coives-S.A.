@@ -13,49 +13,79 @@ class EmailService {
   - EnviarEmail()
 }
 
-class TokenService {
-  - BuildToken()
+class TokenService:ITokenService {
+  - BuildToken(InfoUtilizadorDTO InfoUtilizadorDTO)
+}
+interface ITokenService {}
+
+class ReservaService:IReservaService {
+  - FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+  - PostAsync(ReservaDTO reservaDTO)
+  - DeleteAsync(int id)
+}
+interface IReservaService {}
+
+class TransacaoService:ITransacaoService {
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+}
+interface ITransacaoService {}
+
+class UtilizadorService:IUtilizadorService {
+  - RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
+  - Login(InfoUtilizadorDTO infoUtilizadorDTO)
+}
+interface IUtilizadorService {}
+
 }
 
+package Repositories <<Folder>> {
+
+abstract class "RepositoryBase<T>:IRepositoryBase<T> where T : class" {
+  - GetAllAsync()
+  - GetByIdAsync(int id)
+  - PutAsync(T entity)
+  - PostAsync(T entity)
+  - DeleteAsync(int id)
+}
+
+class "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository" {}
+class "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository" {}
+class "MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository" {}
+class "ParqueRepository:RepositoryBase<Parque>, IParqueRepository" {}
+class "PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository" {}
+class "ReservaRepository:RepositoryBase<Reserva>, IReservaRepository" {}
+class "TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository" {}
+
+interface ICartaoRepository {}
+interface IDebitoDiretoRepository {}
+interface IMetodoPagamentoRepository {}
+interface IParqueRepository {}
+interface IPayPalRepository {}
+interface IReservaRepository {}
+interface ITransacaoRepository {}
 }
 
 package Controllers <<Folder>> {
 
 class UtilizadoresController {
-  +Get GetUtilizador()
-  +Post RegistarUtilizador()
-  +Post Login()
-  +Delete DeleteUtilizador(nif)
+  +Post RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
+  +Post Login(InfoUtilizadorDTO infoUtilizadorDTO)
 }
 
 class ReservasController {
-  +Get GetReserva()
-  +Get GetReservaById(id)
+  +FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+  +Get GetReservaByNif(string nif)
+  +Get GetReservaById(int id)
   +Post PostReserva()
-  +Delete DeleteReserva(id)
-  +FindAvailable(freguesia, inicio, fim)
+  +Delete DeleteReserva(int id)
 }
 
 class TransacoesController {
-  +Get GetTransacao()
-  +Get GetTransacaoById(id)
-  +Post PostTransacao()
-}
-
-class ParquesController {
-  +Get GetParque()
-  +Get GetParqueById(id)
-  +Post PostParque()
-  +Put PutParque(id, parque)
-  +Delete DeleteParque(id)
-}
-
-class MetodoPagamentosController {
-  +Get GetMetodoPagamento()
-  +Get GetMetodoPagamentoById(id)
-  +Post PostMetodoPagamento()
-  +Put PutMetodoPagamento(id, metodoPagamento)
-  +Delete DeleteMetodoPagamento(id)
+  +Get GetTransacaoByNif(string nif)
+  +Get GetTransacaoById(int id)
 }
 
 }
@@ -72,27 +102,27 @@ class Reserva {
   -Int id PK
   -String nifUtilizador FK
   -Int parqueId FK
-  -Int transacaoID FK
   -Double custo
+  -Int transacaoID FK
   -Int reservaParqueId
 }
 
 class Transacao {
-  -Int Id PK
+  -Int id PK
   -String nifPagador FK
   -String nifRecipiente FK
-  -Int metodoId FK
   -Double valor
   -DateTime dataHora
+  -Int metodoId FK
 }
 
 class Parque {
-  -Int Id PK
+  -Int id PK
   -String apiUrl
 }
 
 class MetodoPagamento {
-  -Int Id PK
+  -Int id PK
   -String nome
   -String apiUrl
 }
@@ -100,19 +130,19 @@ class MetodoPagamento {
 package "Abstract Class Credencial" <<Frame>> {
 
 abstract class Credencial {
-  -Int Id PK
+  -Int id PK
   -Int metodoId
 }
 
 abstract PayPal:Credencial {
-  -Override Int Id PK
+  -Override Int id PK
   -String email
   -String password
   -Override Int metodoId FK
 }
 
 abstract Cartao:Credencial {
-  -Override Int Id PK
+  -Override Int id PK
   -String numero
   -String nome
   -String dataValidade
@@ -121,7 +151,7 @@ abstract Cartao:Credencial {
 }
 
 abstract DebitoDireto:Credencial {
-  -Override Int Id PK
+  -Override Int id PK
   -String iban
   -String nome
   -String rua
@@ -137,7 +167,7 @@ abstract DebitoDireto:Credencial {
 
 package Data <<Folder>> {
 
-class Context {
+class "SCContext : IdentityDbContext" {
   -DbSet<Reserva> Reservas
   -DbSet<Transacao> Transacoes
   -DbSet<Parque> Parques
@@ -151,11 +181,45 @@ class Context {
 
 package DTOs <<Folder>> {
 
+class FreguesiaDTO {
+  -Int id
+  -String nome
+}
+
+class LugarDTO {
+  -Int id
+  -Int parqueId
+  -Int numero
+  -String fila
+  -Int andar
+  -Double preco
+  -Int parqueIdSC
+  -String apiUrl
+}
+
+class PagamentoDTO {
+  -String nifPagador
+  -String nifRecipiente
+  -Int metodoId
+  -Double valor
+}
+
 class ReservaDTO {
-  -String RuaParque
-  -Int NumeroLugar
-  -String FilaLugar
-  -Int AndarLugar
+  -String nifUtilizador
+  -String nifVendedor
+  -Int parqueId
+  -String apiUrl
+  -Int metodoId
+  -Double preco
+  -Int lugarId
+  -DateTime inicio
+  -DateTime fim
+}
+
+class ReservaAPIParqueDTO {
+  -Int id
+  -Int nifCliente
+  -Int lugarId
   -DateTime inicio
   -DateTime fim
 }
@@ -196,10 +260,25 @@ class InfoUtilizadorDTO {
 
 class RegistarUtilizadorDTO {
   -String nif
-  -String nome
-  -String email
-  -String password
-  -String credencialId
+  -String nomeUtilizador
+  -String emailUtilizador
+  -String passwordUtilizador
+  -Int metodoId
+
+  -String numero
+  -String nomeCartao
+  -String dataValidade
+  -String cvv
+
+  -String iban
+  -String nomeDebitoDireto
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -DateTime DataSubscricao
+
+  -String emailPayPal
+  -String passwordPayPal
 }
 
 class TokenUtilizadorDTO {
@@ -209,27 +288,59 @@ class TokenUtilizadorDTO {
 
 }
 
-UtilizadoresController ..> "Utilizador:IdentityUser"
-UtilizadoresController ..> Context
-ReservasController ..> Reserva
-ReservasController ..> Context
-ReservasController ..> PagamentoService
-ReservasController ..> EmailService
-TransacoesController ..> Transacao
-TransacoesController ..> Context
-ParquesController ..> Parque
-ParquesController ..> Context
-MetodoPagamentosController ..> MetodoPagamento
-MetodoPagamentosController ..> Context
+package Identity <<Folder>> {
 
-Context "1" --> "0..*" "Utilizador:IdentityUser": tem
-Context "1" --> "0..*" Reserva: tem
-Context "1" --> "0..*" Transacao: tem
-Context "1" --> "0..*" Parque: tem
-Context "1" --> "0..*" MetodoPagamento: tem
-Context "1" --> "0..*" "PayPal:Credencial": tem
-Context "1" --> "0..*" "Cartao:Credencial": tem
-Context "1" --> "0..*" "DebitoDireto:Credencial": tem
+class "SignInManager<Utilizador>" {}
+
+class "UserManager<Utilizador>" {}
+
+}
+
+UtilizadoresController --> "IUtilizadorService"
+UtilizadoresController --> "ITokenService"
+ReservasController --> "IReservaService"
+TransacoesController --> "ITransacaoService"
+
+"IUtilizadorService" ..> "UtilizadorService:IUtilizadorService"
+"IReservaService" ..> "ReservaService:IReservaService"
+"ITransacaoService" ..> "TransacaoService:ITransacaoService"
+"ITokenService" ..> "TokenService:ITokenService"
+
+"UtilizadorService:IUtilizadorService" --> ICartaoRepository
+"UtilizadorService:IUtilizadorService" --> IDebitoDiretoRepository
+"UtilizadorService:IUtilizadorService" --> IPayPalRepository
+"UtilizadorService:IUtilizadorService" --> "UserManager<Utilizador>"
+"UtilizadorService:IUtilizadorService" --> "SignInManager<Utilizador>"
+"ReservaService:IReservaService" --> IReservaRepository
+"ReservaService:IReservaService" --> IParqueRepository
+"ReservaService:IReservaService" --> ITransacaoRepository
+"ReservaService:IReservaService" --> "UserManager<Utilizador>"
+"TransacaoService:ITransacaoService" --> ITransacaoRepository
+
+ICartaoRepository ..> "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository"
+IDebitoDiretoRepository ..> "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository"
+IMetodoPagamentoRepository ..> "MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository"
+IParqueRepository ..> "ParqueRepository:RepositoryBase<Parque>, IParqueRepository"
+IPayPalRepository ..> "PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository"
+IReservaRepository ..> "ReservaRepository:RepositoryBase<Reserva>, IReservaRepository"
+ITransacaoRepository ..> "TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository"
+
+"CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository" --> "SCContext : IdentityDbContext"
+"DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository" --> "SCContext : IdentityDbContext"
+"MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository" --> "SCContext : IdentityDbContext"
+"ParqueRepository:RepositoryBase<Parque>, IParqueRepository" --> "SCContext : IdentityDbContext"
+"PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository" --> "SCContext : IdentityDbContext"
+"ReservaRepository:RepositoryBase<Reserva>, IReservaRepository" --> "SCContext : IdentityDbContext"
+"TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository" --> "SCContext : IdentityDbContext"
+
+"SCContext : IdentityDbContext" "1" --> "0..*" "Utilizador:IdentityUser": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Reserva: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Transacao: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Parque: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" MetodoPagamento: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "PayPal:Credencial": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "Cartao:Credencial": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "DebitoDireto:Credencial": tem
 
 Reserva "0..*" --> "1" "Utilizador:IdentityUser": tem
 Reserva "0..*" --> "1" Transacao: tem

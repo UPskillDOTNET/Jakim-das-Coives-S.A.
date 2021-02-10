@@ -62,9 +62,11 @@ namespace API_Sistema_Central.Services
             return listaLugares;   
         }
 
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetByNifAsync(string nif)
         {
-            return await _repository.GetAllAsync();
+            var temp = await _repository.GetAllAsync();
+            var lista = temp.Value.Where(t => t.NifUtilizador == nif);
+            return lista.ToList();
         }
 
         public async Task<Reserva> GetByIdAsync(int id)

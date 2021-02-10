@@ -30,13 +30,20 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetAllReserva()
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
         {
-            return await _service.GetAllAsync();
+            var reservas = await _service.GetByNifAsync(nif);
+
+            if (reservas == null)
+            {
+                return NotFound();
+            }
+
+            return reservas;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserva>> GetReserva(int id)
+        public async Task<ActionResult<Reserva>> GetReservaById(int id)
         {
             var reserva = await _service.GetByIdAsync(id);
 
