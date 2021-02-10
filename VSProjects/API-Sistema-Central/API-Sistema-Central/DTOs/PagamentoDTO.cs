@@ -9,10 +9,10 @@ namespace API_Sistema_Central.DTOs
     public class PagamentoDTO
     {
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
-        public string NifUtilizador { get; set; }
+        public string NifPagador { get; set; }
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
-        public string NifVendedor { get; set; }
+        public string NifRecipiente { get; set; }
         public int MetodoId { get; set; }
-        public double Preco { get; set; }
+        public double Valor { get; set; }
     }
 }
