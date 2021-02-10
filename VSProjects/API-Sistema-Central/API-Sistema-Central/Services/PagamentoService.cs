@@ -90,7 +90,23 @@ namespace API_Sistema_Central.Services
                     }
 
                 case 4:
-                    //carteira
+                    if (payingUser.Carteira - payDTO.Valor < 0) throw new Exception("O utilizador não tem dinheiro suficiente na carteira.");
+                    else
+                    {
+                        Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        double pUOriginal = payingUser.Carteira;
+                        double rUOriginal = receivingUser.Carteira;
+                        try
+                        {
+                            payingUser.Carteira -= payDTO.Valor;
+                            receivingUser.Carteira += payDTO.Valor;
+                        } catch
+                        {
+                            payingUser.Carteira = pUOriginal;
+                            receivingUser.Carteira = rUOriginal;
+                            throw;
+                        }
+                    }
                     break;
 
                 default:
