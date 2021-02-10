@@ -102,6 +102,19 @@ namespace API_Sistema_Central.Services
 
         public async Task DeleteAsync(int id)
         {
+            Reserva reserva = await _repository.GetByIdAsync(id);
+            Parque parque = await _parqueRepository.GetByIdAsync(reserva.ParqueId);
+
+            //Apagar a reserva na API-Parque
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = parque.ApiUrl + "api/reservas/" + reserva.ReservaParqueId;
+                var response1 = await client.DeleteAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+            }
+
+            //Reembolsar a carteira do utilizador
+
             await _repository.DeleteAsync(id);
         }
     }
