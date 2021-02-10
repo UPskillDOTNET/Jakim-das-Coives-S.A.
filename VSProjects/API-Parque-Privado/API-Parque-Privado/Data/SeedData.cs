@@ -17,7 +17,7 @@ namespace API_Parque_Privado.Data
             }
 
             context.Clientes.AddRange(  //privados podem ter vários clientes
-                new Cliente { Nif = 111222333 , Nome = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt" },
+                new Cliente { Nif = 999999999 , Nome = "Jakim das Coives S.A.", Email = "jakimdascoives@upskill.pt" },
                 new Cliente { Nif = 444555666, Nome = "Manel dos PC's", Email = "maneldospcs@upskill.pt" },
                 new Cliente { Nif = 777888999, Nome = "Toni das Beringelas", Email = "toninhodasberingelas@upskill.pt" },
                 new Cliente { Nif = 111000111, Nome = "Pico da Programação", Email = "piquinhodosprogramas@upskill.pt" }
@@ -25,7 +25,7 @@ namespace API_Parque_Privado.Data
             context.SaveChanges();
 
             context.Freguesias.AddRange( //apenas uma freguesia
-                new Freguesia { Nome = "Custóias" }
+                new Freguesia { Nome = "Porto" }
             );
             context.SaveChanges();
 
