@@ -25,7 +25,14 @@ namespace API_Sistema_Central.Controllers
         [HttpGet("{nif}")]
         public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacaoByNif(string nif)
         {
-            return await _service.GetByNifAsync(nif);
+            var transacoes = await _service.GetByNifAsync(nif);
+
+            if (transacoes == null)
+            {
+                return NotFound();
+            }
+
+            return transacoes;
         }
 
         [HttpGet("{id}")]
