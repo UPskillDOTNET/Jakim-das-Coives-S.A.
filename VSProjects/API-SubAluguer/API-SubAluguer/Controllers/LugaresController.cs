@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class LugaresController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly ILugarService _service;
 
-        public LugaresController(API_SubAluguerContext context)
+        public LugaresController(ILugarService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Lugares
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lugar>>> GetLugar()
+        public async Task<ActionResult<IEnumerable<Lugar>>> GetAllLugar()
         {
-            return await _context.Lugares.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Lugares/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lugar>> GetLugar(int id)
         {
-            var lugar = await _context.Lugares.FindAsync(id);
+            var lugar = await _service.GetByIdAsync(id);
 
             if (lugar == null)
             {
@@ -42,8 +41,6 @@ namespace API_SubAluguer.Controllers
             return lugar;
         }
 
-        // PUT: api/Lugares/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLugar(int id, Lugar lugar)
         {
@@ -51,58 +48,37 @@ namespace API_SubAluguer.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(lugar).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(lugar);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LugarExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Lugares
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
-        {
-            _context.Lugares.Add(lugar);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetLugar", new { id = lugar.Id }, lugar);
-        }
-
-        // DELETE: api/Lugares/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLugar(int id)
-        {
-            var lugar = await _context.Lugares.FindAsync(id);
-            if (lugar == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Lugares.Remove(lugar);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool LugarExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
         {
-            return _context.Lugares.Any(e => e.Id == id);
+            await _service.PostAsync(lugar);
+
+            return CreatedAtAction("GetLugar", new { id = lugar.Id }, lugar);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteLugar(int id)
+        {
+            var lugar = await _service.GetByIdAsync(id);
+            if (lugar == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

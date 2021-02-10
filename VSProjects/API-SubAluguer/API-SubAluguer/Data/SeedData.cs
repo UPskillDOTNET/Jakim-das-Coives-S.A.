@@ -26,15 +26,18 @@ namespace API_SubAluguer.Data
             );
             context.SaveChanges();
 
+
             context.Freguesias.AddRange(
                 new Freguesia { Nome = "Porto" }
             );
             context.SaveChanges();
 
+
             context.Parques.AddRange(
                 new Parque { Rua = "Rua do parque privado 3", FreguesiaId = 1 }
             );
             context.SaveChanges();
+
 
             context.Lugares.AddRange(
                 new Lugar { Numero = 1, Fila = "A", Andar = -2, ParqueId = 1, Preco = 5.99 },
@@ -45,11 +48,19 @@ namespace API_SubAluguer.Data
             );
             context.SaveChanges();
 
+
             context.Reservas.AddRange(
                 new Reserva { NifCliente = 222222222, LugarId = 1, Inicio = DateTime.Parse("2021-01-30 11:00:00"), Fim = DateTime.Parse("2021-01-30 12:00:00") },
                 new Reserva { NifCliente = 333333333, LugarId = 2, Inicio = DateTime.Parse("2021-01-29 21:00:00"), Fim = DateTime.Parse("2021-01-31 10:00:00") },
                 new Reserva { NifCliente = 444444444, LugarId = 3, Inicio = DateTime.Parse("2021-01-30 10:00:00"), Fim = DateTime.Parse("2021-01-30 13:00:00") },
                 new Reserva { NifCliente = 555555555, LugarId = 4, Inicio = DateTime.Parse("2021-01-30 11:00:00"), Fim = DateTime.Parse("2021-01-30 13:00:00") }
+            );
+            context.SaveChanges();
+
+
+            context.Disponibilidades.AddRange(
+                new Disponibilidade { ReservaId = 1 },
+                new Disponibilidade { ReservaId = 2 }
             );
             context.SaveChanges();
         }

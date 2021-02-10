@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly IClienteService _service;
 
-        public ClientesController(API_SubAluguerContext context)
+        public ClientesController(IClienteService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Clientes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetCliente()
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetAllClientes()
         {
-            return await _context.Clientes.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Clientes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _service.GetByIdAsync(id);
 
             if (cliente == null)
             {
@@ -42,81 +41,44 @@ namespace API_SubAluguer.Controllers
             return cliente;
         }
 
-        // PUT: api/Clientes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCliente(int id, Cliente cliente)
         {
-            if (id != cliente.Nif)
+            if (id != cliente.Id)
             {
                 return BadRequest();
             }
-
-            _context.Entry(cliente).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(cliente);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Clientes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
-        {
-            _context.Clientes.Add(cliente);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ClienteExists(cliente.Nif))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetCliente", new { id = cliente.Nif }, cliente);
-        }
-
-        // DELETE: api/Clientes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCliente(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool ClienteExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
         {
-            return _context.Clientes.Any(e => e.Nif == id);
+            await _service.PostAsync(cliente);
+
+            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCliente(int id)
+        {
+            var cliente = await _service.GetByIdAsync(id);
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

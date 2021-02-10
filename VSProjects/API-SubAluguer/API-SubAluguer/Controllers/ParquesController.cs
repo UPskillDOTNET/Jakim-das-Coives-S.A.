@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,36 +15,32 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class ParquesController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly IParqueService _service;
 
-        public ParquesController(API_SubAluguerContext context)
+        public ParquesController(IParqueService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Parques
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Parque>>> GetParque()
+        public async Task<ActionResult<IEnumerable<Parque>>> GetAllParque()
         {
-            return await _context.Parques.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Parques/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Parque>> GetParque(int id)
         {
-            var parque = await _context.Parques.FindAsync(id);
+            var lugar = await _service.GetByIdAsync(id);
 
-            if (parque == null)
+            if (lugar == null)
             {
                 return NotFound();
             }
 
-            return parque;
+            return lugar;
         }
 
-        // PUT: api/Parques/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParque(int id, Parque parque)
         {
@@ -51,58 +48,37 @@ namespace API_SubAluguer.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(parque).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(parque);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParqueExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Parques
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Parque>> PostParque(Parque parque)
-        {
-            _context.Parques.Add(parque);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetParque", new { id = parque.Id }, parque);
-        }
-
-        // DELETE: api/Parques/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteParque(int id)
-        {
-            var parque = await _context.Parques.FindAsync(id);
-            if (parque == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Parques.Remove(parque);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool ParqueExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Parque>> PostParque(Parque parque)
         {
-            return _context.Parques.Any(e => e.Id == id);
+            await _service.PostAsync(parque);
+
+            return CreatedAtAction("GetParque", new { id = parque.Id }, parque);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteParque(int id)
+        {
+            var parque = await _service.GetByIdAsync(id);
+            if (parque == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

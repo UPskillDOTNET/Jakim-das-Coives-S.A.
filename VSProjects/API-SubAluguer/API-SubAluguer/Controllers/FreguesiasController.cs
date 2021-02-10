@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class FreguesiasController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly IFreguesiaService _service;
 
-        public FreguesiasController(API_SubAluguerContext context)
+        public FreguesiasController(IFreguesiaService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Freguesias
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Freguesia>>> GetFreguesia()
+        public async Task<ActionResult<IEnumerable<Freguesia>>> GetAllFreguesia()
         {
-            return await _context.Freguesias.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Freguesias/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Freguesia>> GetFreguesia(int id)
         {
-            var freguesia = await _context.Freguesias.FindAsync(id);
+            var freguesia = await _service.GetByIdAsync(id);
 
             if (freguesia == null)
             {
@@ -42,8 +41,6 @@ namespace API_SubAluguer.Controllers
             return freguesia;
         }
 
-        // PUT: api/Freguesias/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFreguesia(int id, Freguesia freguesia)
         {
@@ -51,58 +48,37 @@ namespace API_SubAluguer.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(freguesia).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(freguesia);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FreguesiaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Freguesias
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Freguesia>> PostFreguesia(Freguesia freguesia)
-        {
-            _context.Freguesias.Add(freguesia);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFreguesia", new { id = freguesia.Id }, freguesia);
-        }
-
-        // DELETE: api/Freguesias/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFreguesia(int id)
-        {
-            var freguesia = await _context.Freguesias.FindAsync(id);
-            if (freguesia == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Freguesias.Remove(freguesia);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool FreguesiaExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Freguesia>> PostFreguesia(Freguesia freguesia)
         {
-            return _context.Freguesias.Any(e => e.Id == id);
+            await _service.PostAsync(freguesia);
+
+            return CreatedAtAction("GetFreguesia", new { id = freguesia.Id }, freguesia);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFreguesia(int id)
+        {
+            var freguesia = await _service.GetByIdAsync(id);
+            if (freguesia == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

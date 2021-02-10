@@ -9,14 +9,14 @@ namespace API_SubAluguer.Models
 {
     public class Cliente
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
         [Range(typeof(int), "100000000", "999999999")]
         public int Nif { get; set; }
-        [Required]
+
         public string Nome { get; set; }
-        [Required]
-        [EmailAddress]
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
     }
 }

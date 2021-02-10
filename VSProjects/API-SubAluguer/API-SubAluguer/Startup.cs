@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
+using API_SubAluguer.Services;
+using API_SubAluguer.Repository;
 
 namespace API_SubAluguer
 {
@@ -37,6 +39,20 @@ namespace API_SubAluguer
 
             services.AddDbContext<API_SubAluguerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("API_SubAluguerContext")));
+
+            services.AddTransient<IClienteService, ClienteService>();
+            services.AddTransient<IDisponibilidadeService, DisponibilidadeService>();
+            services.AddTransient<IFreguesiaService, FreguesiaService>();
+            services.AddTransient<ILugarService, LugarService>();
+            services.AddTransient<IParqueService, ParqueService>();
+            services.AddTransient<IReservaService, ReservaService>();
+
+            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IDisponibilidadeRepository, DisponibilidadeRepository>();
+            services.AddScoped<IFreguesiaRepository, FreguesiaRepository>();
+            services.AddScoped<IParqueRepository, ParqueRepository>();
+            services.AddScoped<ILugarRepository, LugarRepository>();
+            services.AddScoped<IReservaRepository, ReservaRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

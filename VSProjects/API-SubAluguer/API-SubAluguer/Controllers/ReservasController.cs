@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
+using API_SubAluguer.Services;
 
 namespace API_SubAluguer.Controllers
 {
@@ -14,25 +15,23 @@ namespace API_SubAluguer.Controllers
     [ApiController]
     public class ReservasController : ControllerBase
     {
-        private readonly API_SubAluguerContext _context;
+        private readonly IReservaService _service;
 
-        public ReservasController(API_SubAluguerContext context)
+        public ReservasController(IReservaService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Reservas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetReserva()
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetAllReserva()
         {
-            return await _context.Reservas.ToListAsync();
+            return await _service.GetAllAsync();
         }
 
-        // GET: api/Reservas/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Reserva>> GetReserva(int id)
         {
-            var reserva = await _context.Reservas.FindAsync(id);
+            var reserva = await _service.GetByIdAsync(id);
 
             if (reserva == null)
             {
@@ -42,8 +41,6 @@ namespace API_SubAluguer.Controllers
             return reserva;
         }
 
-        // PUT: api/Reservas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReserva(int id, Reserva reserva)
         {
@@ -51,69 +48,37 @@ namespace API_SubAluguer.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(reserva).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.PutAsync(reserva);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReservaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Reservas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
-        {
-            if (!IsNotAvailable(reserva.LugarId, reserva.Inicio, reserva.Fim))
-            {
-                _context.Reservas.Add(reserva);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
-            }
-            else
-            {
-                return Conflict(new { message = $"Este lugar não se encontra disponível" });
-            }
-        }
-
-        // DELETE: api/Reservas/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReserva(int id)
-        {
-            var reserva = await _context.Reservas.FindAsync(id);
-            if (reserva == null)
+            catch (Exception)
             {
                 return NotFound();
             }
 
-            _context.Reservas.Remove(reserva);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
-        private bool ReservaExists(int id)
+        [HttpPost]
+        public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {
-            return _context.Reservas.Any(e => e.Id == id);
+            await _service.PostAsync(reserva);
+
+            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
         }
-        private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReserva(int id)
         {
-            return _context.Reservas.Any(e => e.LugarId == lugarId && e.Inicio <= inicio && e.Fim >= fim);
+            var reserva = await _service.GetByIdAsync(id);
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+            await _service.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }
