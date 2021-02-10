@@ -33,7 +33,7 @@ namespace API_Sistema_Central.DTOs
         public string CodigoPostal { get; set; }
         public string Freguesia { get; set; }
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm:ss}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime DataSubscricao { get; set; }
 
         // Dados PayPal

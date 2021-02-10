@@ -17,7 +17,7 @@ namespace API_Parque_Privado_3.Data
             }
 
             context.Clientes.AddRange(
-                new Cliente { Nif = 111222333, Nome = "Sistema Central", Email = "jakimdascoives@upskill.pt" },
+                new Cliente { Nif = 999999999, Nome = "Sistema Central", Email = "jakimdascoives@upskill.pt" },
                 new Cliente { Nif = 222222222, Nome = "Fake Client 1", Email = "fakeclient1@upskill.pt" },
                 new Cliente { Nif = 333333333, Nome = "Fake Client 2", Email = "fakeclient2@upskill.pt" },
                 new Cliente { Nif = 444444444, Nome = "Fake Client 3", Email = "fakeclient3@upskill.pt" },
