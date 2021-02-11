@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "2ce21a10-e2c9-4123-bd01-1ed0e4a73919",
+		"name": "API PayPal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PayPal",
+			"item": [
+				{
+					"name": "Check if PayPal exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if PayPal exists\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/999",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create PayPal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create PayPal\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"created_id\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\":\"cliente@test.pt\",\r\n    \"EmailDestinatario\":\"provedor@test.pt\",\r\n    \"Data\":\"2021-02-11T10:20:21.348Z\",\r\n    \"Password\":\"Jak&mCo&ves\",\r\n    \"Custo\":11\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if PayPal was created",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if PayPal was created\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/{{created_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"{{created_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PayPal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update PayPal\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\":{{created_id}},\r\n    \"Email\":\"aaaaaaa@test.pt\",\r\n    \"EmailDestinatario\":\"provedor@test.pt\",\r\n    \"Data\":\"2021-02-11T10:20:21.348Z\",\r\n    \"Password\":\"Jak&mCo&ves\",\r\n    \"Custo\":11\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/{{created_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"{{created_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if PayPal was updated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if PayPal was updated\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check Updated Email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.email).to.eql(\"aaaaaaa@test.pt\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/{{created_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"{{created_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PayPal",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delete PayPal\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/{{created_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"{{created_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if PayPal was deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if PayPal was deleted\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5020/api/paypal/{{created_id}}",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5020",
+							"path": [
+								"api",
+								"paypal",
+								"{{created_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
