@@ -160,8 +160,12 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task Reembolso(Utilizador reembolsadoUser, Utilizador provedorUser, double valor)
+        public async Task Reembolso(Transacao transacao)
         {
+            Utilizador reembolsadoUser = await _userManager.FindByIdAsync(transacao.NifPagador);
+            Utilizador provedorUser = await _userManager.FindByIdAsync(transacao.NifRecipiente);
+            double valor = transacao.Valor;
+
             double rUOriginal = reembolsadoUser.Carteira;
             double pUOriginal = provedorUser.Carteira;
             try
