@@ -111,69 +111,6 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        #region Payment Methods
-
-        public async Task PayWithCartao(CartaoDTO dTO)
-        {
-            MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
-            _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var cartaoURI = "api/cartoes";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor)
-        {
-            double pUOriginal = payingUser.Carteira;
-            double rUOriginal = receivingUser.Carteira;
-            try
-            {
-                payingUser.Carteira -= valor;
-                receivingUser.Carteira += valor;
-                await _userManager.UpdateAsync(payingUser);
-                await _userManager.UpdateAsync(receivingUser);
-            }
-            catch
-            {
-                payingUser.Carteira = pUOriginal;
-                receivingUser.Carteira = rUOriginal;
-                throw;
-            }
-        }
-
-        public async Task PayWithDebitoDireto(DebitoDiretoDTO dTO)
-        {
-            MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
-            _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var debitoDiretoURI = "api/DebitosDiretos";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task PayWithPayPal(PayPalDTO dTO)
-        {
-            MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
-            _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var payPalURI = "api/paypal";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
-            response.EnsureSuccessStatusCode();
-        }
-
         public async Task Reembolso(Transacao transacao)
         {
             Utilizador reembolsadoUser = await _userManager.FindByIdAsync(transacao.NifPagador); //identificar users para lhes mexer na carteira
@@ -195,6 +132,69 @@ namespace API_Sistema_Central.Services
                 provedorUser.Carteira = rUOriginal;
                 throw;
             }
+        }
+
+        #region Payment Methods
+
+        private async Task PayWithCartao(CartaoDTO dTO)
+        {
+            MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
+            _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var cartaoURI = "api/cartoes";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
+            response.EnsureSuccessStatusCode();
+        }
+
+        private async Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor)
+        {
+            double pUOriginal = payingUser.Carteira;
+            double rUOriginal = receivingUser.Carteira;
+            try
+            {
+                payingUser.Carteira -= valor;
+                receivingUser.Carteira += valor;
+                await _userManager.UpdateAsync(payingUser);
+                await _userManager.UpdateAsync(receivingUser);
+            }
+            catch
+            {
+                payingUser.Carteira = pUOriginal;
+                receivingUser.Carteira = rUOriginal;
+                throw;
+            }
+        }
+
+        private async Task PayWithDebitoDireto(DebitoDiretoDTO dTO)
+        {
+            MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
+            _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var debitoDiretoURI = "api/DebitosDiretos";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
+            response.EnsureSuccessStatusCode();
+        }
+
+        private async Task PayWithPayPal(PayPalDTO dTO)
+        {
+            MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
+            _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var payPalURI = "api/paypal";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
+            response.EnsureSuccessStatusCode();
         }
 
         #endregion
@@ -246,8 +246,5 @@ namespace API_Sistema_Central.Services
         }
 
         #endregion
-
-
-
     }
 }

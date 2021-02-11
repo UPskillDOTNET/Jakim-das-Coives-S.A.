@@ -12,9 +12,6 @@ namespace API_Sistema_Central.Services
     {
 
         public Task Pay(PagamentoDTO payDTO);
-        public Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor);
-        public Task PayWithCartao(CartaoDTO dTO);
-        public Task PayWithPayPal(PayPalDTO dTO);
-        public Task PayWithDebitoDireto(DebitoDiretoDTO dTO);
+        public Task Reembolso(Transacao transacao);
     }
 }
