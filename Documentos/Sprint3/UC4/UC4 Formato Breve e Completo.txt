@@ -1,53 +1,46 @@
 Caso de Uso Simples
 
-    - Editar uma reserva feita por um utilizador
+    - Pesquisar disponibilidade
     
 --------------------------------------------------------------------------------------------------
 
 Formato Breve
 
-    O utilizador envia dados de uma reserva editados ao Sistema Central da Jakim das Coives para validação.
-    O sistema altera a reserva, cobrando a diferença de valor monetário e informa o utilizador do sucesso da operação.
+    O Utilizador faz à API.SistemaCentral um pedido de disponibilidade de lugares para aluguer numa dada localidade e um determinado período de tempo.
+    A API.SistemaCentral devolve uma lista de todos os lugares disponiveis conforme os requisitos pedidos.
 
 --------------------------------------------------------------------------------------------------
 
 Formato Completo
 
 Ator principal
-    - Utilizador Registado
+    - Utilizador
 
 Partes Interessadas
-    - Utilizador: pretende alterar a reserva para satisfazer o seu desejo de flexibilidade de horário/lugar
-    - Sistema Central: pretende saber as alterações à reserva que o Utilizador fez, validando-as e calculando a diferença de valor
-    
+    - Utilizador: pretende obter uma lista de todos os lugares disponiveis para aluguer numa dada localidade e um determinado período de tempo.
+    - API.SistemaCentral: pretende alugar os lugares disponiveis.
+
 Pré-condições
-    - A reserva deve existir no Sistema
+    - ...
 
 Pós-condições
-    - As alterações são gravadas no Sistema Central da Jakim das Coives
-    - O valor monetário é retificado
+    - Permite efectuar uma reserva.
 
 
 Fluxo Básico
 
-    1. O utilizador inicia o pedido de atualização de reserva
-    2. O sistema pede novos dados
-    3. O utilizador envia os dados ao sistema para gravação
-    4. O sistema valida e cobra a diferença de valor monetário entre a reserva original e a modificada, informando o utilizador do sucesso da operação. 
+    1. O Utilizador envia à API.SistemaCentral o pedido de disponibilidade.
+    2. A API.SistemaCentral pede a localidade, a data/hora de inicio e a data/hora de fim pretendidos.
+    3. O Cliente insere os dados.
+    4. A API.SistemaCentral devolve uma lista de todos os lugares disponiveis conforme os requisitos pedidos.
 
 Fluxos Alternativos
 
-    *a - O utilizador solicita o cancelamento da alteração.
-	    O caso de uso acaba.
-
-    4a - A reserva não existe no Sistema
-        O Sistema informa o sistema de que a reserva não existe.
-        O utilizador cancela a alteração.
-        O caso de uso acaba.
-
-    4b - As alterações estão inválidas
-        O Sistema informa o sistema de que a reserva é inválida.
-        O utilizador cancela a alteração.
+    2a - Não existem lugares disponiveis para os requisitos pedidos.
+        A API informa o cliente que não existem lugares disponiveis.
         O caso de uso acaba.
 
 --------------------------------------------------------------------------------------------------
+
+
+

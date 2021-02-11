@@ -1,0 +1,24 @@
+UC5 – Sub-alugar Reserva
+
+Formato Breve
+O utilizador inicia o pedido de sub-aluguer. A API.SubAluguer solicita os dados necessários (reservaId). O utilizador introduz os dados solicitados. A API.SubAluguer solicita o novo preço do lugar. O utilizador introduz o novo preço do lugar. A API.SubAluguer regista os dados, processa o pedido de sub-aluguer e informa do sucesso da operação.
+
+Formato Completo
+Ator principal: 
+- Utilizador
+Partes interessadas e seus interesses:
+- Utilizador: pretende sub-alugar um dos seus lugares reservados
+- Sistema Central: pretende que o utilizador possa sub-alugar um dos seus lugares reservados
+
+Cenário de sucesso principal (ou fluxo básico)
+- O utilizador inicia o pedido de sub-aluguer.
+- A API.SubAluguer solicita os dados necessários (reservaId).
+- O utilizador introduz os dados solicitados.
+- A API.SubAluguer solicita o novo preço do lugar.
+- O utilizador introduz o novo preço do lugar.
+- A API.SubAluguer regista os dados, processa o pedido de sub-aluguer e informa do sucesso da operação.
+
+
+Extensões (ou fluxos alternativos)
+- O utilizador solicita o cancelamento do pedido de sub-aluger. O caso de uso termina.
+- Dados mínimos obrigatórios em falta. A API.SubAluguer informa o utilizador quais os dados em falta e permite a sua introdução.

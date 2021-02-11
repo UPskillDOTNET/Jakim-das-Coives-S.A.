@@ -7,7 +7,7 @@ Caso de Uso Simples
 Formato Breve
 
     O Utilizador faz ao Sistema Central um pedido de cancelamento de uma reserva.
-    O O Sistema Central apaga a reserva da sua base de dados e informa o Utilizador do sucesso da operação.
+    O O Sistema Central apaga a reserva da sua base de dados, reembolsa o Utilizador, envia-lhe um email a confirmar o cancelamento e informa-o do sucesso da operação.
 
 --------------------------------------------------------------------------------------------------
 
@@ -21,10 +21,12 @@ Partes Interessadas
     - Sistema Central: pretende saber que a reserva que o Utilizador fez foi cancelada.
 
 Pré-condições
-    - O utilizador procedeu ao cancelamento.
+    - O Utilizador já tinha efetuado uma reserva anteriormente.
 
 Pós-condições
-    - As alterações são gravadas na base de dados da Sistema Central.
+    - As alterações são gravadas na base de dados do Sistema Central.
+    - O Utilizador é reembolsado.
+    - O Utilizador recebe um email a confirmar o cancelamento.
 
 
 Fluxo Básico
@@ -32,7 +34,7 @@ Fluxo Básico
     1. O Utilizador inicia o pedido de cancelamento.
     2. O sistema Central pede os dados da reserva (id).
     3. O Utilizador insere os dados pedidos.
-    2. O Sistema Central apaga a reserva da base de dados e informa o Utilizador do sucesso.
+    2. O Sistema Central apaga a reserva da base de dados, reembolsa o Utilizador, envia-lhe um email a confirmar o cancelamento e informa-o do sucesso da operação.
 
 Fluxos Alternativos
 

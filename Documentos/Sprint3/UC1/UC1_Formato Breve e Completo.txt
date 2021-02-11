@@ -1,0 +1,22 @@
+UC1 – Registar Utilizador no Sistema Central
+
+Formato Breve
+O utilizador não registado inicia o seu registo. O Sistema Central solicita os dados necessários (nome, NIF, email e método de pagamento preferencial). O utilizador não registado introduz os dados solicitados. O Sistema Central regista os dados, torna o utilizador num utilizador registado, e informa do sucesso da operação.
+
+Formato Completo
+Ator principal: 
+- Utilizador Não Registado
+Partes interessadas e seus interesses:
+- Utilizador Não Registado: pretende registar-se para usufruir das funcionalidades do Sistema Central
+- Sistema Central: pretende que o utilizador em causa se registe de modo usar a plataforma.
+
+Cenário de sucesso principal (ou fluxo básico)
+- O utilizador não registado inicia o seu registo.
+- O Sistema Central solicita os dados necessários (nome, NIF, email e método de pagamento preferencial).
+- O utilizador não registado introduz os dados solicitados.
+- O Sistema Central regista os dados, torna o utilizador num utilizador registado, e informa do sucesso da operação.
+
+Extensões (ou fluxos alternativos)
+- O utilizador não registado solicita o cancelamento do registo. O caso de uso termina.
+- Dados mínimos obrigatórios em falta. O Sistema Central informa o utilizador quais os dados em falta e permite a sua introdução.
+ - O Sistema Central deteta que o NIF introduzido já existe no sistema. O Sistema Central alerta o utilizador não registado para o facto e permite a alteração do mesmo.

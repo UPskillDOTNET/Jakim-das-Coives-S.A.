@@ -2,26 +2,42 @@
 autonumber
 actor "Utilizador Não Registado" as UNR
 participant ":api/utilizadoresController" as UC
+participant "utilizadorService" as S
+participant ":userManager" as UM
 participant ":api/utilizador" as U
-participant ":context" as C
+participant "tokenService" as TS
+
 
 activate UNR
-UNR --> UC : solicita registo
+UNR --> UC : solicita registo\n(RegistarUtilizadorDTO)
 activate UC
 
-UC --> U : valida utilizador
+UC --> S : RegistarUtilizador(RegistarUtilizadorDTO)
+activate S
+
+S --> UM : CreateAsync(utilizador, password)
+activate UM
+
+UM --> U : Regista um Utilizador
 activate U
 
-U --> UC : utilizador validado
+U --> UM : Utilizador Registado
 deactivate U
 
-UC --> C : Add(utilizador)
-activate C
+UM --> S : IdentityResult
+deactivate UM
 
-C --> UC : SaveChangesAsync()
-deactivate C
+S --> UC : IdentityResult
+deactivate S
 
-UC --> UNR: CreatedAtAction()\noperação bem sucedida
+UC --> TS : BuildToken(infoUtilizadorDTO)
+activate TS
+
+TS --> UC : Return Token
+deactivate TS
+
+UC --> UNR : Return Token\noperação bem sucedida
+
 deactivate UC
 deactivate UNR
 @enduml

@@ -1,20 +1,26 @@
 @startuml
 autonumber
-actor "Utilizador" as SC
-participant ":api/LugaresController" as RC
+actor "Utilizador" as U
+participant ":api/lugaresController" as RC
 participant ":context" as C
 
-activate SC
-SC --> RC : inicia pesquisa de disponibilidade(localidade, inicio, fim)
+activate U
+U --> RC : inicia pedido sub-aluguer
 activate RC
 
-RC --> C : FindAvailable(localidade, inicio, fim)
+RC --> U : solicita dados (reservaId, preço)
+deactivate RC
+
+U --> RC : introduz dados solicitados
+activate RC
+
+RC --> C : Add(lugar)
 activate C
 
-C --> RC : List<Lugar> disponiveis
+C --> RC : SaveChangesAsync()
 deactivate C
 
-RC --> SC: return(List<Lugar> disponiveis) operação bem sucedida
+RC --> U: CreatedAtAction()\noperação bem sucedida
 deactivate RC
-deactivate SC
+deactivate U
 @enduml

@@ -6,10 +6,10 @@ Caso de Uso Simples
 
 Formato Breve
 
-    O Utilizador pede ao sistema central para efetuar uma Reserva.
+    O Utilizador pede ao Sistema Central para efetuar uma Reserva.
     O O Sistema Central pesquisa os lugar vagos para um determinado local e hora fornecidos pelo utilizador.
-    O utilizador escolhe o lugar de uma lista fornecida pelo sistema. 
-    Após confirmação do pagamento o sistema guarda a reserva na base de dados e informa o utilizador do sucesso da operação
+    O Utilizador escolhe o lugar de uma lista fornecida pelo sistema. 
+    Após confirmação do pagamento o Sistema guarda a reserva na base de dados, envia um email de confirmação ao Utilizador com o respetivo QR code e informa-o do sucesso da operação.
 
 --------------------------------------------------------------------------------------------------
 
@@ -20,21 +20,22 @@ Ator principal
 
 Partes Interessadas
     - Utilizador: pretende efetuar uma Reserva no Sistema Central.
-    - Sistema Central: pretende saber gurdar a Reserva na Base de Dados.
+    - Sistema Central: pretende saber guardar a Reserva na Base de Dados.
 
 Pré-condições
-    - O utilizador fez uma pesquisa dos lugares disponiveis.
+    - O Utilizador fez uma pesquisa dos lugares disponíveis.
 
 Pós-condições
     - O Sistema após confirmação do pagamento guarda os dados da reserva.
+    - O Sistema envia ao Utilizador um email de confirmação com o respetivo QR code.
 
 
 Fluxo Básico
 
     1. O Utilizador inicia o pedido de reserva num determinado local e data.
-    2. O sistema Central devolve os lugares disponiveis.
-    3. O Utilizador escolhe o lugar pertendido.
-    2. O Sistema Central gurda a reserva na base de daods e informa o utilizador do sucesso da operação.
+    2. O Sistema Central devolve os lugares disponíveis.
+    3. O Utilizador escolhe o lugar pretendido.
+    2. O Sistema Central guarda a reserva na base de dados, envia um email de confirmação ao utilizador com o respetivo QR code e informa-o do sucesso da operação.
 
 --------------------------------------------------------------------------------------------------
 

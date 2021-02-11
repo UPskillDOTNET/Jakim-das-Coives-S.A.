@@ -1,19 +1,26 @@
 @startuml
 autonumber
-actor "Cliente" as UserNR
-participant ":API.SistemaCentral" as API
+actor "Utilizador" as User
+participant ":API.SubAluguer" as API
 
-activate UserNR
-UserNR -> "API" : inicia pesquisa de disponibilidade
-activate "API"
-"API" --> UserNR : solicita dados cliente \n(localidade, inicio, fim)
-deactivate "API"
+activate User
+User -> API : inicia pedido de sub-aluguer
+activate API
+API --> User : solicita dados pretendidos \n(reservaId)
+deactivate API
 
-UserNR -> "API" : introduz os dados solicitados
-activate "API"
+User -> API : introduz os dados solicitados
+activate API
 
-"API" --> UserNR : operação bem sucedida
-deactivate "API"
+API --> User : solicita novo preço do lugar
+deactivate API
 
-deactivate UserNR
+User -> API : introduz novo preço do lugar
+activate API
+
+API --> User : operação bem sucedida
+
+deactivate API
+
+deactivate User
 @enduml

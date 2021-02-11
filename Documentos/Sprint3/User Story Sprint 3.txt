@@ -28,22 +28,17 @@ As a … Utilizador registado com reserva efectuada
 I want … cancelar a minha reserva e ser “reembolsado”
 So that … ficar com o valor a crédito na minha carteira virtual para futuras reservas
 
-User Story 7 “Actualizar reserva”
-As a … Utilizador registado com reserva efectuada
-I want … poder alterar a data e/ou hora de uma reserva mantendo o mesmo lugar (caso esteja livre)
-So that … ter flexibilidade de horário
-
-User Story 8 “Confirmar reserva”
+User Story 7 “Confirmar reserva”
 As a … Sistema
 I want … enviar QR-Code de confirmação ao cliente por email
 So that … o cliente poder utilizar o serviço
 
-User Story 9 “Enviar factura”
+User Story 8 “Enviar factura”
 As a … Sistema
 I want … enviar ao cliente a factura referente à reserva
 So that … para cumprir a lei
 
-User Story 10 “Verificar reservas duplicadas”
+User Story 9 “Verificar reservas duplicadas”
 As a … Sistema
 I want … garantir que não efectuo uma reserva duplicada para o mesmo lugar no mesmo período de tempo
 So that … para prestar um serviço de qualidade aos meus utilizadores

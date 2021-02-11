@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Cliente" as UserNR
+participant ":API.SistemaCentral" as API
+
+activate UserNR
+UserNR -> "API" : inicia pesquisa de disponibilidade
+activate "API"
+"API" --> UserNR : solicita dados cliente \n(localidade, inicio, fim)
+deactivate "API"
+
+UserNR -> "API" : introduz os dados solicitados
+activate "API"
+
+"API" --> UserNR : operação bem sucedida
+deactivate "API"
+
+deactivate UserNR
+@enduml
