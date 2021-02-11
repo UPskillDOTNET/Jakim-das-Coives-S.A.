@@ -160,6 +160,25 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task Reembolso(Utilizador reembolsadoUser, Utilizador provedorUser, double valor)
+        {
+            double rUOriginal = reembolsadoUser.Carteira;
+            double pUOriginal = provedorUser.Carteira;
+            try
+            {
+                reembolsadoUser.Carteira += valor;
+                provedorUser.Carteira -= valor;
+                await _userManager.UpdateAsync(reembolsadoUser);
+                await _userManager.UpdateAsync(provedorUser);
+            }
+            catch
+            {
+                reembolsadoUser.Carteira = pUOriginal;
+                provedorUser.Carteira = rUOriginal;
+                throw;
+            }
+        }
+
         #endregion
 
         #region DTO Builders
