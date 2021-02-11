@@ -2,33 +2,81 @@
 autonumber
 actor "Utilizador" as U
 participant ":api/ReservaController" as RC
-participant ":context" as C
+participant ":api/ReservaService" as RS
+participant ":api/PagamentoService" as PS
+participant ":api/TransacaoRepository" as TR
+participant "API:Parque" as API
+participant ":api/EmailService" as ES
+participant ":api/ReservaRepository" as RR
+
 
 activate U
-U --> RC: solicita lugares disponiveis
 
+U --> RC: solicita reserva\n(reservaDTO)
 activate RC
-RC --> C : findAvaiable(lugarId, Data/Hora)
 
-activate C
-C --> RC : returnAvaiable
 
-deactivate C
-RC --> U : Retorna Lugares Disponiveis
+RC --> RS: PostReserva(reservaDTO)
+activate RS
+
+RS --> PS: Pay(pagamentoDTO)
+activate PS
+
+PS --> RS:
+deactivate PS
+
+RS --> TR: PostAsync(transacao)
+activate TR
+
+TR --> RS: return transacao
+deactivate TR
+
+RS --> API: PostAsync(reservaApiParqueDTO)
+activate API
+
+API --> RS: return reservaParque
+deactivate API
+
+RS --> ES: EnviarEmail(QRCodeDTO)
+activate ES
+
+ES --> RS:
+deactivate ES
+
+RS --> RR: PostAsync(reserva)
+activate RR
+
+RR --> RS: return reserva
+deactivate RR
+
+RS --> RC: return reserva
+deactivate RS
+
+RC --> U: return reserva\noperacao bem sucedida
 deactivate RC
 
-U --> RC: Escolhe lugar a reservar
-activate RC
+deactivate U
+@enduml
 
+API --> RS: return reservaParque
+deactivate API
 
-RC --> C : Add(Reserva)
-activate C
+RS --> ES: EnviarEmail(QRCodeDTO)
+activate ES
 
-C --> RC : SaveChangesAsync()
-deactivate C
+ES --> RS:
+deactivate ES
 
+RS --> RR: PostAsync(reserva)
+activate RR
 
-RC --> U : Criação bem sucedida
+RR --> RS: return reserva
+deactivate RR
+
+RS --> RC: return reserva
+deactivate RS
+
+RC --> U: return reserva\noperacao bem sucedida
 deactivate RC
 
 deactivate U
