@@ -49,7 +49,7 @@ namespace API_Sistema_Central.Services
                 case 2:
                     {
                         //debito direto
-                        if (userCredentials is not DebitoDireto) throw new InvalidOperationException();
+                        if (userCredentials is not DebitoDireto) throw new Exception("O utilizador não possui dados para débito direto!!");
                         DebitoDireto convUser = (DebitoDireto)userCredentials;
                         DebitoDiretoDTO dto = DebitoDiretoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
                         try
@@ -66,7 +66,7 @@ namespace API_Sistema_Central.Services
                 case 3:
                     {
                         //paypal
-                        if (userCredentials is not PayPal) throw new InvalidOperationException();
+                        if (userCredentials is not PayPal) throw new Exception("O utilizador não possui dados para PayPal!");
                         PayPal convUser = (PayPal)userCredentials;
                         Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
                         string receiverEmail = receivingUser.Email;
@@ -92,7 +92,7 @@ namespace API_Sistema_Central.Services
                     break;
 
                 default:
-                    throw new IndexOutOfRangeException();
+                    throw new Exception("Método de Pagamento Não Suportado!");
             }
         }
 
