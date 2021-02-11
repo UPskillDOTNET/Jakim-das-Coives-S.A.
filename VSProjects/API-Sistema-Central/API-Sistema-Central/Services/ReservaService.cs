@@ -99,7 +99,7 @@ namespace API_Sistema_Central.Services
             //Fazer pagamento da reserva
             //Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
 
-            PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reservaDTO.Preco };
+            PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reserva.Custo};
 
             _payment.Pay(payDTO);
 
