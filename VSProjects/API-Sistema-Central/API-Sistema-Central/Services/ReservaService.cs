@@ -111,7 +111,7 @@ namespace API_Sistema_Central.Services
             var f = GetFreguesiaNomeByParqueID(reservaDTO.ParqueId, reservaDTO.ApiUrl);
             var p = GetParqueNomeByID(reservaDTO.ParqueId, reservaDTO.ApiUrl);
             var l = GetLugarByID(reservaDTO.LugarId, reservaDTO.ApiUrl);
-            QRCodeDTO qr = new QRCodeDTO { Email = utilizador.Email, IdReserva = reserva.ReservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f.Result, NomeParque = p.Result, NumeroLugar = l.Result.Numero, Fila = l.Result.Fila, Andar = l.Result.Andar };
+            QRCodeDTO qr = new QRCodeDTO { NomeUtilizador = utilizador.Nome, Email = utilizador.Email, IdReserva = reserva.ReservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f.Result, NomeParque = p.Result, NumeroLugar = l.Result.Numero, Fila = l.Result.Fila, Andar = l.Result.Andar };
             _emailService.EnviarEmail(qr);
 
             return await _repository.PostAsync(reserva);
