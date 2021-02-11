@@ -7,11 +7,13 @@ class PagamentoService {
   - Pagar()
   - Receber()
 }
+interface IPagamentoService {}
 
 class EmailService {
-  - ObterQRCode()
-  - EnviarEmail()
+  - EnviarEmail(QRCodeDTO qr)
+  - EnviarEmailCancelamento(nome, id, email)
 }
+interface IEmailService {}
 
 class TokenService:ITokenService {
   - BuildToken(InfoUtilizadorDTO InfoUtilizadorDTO)

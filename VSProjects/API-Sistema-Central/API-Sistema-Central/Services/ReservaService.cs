@@ -20,16 +20,16 @@ namespace API_Sistema_Central.Services
         private readonly ITransacaoRepository _transacaoRepository;
         private readonly IEmailService _emailService;
         private readonly UserManager<Utilizador> _userManager;
-        private readonly IPagamentoService _payment;
+        private readonly IPagamentoService _pagamentoService;
 
-        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IPagamentoService paymentService, IEmailService emailService)
+        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IPagamentoService pagamentoService, IEmailService emailService)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
             _transacaoRepository = transacaoRepository;
             _userManager = userManager;
             _emailService = emailService;
-            _payment = paymentService;
+            _pagamentoService = pagamentoService;
         }
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
@@ -96,7 +96,7 @@ namespace API_Sistema_Central.Services
 
             PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reserva.Custo};
 
-            await _payment.Pay(payDTO);
+            await _pagamentoService.Pay(payDTO);
 
             //Registar a transacao do pagamento da reserva
             Transacao transacao = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });
@@ -115,21 +115,34 @@ namespace API_Sistema_Central.Services
         public async Task DeleteAsync(int id)
         {
             Reserva reserva = await _repository.GetByIdAsync(id);
-            Parque parque = await _parqueRepository.GetByIdAsync(reserva.ParqueId);
-
-            //Apagar a reserva na API-Parque
-            using (HttpClient client = new HttpClient())
-            {
-                string endpoint1 = parque.ApiUrl + "api/reservas/" + reserva.ReservaParqueId;
-                var response1 = await client.DeleteAsync(endpoint1);
-                response1.EnsureSuccessStatusCode();
-            }
+            
+            //Apagar a reserva no parque
+            await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
 
             //Reembolsar a carteira do utilizador
+            Transacao t = await _transacaoRepository.GetByIdAsync(reserva.TransacaoId);
+
+
+            //Registar a transacao do reembolso
+
+
+            //Enviar email de cancelamento
+            _emailService.EnviarEmailCancelamento();
 
             await _repository.DeleteAsync(id);
         }
 
+
+        private async Task DeleteReservaInParqueAPIAsync(int parqueId, int reservaParqueId)
+        {
+            Parque parque = await _parqueRepository.GetByIdAsync(parqueId);
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = parque.ApiUrl + "api/reservas/" + reservaParqueId;
+                var response1 = await client.DeleteAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+            }
+        }
         private async Task<string> GetFreguesiaNomeByParqueID(int id, string url)
         {
             FreguesiaDTO f;

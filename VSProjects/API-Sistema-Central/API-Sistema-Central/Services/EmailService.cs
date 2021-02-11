@@ -38,5 +38,23 @@ namespace API_Sistema_Central.Services
             smtp.EnableSsl = true;
             smtp.Send(msg);
         }
+
+        public void EnviarEmailCancelamento(string nome, int id, string email)
+        {
+            string body = "<h2>Exmo(a) Sr.(a) " + nome + "</h2>" +
+                "<h2>A sua reserva número " + id + " foi cancelada com sucesso!</h2>";
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress("sistemacentraljakim@gmail.com");
+            msg.To.Add(email);
+            msg.Subject = "Cancelamento de reserva";
+            msg.Body = body;
+            msg.IsBodyHtml = true;
+
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("sistemacentraljakim@gmail.com", "123Pa$$word");
+            smtp.EnableSsl = true;
+            smtp.Send(msg);
+        }
     }
 }
