@@ -12,7 +12,7 @@ using APICartao.Services;
 
 namespace APICartao.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cartoes")]
     [ApiController]
     public class CartoesController : ControllerBase
     {
@@ -23,14 +23,14 @@ namespace APICartao.Controllers
             _service = service;
         }
 
-        // GET: api/Cartoes
+        // GET: api/cartoes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cartao>>> GetCartao()
         {
             return await _service.GetAllCartoes();
         }
 
-        // GET: api/Cartoes/5
+        // GET: api/cartoes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Cartao>> GetCartao(long id)
         {
@@ -50,7 +50,7 @@ namespace APICartao.Controllers
             return await _service.GetCartoesByNumero(n);
         }
 
-        // POST: api/Cartoes
+        // POST: api/cartoes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Cartao>> PostCartao(Cartao cartao)

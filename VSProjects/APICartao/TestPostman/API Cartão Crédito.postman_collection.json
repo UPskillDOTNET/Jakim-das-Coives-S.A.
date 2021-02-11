@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "5abfe8e8-9af2-45f9-adcc-bcab0cc5e81b",
+		"name": "API Cartão Crédito",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check if Cartao Credito exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if Cartao Credito exists\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5021/api/cartoes/1234567812345678",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5021",
+					"path": [
+						"api",
+						"cartoes",
+						"1234567812345678"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Cartao Credito",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create Cartao Credito\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Create id variable\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.globals.set(\"idCartao\", jsonData.id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"numero\":\"1234567812345678\",\r\n    \"nome\":\"Jakim das Coives\",\r\n    \"dataValidade\":\"08/12\",\r\n    \"cvv\":\"123\",\r\n    \"custo\":12,\r\n    \"nifDestinatario\": 123456789,\r\n    \"data\": \"2021-02-11T14:56:58\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5021/api/cartoes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5021",
+					"path": [
+						"api",
+						"cartoes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check if was created by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5021/api/cartoes/{{idCartao}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5021",
+					"path": [
+						"api",
+						"cartoes",
+						"{{idCartao}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check if was created by Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5021/api/cartoes/nr/1234567812345678",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5021",
+					"path": [
+						"api",
+						"cartoes",
+						"nr",
+						"1234567812345678"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
