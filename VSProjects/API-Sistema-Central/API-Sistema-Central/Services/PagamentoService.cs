@@ -121,6 +121,8 @@ namespace API_Sistema_Central.Services
             {
                 payingUser.Carteira -= valor;
                 receivingUser.Carteira += valor;
+                await _userManager.UpdateAsync(payingUser);
+                await _userManager.UpdateAsync(receivingUser);
             }
             catch
             {
