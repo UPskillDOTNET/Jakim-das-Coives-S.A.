@@ -191,7 +191,7 @@ namespace API_Sistema_Central.Services
             }
             catch
             {
-                reembolsadoUser.Carteira = pUOriginal;
+                reembolsadoUser.Carteira = pUOriginal; //reverter alterações
                 provedorUser.Carteira = rUOriginal;
                 throw;
             }
