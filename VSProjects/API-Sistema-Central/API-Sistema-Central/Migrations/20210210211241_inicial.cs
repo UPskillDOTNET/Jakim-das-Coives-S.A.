@@ -222,7 +222,7 @@ namespace API_Sistema_Central.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transacao",
+                name: "Transacoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -235,21 +235,21 @@ namespace API_Sistema_Central.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transacao", x => x.Id);
+                    table.PrimaryKey("PK_Transacoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transacao_AspNetUsers_NifPagador",
+                        name: "FK_Transacoes_AspNetUsers_NifPagador",
                         column: x => x.NifPagador,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Transacao_AspNetUsers_NifRecipiente",
+                        name: "FK_Transacoes_AspNetUsers_NifRecipiente",
                         column: x => x.NifRecipiente,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Transacao_MetodosPagamento_MetodoId",
+                        name: "FK_Transacoes_MetodosPagamento_MetodoId",
                         column: x => x.MetodoId,
                         principalTable: "MetodosPagamento",
                         principalColumn: "Id",
@@ -257,7 +257,7 @@ namespace API_Sistema_Central.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reserva",
+                name: "Reservas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -270,23 +270,23 @@ namespace API_Sistema_Central.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reserva", x => x.Id);
+                    table.PrimaryKey("PK_Reservas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reserva_AspNetUsers_NifUtilizador",
+                        name: "FK_Reservas_AspNetUsers_NifUtilizador",
                         column: x => x.NifUtilizador,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Reserva_Parques_ParqueId",
+                        name: "FK_Reservas_Parques_ParqueId",
                         column: x => x.ParqueId,
                         principalTable: "Parques",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reserva_Transacao_TransacaoId",
+                        name: "FK_Reservas_Transacoes_TransacaoId",
                         column: x => x.TransacaoId,
-                        principalTable: "Transacao",
+                        principalTable: "Transacoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -341,33 +341,33 @@ namespace API_Sistema_Central.Migrations
                 column: "MetodoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reserva_NifUtilizador",
-                table: "Reserva",
+                name: "IX_Reservas_NifUtilizador",
+                table: "Reservas",
                 column: "NifUtilizador");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reserva_ParqueId",
-                table: "Reserva",
+                name: "IX_Reservas_ParqueId",
+                table: "Reservas",
                 column: "ParqueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reserva_TransacaoId",
-                table: "Reserva",
+                name: "IX_Reservas_TransacaoId",
+                table: "Reservas",
                 column: "TransacaoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacao_MetodoId",
-                table: "Transacao",
+                name: "IX_Transacoes_MetodoId",
+                table: "Transacoes",
                 column: "MetodoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacao_NifPagador",
-                table: "Transacao",
+                name: "IX_Transacoes_NifPagador",
+                table: "Transacoes",
                 column: "NifPagador");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transacao_NifRecipiente",
-                table: "Transacao",
+                name: "IX_Transacoes_NifRecipiente",
+                table: "Transacoes",
                 column: "NifRecipiente");
         }
 
@@ -389,7 +389,7 @@ namespace API_Sistema_Central.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Reserva");
+                name: "Reservas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -398,7 +398,7 @@ namespace API_Sistema_Central.Migrations
                 name: "Parques");
 
             migrationBuilder.DropTable(
-                name: "Transacao");
+                name: "Transacoes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
