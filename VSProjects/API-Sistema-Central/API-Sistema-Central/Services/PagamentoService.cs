@@ -20,27 +20,38 @@ namespace API_Sistema_Central.Services
         private readonly UserManager<Utilizador> _userManager;
         private HttpClient _client;
 
-        public PagamentoService(IMetodoPagamentoRepository repository, UserManager<Utilizador> userManager)
+        public PagamentoService(IMetodoPagamentoRepository repository, UserManager<Utilizador> userManager) //construtor do serviço
         {
             _repository = repository;
             _userManager = userManager;
             _client = new HttpClient();
         }
 
-        public async Task Pay(PagamentoDTO payDTO)
+        public async Task Pay(PagamentoDTO payDTO) //pagar uma reserva
         {
             var method = payDTO.MetodoId;
 
-            Utilizador payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador);
+            Utilizador payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador); //retorna um utilizador com a sua credencial de pagamento incluída
 
             Credencial userCredentials = payingUser.Credencial;
 
-            switch (method)
+            switch (method) // id's na base de dados
             {
+
+                /*
+                 * 1 - Cartao
+                 * 2 - Debito Direto
+                 * 3 - PayPal
+                 * 4 - Carteira do Sistema Jakim das Coives
+                 * 
+                 * */
+
+
+
                 case 1:
                     {
                         //cartao
-                        if (userCredentials is not Cartao) throw new Exception("O utilizador não possui dados para cartão de crédito!");
+                        if (userCredentials is not Cartao) throw new Exception("O utilizador não possui dados para cartão de crédito!"); //conversao de credencial generica para especifica do cartao
                         Cartao convUser = (Cartao)userCredentials;
                         CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
                         await PayWithCartao(dto);
@@ -84,16 +95,19 @@ namespace API_Sistema_Central.Services
                     }
 
                 case 4:
-                    if (payingUser.Carteira - payDTO.Valor < 0) throw new Exception("O utilizador não tem dinheiro suficiente na carteira.");
-                    else
                     {
-                        Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
-                        await PayWithCarteira(payingUser, receivingUser, payDTO.Valor);
+                        //carteira
+                        if (payingUser.Carteira - payDTO.Valor < 0) throw new Exception("O utilizador não tem dinheiro suficiente na carteira.");
+                        else
+                        {
+                            Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                            await PayWithCarteira(payingUser, receivingUser, payDTO.Valor);
+                        }
+                        break;
                     }
-                    break;
 
                 default:
-                    throw new Exception("Método de Pagamento Não Suportado!");
+                    throw new Exception("Método de Pagamento Não Suportado!"); // metodo ainda nao implementado
             }
         }
 
@@ -158,6 +172,29 @@ namespace API_Sistema_Central.Services
 
             HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task Reembolso(Transacao transacao)
+        {
+            Utilizador reembolsadoUser = await _userManager.FindByIdAsync(transacao.NifPagador); //identificar users para lhes mexer na carteira
+            Utilizador provedorUser = await _userManager.FindByIdAsync(transacao.NifRecipiente);
+            double valor = transacao.Valor;
+
+            double rUOriginal = reembolsadoUser.Carteira;
+            double pUOriginal = provedorUser.Carteira;
+            try
+            {
+                reembolsadoUser.Carteira += valor;
+                provedorUser.Carteira -= valor;
+                await _userManager.UpdateAsync(reembolsadoUser);
+                await _userManager.UpdateAsync(provedorUser);
+            }
+            catch
+            {
+                reembolsadoUser.Carteira = pUOriginal; //reverter alterações
+                provedorUser.Carteira = rUOriginal;
+                throw;
+            }
         }
 
         #endregion
