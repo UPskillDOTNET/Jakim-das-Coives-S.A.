@@ -26,7 +26,7 @@ namespace API_Sistema_Central.Services
             _client = new HttpClient();
         }
 
-        public async void Pay(PagamentoDTO payDTO)
+        public async Task Pay(PagamentoDTO payDTO)
         {
             var method = payDTO.MetodoId;
 
@@ -39,17 +39,10 @@ namespace API_Sistema_Central.Services
                 case 1:
                     {
                         //cartao
-                        if (userCredentials is not Cartao) throw new InvalidOperationException();
+                        if (userCredentials is not Cartao) throw new Exception("O utilizador não possui dados para cartão de crédito!");
                         Cartao convUser = (Cartao)userCredentials;
                         CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
-                        try
-                        {
-                            PayWithCartao(dto);
-                        }
-                        catch
-                        {
-                            throw;
-                        }
+                        await PayWithCartao(dto);
                         break;
                     }
 
@@ -61,7 +54,7 @@ namespace API_Sistema_Central.Services
                         DebitoDiretoDTO dto = DebitoDiretoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
                         try
                         {
-                            PayWithDebitoDireto(dto);
+                            await PayWithDebitoDireto(dto);
                         }
                         catch
                         {
@@ -80,7 +73,7 @@ namespace API_Sistema_Central.Services
                         PayPalDTO dto = PayPalDTOBuilder(convUser, receiverEmail, payDTO.Valor);
                         try
                         {
-                            PayWithPayPal(dto);
+                            await PayWithPayPal(dto);
                         }
                         catch
                         {
@@ -94,18 +87,7 @@ namespace API_Sistema_Central.Services
                     else
                     {
                         Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
-                        double pUOriginal = payingUser.Carteira;
-                        double rUOriginal = receivingUser.Carteira;
-                        try
-                        {
-                            payingUser.Carteira -= payDTO.Valor;
-                            receivingUser.Carteira += payDTO.Valor;
-                        } catch
-                        {
-                            payingUser.Carteira = pUOriginal;
-                            receivingUser.Carteira = rUOriginal;
-                            throw;
-                        }
+                        await PayWithCarteira(payingUser, receivingUser, payDTO.Valor);
                     }
                     break;
 
@@ -116,7 +98,7 @@ namespace API_Sistema_Central.Services
 
         #region Payment Methods
 
-        public async void PayWithCartao(CartaoDTO dTO)
+        public async Task PayWithCartao(CartaoDTO dTO)
         {
             MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
             _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
@@ -130,12 +112,24 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public void PayWithCarteira(string nif)
+        public async Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor)
         {
-            throw new NotImplementedException();
+            double pUOriginal = payingUser.Carteira;
+            double rUOriginal = receivingUser.Carteira;
+            try
+            {
+                payingUser.Carteira -= valor;
+                receivingUser.Carteira += valor;
+            }
+            catch
+            {
+                payingUser.Carteira = pUOriginal;
+                receivingUser.Carteira = rUOriginal;
+                throw;
+            }
         }
 
-        public async void PayWithDebitoDireto(DebitoDiretoDTO dTO)
+        public async Task PayWithDebitoDireto(DebitoDiretoDTO dTO)
         {
             MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
             _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
@@ -149,7 +143,7 @@ namespace API_Sistema_Central.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async void PayWithPayPal(PayPalDTO dTO)
+        public async Task PayWithPayPal(PayPalDTO dTO)
         {
             MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
             _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);

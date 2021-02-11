@@ -101,7 +101,7 @@ namespace API_Sistema_Central.Services
 
             PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reserva.Custo};
 
-            _payment.Pay(payDTO);
+            await _payment.Pay(payDTO);
 
             //Enviar email de confirmacao
             _emailService.EnviarEmail();

@@ -1,4 +1,5 @@
 ﻿using API_Sistema_Central.DTOs;
+using API_Sistema_Central.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace API_Sistema_Central.Services
     public interface IPagamentoService
     {
 
-        public void Pay(PagamentoDTO payDTO);
-        public void PayWithCarteira(string nif);
-        public void PayWithCartao(CartaoDTO dTO);
-        public void PayWithPayPal(PayPalDTO dTO);
-        public void PayWithDebitoDireto(DebitoDiretoDTO dTO);
+        public Task Pay(PagamentoDTO payDTO);
+        public Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor);
+        public Task PayWithCartao(CartaoDTO dTO);
+        public Task PayWithPayPal(PayPalDTO dTO);
+        public Task PayWithDebitoDireto(DebitoDiretoDTO dTO);
     }
 }
