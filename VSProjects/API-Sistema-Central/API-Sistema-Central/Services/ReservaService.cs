@@ -20,14 +20,16 @@ namespace API_Sistema_Central.Services
         private readonly ITransacaoRepository _transacaoRepository;
         private readonly IEmailService _emailService;
         private readonly UserManager<Utilizador> _userManager;
+        private readonly IPagamentoService _payment;
 
-        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IEmailService emailService)
+        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IPagamentoService paymentService, IEmailService emailService)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
             _transacaoRepository = transacaoRepository;
             _userManager = userManager;
             _emailService = emailService;
+            _payment = paymentService;
         }
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
@@ -96,6 +98,10 @@ namespace API_Sistema_Central.Services
 
             //Fazer pagamento da reserva
             Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
+
+            PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reserva.Custo};
+
+            await _payment.Pay(payDTO);
 
             //Registar a transacao do pagamento da reserva
             Transacao transacao = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });

@@ -11,7 +11,7 @@ using Api_DebitoDireto.Services;
 
 namespace Api_DebitoDireto.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/debitosdiretos")]
     [ApiController]
     public class DebitosDiretosController : ControllerBase
     {

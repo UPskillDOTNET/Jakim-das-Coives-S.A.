@@ -64,6 +64,7 @@ namespace API_Sistema_Central
             services.AddTransient<IUtilizadorService, UtilizadorService>();
             services.AddTransient<ITransacaoService, TransacaoService>();
             services.AddTransient<IReservaService, ReservaService>();
+            services.AddTransient<IPagamentoService, PagamentoService>();
             services.AddTransient<IEmailService, EmailService>();
 
             services.AddScoped<ICartaoRepository, CartaoRepository>();
