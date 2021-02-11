@@ -286,6 +286,25 @@ class TokenUtilizadorDTO {
   -DateTime expiration
 }
 
+class ParqueDTO {
+  -Int id
+  -String rua
+  -Int freguesiaId
+}
+
+class QRCodeDTO {
+  -Int idReserva
+  -String email
+  -String nomeUtilizador
+  -String nomeFreguesia
+  -String nomeParque
+  -Int numeroLugar
+  -String fila
+  -Int andar
+  -DateTime inicio
+  -DateTime fim
+}
+
 }
 
 package Identity <<Folder>> {
