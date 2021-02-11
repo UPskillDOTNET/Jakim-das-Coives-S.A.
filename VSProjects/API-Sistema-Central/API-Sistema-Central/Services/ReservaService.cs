@@ -89,20 +89,24 @@ namespace API_Sistema_Central.Services
                 ReservaAPIParqueDTO r2 = await response.Content.ReadAsAsync<ReservaAPIParqueDTO>();
                 reserva.ReservaParqueId = r2.Id;
             }
-
+            
             //Calcular o custo da Reserva
             var h = (reservaDTO.Fim - reservaDTO.Inicio).TotalHours;
             reserva.Custo = h * reservaDTO.Preco;
 
             //Fazer pagamento da reserva
-            //Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
-
-            //Enviar email de confirmacao
-            _emailService.EnviarEmail();
+            Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
 
             //Registar a transacao do pagamento da reserva
             Transacao transacao = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });
             reserva.TransacaoId = transacao.Id;
+
+            //Enviar email de confirmacao
+            var f = GetFreguesiaNomeByParqueID(reservaDTO.ParqueId, reservaDTO.ApiUrl);
+            var p = GetParqueNomeByID(reservaDTO.ParqueId, reservaDTO.ApiUrl);
+            var l = GetLugarByID(reservaDTO.LugarId, reservaDTO.ApiUrl);
+            QRCodeDTO qr = new QRCodeDTO { Email = utilizador.Email, IdReserva = reserva.ReservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f.Result, NomeParque = p.Result, NumeroLugar = l.Result.Numero, Fila = l.Result.Fila, Andar = l.Result.Andar };
+            _emailService.EnviarEmail(qr);
 
             return await _repository.PostAsync(reserva);
         }
@@ -123,6 +127,48 @@ namespace API_Sistema_Central.Services
             //Reembolsar a carteira do utilizador
 
             await _repository.DeleteAsync(id);
+        }
+
+        private async Task<string> GetFreguesiaNomeByParqueID(int id, string url)
+        {
+            FreguesiaDTO f = new FreguesiaDTO();
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = url + "api/parques/" + id;
+                var response1 = await client.GetAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+                ParqueDTO p = await response1.Content.ReadAsAsync<ParqueDTO>();
+
+                string endpoint2 = url + "api/freguesias/" + p.FreguesiaId;
+                var response2 = await client.GetAsync(endpoint2);
+                response2.EnsureSuccessStatusCode();
+                f = await response2.Content.ReadAsAsync<FreguesiaDTO>();
+            }
+            return f.Nome;
+        }
+        private async Task<string> GetParqueNomeByID(int id, string url)
+        {
+            ParqueDTO p = new ParqueDTO();
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = url + "api/parques/" + id;
+                var response1 = await client.GetAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+                p = await response1.Content.ReadAsAsync<ParqueDTO>();
+            }
+            return p.Rua;
+        }
+        private async Task<LugarDTO> GetLugarByID(int id, string url)
+        {
+            LugarDTO l = new LugarDTO();
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = url + "api/lugares/" + id;
+                var response1 = await client.GetAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+                l = await response1.Content.ReadAsAsync<LugarDTO>();
+            }
+            return l;
         }
     }
 }
