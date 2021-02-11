@@ -3,6 +3,7 @@ using API_Sistema_Central.Models;
 using API_Sistema_Central.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace API_Sistema_Central.Services
         {
             var method = payDTO.MetodoId;
 
-            Utilizador payingUser = await _userManager.FindByIdAsync(payDTO.NifPagador);
+            Utilizador payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador);
 
             Credencial userCredentials = payingUser.Credencial;
 
