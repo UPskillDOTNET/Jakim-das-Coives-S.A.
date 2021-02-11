@@ -1,26 +1,78 @@
 @startuml
 autonumber
-actor "Utilizador" as SC
-participant ":api/reservasController" as RC
-participant ":context" as C
+actor "Utilizador" as U
+participant ":api/ReservaController" as RC
+participant ":api/ReservaService" as RS
+participant ":api/ParqueRepository" as PR
+participant "API:Parque" as API
+participant ":api/PagamentoService" as PS
+participant ":api/UserManager" as UM
+participant ":api/TransacaoRepository" as TR
+participant ":api/EmailService" as ES
+participant ":api/ReservaRepository" as RR
 
-activate SC
-SC --> RC : pede para cancelar uma reserva(id)
+
+activate U
+
+U --> RC: DeleteReserva(id)
 activate RC
 
-RC --> C : FindAsync(id)
-activate C
+RC --> RS: DeleteAsync(id)
+activate RS
 
-C --> RC : return(reserva)
-deactivate C
+RS --> RR: GetByIdAsync(id)
+activate RR
 
-RC --> C : Remove(reserva)
-activate C
+RR --> RS:return reserva
+deactivate RR
 
-C --> RC : SaveChangesAsync()
-deactivate C
+RS --> PR: GetByIdAsync(reserva.ParqueId)
+activate PR
 
-RC --> SC: NoContent() operação bem sucedida
+PR --> RS: return parque
+deactivate PR
+
+RS --> API: DeleteAsync(reserva.reservaParqueId)
+activate API
+
+API --> RS:
+deactivate API
+
+RS --> PS: Reembolso(reserva.Transacao)
+activate PS
+
+PS --> UM: UpdateAsync(utilizador)
+activate UM
+
+UM --> PS:
+deactivate UM
+
+PS --> RS
+deactivate PS
+
+RS --> TR: PostAsync(transacao)
+activate TR
+
+TR --> RS: return transacao
+deactivate TR
+
+RS --> ES: EnviarEmailCancelamento(nome, reservaId)
+activate ES
+
+ES --> RS:
+deactivate ES
+
+RS --> RR: DeleteAsync(id)
+activate RR
+
+RR --> RS:
+deactivate RR
+
+RS --> RC:
+deactivate RS
+
+RC --> U: operacao bem sucedida
 deactivate RC
-deactivate SC
+
+deactivate U
 @enduml
