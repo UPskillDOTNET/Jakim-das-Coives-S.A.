@@ -107,7 +107,7 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var cartaoURI = "api/Cartoes";
+            var cartaoURI = "api/cartoes";
 
             HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
             response.EnsureSuccessStatusCode();
