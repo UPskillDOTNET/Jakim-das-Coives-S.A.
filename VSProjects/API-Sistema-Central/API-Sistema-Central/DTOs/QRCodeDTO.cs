@@ -10,6 +10,7 @@ namespace API_Sistema_Central.DTOs
     {
         public int IdReserva { get; set; }
         public string Email { get; set; }
+        public string NomeUtilizador { get; set; }
         public string NomeFreguesia { get; set; }
         public string NomeParque { get; set; }
         public int NumeroLugar { get; set; }

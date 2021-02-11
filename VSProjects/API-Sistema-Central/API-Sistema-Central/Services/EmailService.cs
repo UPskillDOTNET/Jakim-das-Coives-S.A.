@@ -16,13 +16,14 @@ namespace API_Sistema_Central.Services
         {
             string conteudoqr = "Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
             string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
-            string body = "<h1>A sua reserva número " + qr.IdReserva + " está pronta!</h1>" +
-                "<table><tr><td><p>Lugar: " + qr.NumeroLugar + "</p>"+
-                "<p>Fila: " + qr.Fila + "</p>"+
-                "<p>Andar: " + qr.Andar + "</p><br>"+
-                "<p>Freguesia: " + qr.NomeFreguesia + "</p>"+
-                "<p>Parque: " + qr.NomeParque + "</p><br>"+
-                "<p>Data e Hora de início: " + qr.Inicio + "</p>"+
+            string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
+                "<h2>A sua reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>"+
+                "<p><b>Fila: " + qr.Fila + "</b></p>" +
+                "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
+                "<p>Freguesia: " + qr.NomeFreguesia + "</p>" +
+                "<p>Parque: " + qr.NomeParque + "</p><br>" +
+                "<p>Data e Hora de início: " + qr.Inicio + "</p>" +
                 "<p>Data e Hora de fim: " + qr.Fim + "</p></td><td style='width: 30px'></td><td>" + qrcode + "</td></tr></table>";
 
             MailMessage msg = new MailMessage();

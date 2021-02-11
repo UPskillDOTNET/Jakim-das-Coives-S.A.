@@ -29,7 +29,7 @@ namespace API_Sistema_Central.Controllers
             return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
         }
 
-        [HttpGet]
+        [HttpGet("all/{nif}")]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
         {
             var reservas = await _service.GetByNifAsync(nif);
