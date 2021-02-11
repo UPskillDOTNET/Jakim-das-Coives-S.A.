@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_Sistema_Central.Migrations
 {
     [DbContext(typeof(SCContext))]
-    [Migration("20210204194221_inicial")]
+    [Migration("20210210211241_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace API_Sistema_Central.Migrations
 
                     b.HasIndex("TransacaoId");
 
-                    b.ToTable("Reserva");
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("API_Sistema_Central.Models.Transacao", b =>
@@ -138,7 +138,7 @@ namespace API_Sistema_Central.Migrations
 
                     b.HasIndex("NifRecipiente");
 
-                    b.ToTable("Transacao");
+                    b.ToTable("Transacoes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

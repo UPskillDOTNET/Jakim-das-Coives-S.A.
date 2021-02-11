@@ -25,8 +25,8 @@ namespace API_Sistema_Central.Data
 
         public DbSet<API_Sistema_Central.Models.DebitoDireto> DebitosDiretos { get; set; }
 
-        public DbSet<API_Sistema_Central.Models.Reserva> Reserva { get; set; }
+        public DbSet<API_Sistema_Central.Models.Reserva> Reservas { get; set; }
 
-        public DbSet<API_Sistema_Central.Models.Transacao> Transacao { get; set; }
+        public DbSet<API_Sistema_Central.Models.Transacao> Transacoes { get; set; }
     }
 }

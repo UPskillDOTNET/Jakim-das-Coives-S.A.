@@ -29,14 +29,21 @@ namespace API_Sistema_Central.Controllers
             return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetAllReserva()
+        [HttpGet("all/{nif}")]
+        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
         {
-            return await _service.GetAllAsync();
+            var reservas = await _service.GetByNifAsync(nif);
+
+            if (reservas == null)
+            {
+                return NotFound();
+            }
+
+            return reservas;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserva>> GetReserva(int id)
+        public async Task<ActionResult<Reserva>> GetReservaById(int id)
         {
             var reserva = await _service.GetByIdAsync(id);
 
@@ -53,7 +60,7 @@ namespace API_Sistema_Central.Controllers
         {
             Reserva reserva = await _service.PostAsync(reservaDTO);
 
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            return CreatedAtAction("GetReservaById", new { id = reserva.Id }, reserva);
         }
 
         [HttpDelete("{id}")]
