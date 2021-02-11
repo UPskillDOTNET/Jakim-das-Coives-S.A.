@@ -60,7 +60,7 @@ namespace API_Sistema_Central.Controllers
         {
             Reserva reserva = await _service.PostAsync(reservaDTO);
 
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            return CreatedAtAction("GetReservaById", new { id = reserva.Id }, reserva);
         }
 
         [HttpDelete("{id}")]

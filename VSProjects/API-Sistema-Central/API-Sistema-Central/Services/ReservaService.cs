@@ -18,14 +18,16 @@ namespace API_Sistema_Central.Services
         private readonly IReservaRepository _repository;
         private readonly IParqueRepository _parqueRepository;
         private readonly ITransacaoRepository _transacaoRepository;
+        private readonly IEmailService _emailService;
         private readonly UserManager<Utilizador> _userManager;
 
-        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager)
+        public ReservaService(IReservaRepository repository, IParqueRepository parqueRepository, ITransacaoRepository transacaoRepository, UserManager<Utilizador> userManager, IEmailService emailService)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
             _transacaoRepository = transacaoRepository;
             _userManager = userManager;
+            _emailService = emailService;
         }
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
@@ -95,8 +97,11 @@ namespace API_Sistema_Central.Services
             //Fazer pagamento da reserva
             //Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
 
+            //Enviar email de confirmacao
+            _emailService.EnviarEmail();
+
             //Registar a transacao do pagamento da reserva
-            Transacao transacao = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.Now });
+            Transacao transacao = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });
             reserva.TransacaoId = transacao.Id;
 
             return await _repository.PostAsync(reserva);
