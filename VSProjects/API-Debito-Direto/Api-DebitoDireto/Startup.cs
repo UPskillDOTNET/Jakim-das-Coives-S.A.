@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Api_DebitoDireto.Data;
+using Api_DebitoDireto.Services;
+using Api_DebitoDireto.Repositories;
 
 namespace Api_DebitoDireto
 {
@@ -37,6 +39,11 @@ namespace Api_DebitoDireto
 
             services.AddDbContext<Api_DebitoDiretoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Api_DebitoDiretoContext")));
+
+            services.AddTransient<IDebitoDiretoService, DebitoDiretoServices>();
+
+            services.AddScoped<IDebitoDiretoRepository, DebitoDiretoRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
