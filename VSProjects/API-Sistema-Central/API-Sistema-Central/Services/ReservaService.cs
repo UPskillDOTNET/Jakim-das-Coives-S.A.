@@ -115,7 +115,8 @@ namespace API_Sistema_Central.Services
             }
 
             //Reservar o lugar na API-Parque
-            reserva.ReservaParqueId = await PostReservaInParqueAPIAndReturnIdAsync(reservaDTO);
+            var reservaParque = await PostReservaInParqueAPIAsync(reservaDTO);
+            reserva.ReservaParqueId = reservaParque.Id;
             if (reserva.ReservaParqueId == 0)
             {
                 await _pagamentoService.Reembolso(t);
@@ -227,13 +228,13 @@ namespace API_Sistema_Central.Services
         private async Task<QRCodeDTO> QRCodeDTOAsync(ReservaDTO reservaDTO, int reservaParqueId)
         {
             Utilizador utilizador = await _userManager.FindByIdAsync(reservaDTO.NifUtilizador);
-            var f = GetFreguesiaNomeByParqueID(reservaDTO.ParqueId, reservaDTO.ApiUrl).Result;
-            var p = GetParqueNomeByID(reservaDTO.ParqueId, reservaDTO.ApiUrl).Result;
-            var l = GetLugarByID(reservaDTO.LugarId, reservaDTO.ApiUrl).Result;
+            var l = GetLugarParqueByID(reservaDTO.LugarId, reservaDTO.ApiUrl).Result;
+            var f = GetFreguesiaNomeByParqueID(l.ParqueId, reservaDTO.ApiUrl).Result;
+            var p = GetParqueNomeByID(l.ParqueId, reservaDTO.ApiUrl).Result;
             QRCodeDTO qr = new QRCodeDTO { NomeUtilizador = utilizador.Nome, Email = utilizador.Email, IdReserva = reservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f, NomeParque = p, NumeroLugar = l.Numero, Fila = l.Fila, Andar = l.Andar };
             return qr;
         }
-        private async Task<int> PostReservaInParqueAPIAndReturnIdAsync(ReservaDTO reservaDTO)
+        private async Task<ReservaAPIParqueDTO> PostReservaInParqueAPIAsync(ReservaDTO reservaDTO)
         {
             ReservaAPIParqueDTO r = new ReservaAPIParqueDTO { NifCliente = 999999999, LugarId = reservaDTO.LugarId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim };
             ReservaAPIParqueDTO r2;
@@ -245,7 +246,7 @@ namespace API_Sistema_Central.Services
                 response.EnsureSuccessStatusCode();
                 r2 = await response.Content.ReadAsAsync<ReservaAPIParqueDTO>();
             }
-            return r2.Id;
+            return r2;
         }
         private async Task DeleteReservaInParqueAPIAsync(int parqueId, int reservaParqueId)
         {
@@ -286,7 +287,7 @@ namespace API_Sistema_Central.Services
             }
             return p.Rua;
         }
-        private async Task<LugarDTO> GetLugarByID(int id, string url)
+        private async Task<LugarDTO> GetLugarParqueByID(int id, string url)
         {
             LugarDTO l;
             using (HttpClient client = new HttpClient())
