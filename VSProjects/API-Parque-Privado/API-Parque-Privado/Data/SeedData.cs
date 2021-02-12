@@ -28,7 +28,7 @@ namespace API_Parque_Privado.Data
             context.Freguesias.Add(new Freguesia { Nome = "Porto" });
             context.SaveChanges();
 
-            context.Parques.Add(new Parque { Rua = "Rua do parque privado 3", FreguesiaId = 1 });
+            context.Parques.Add(new Parque { Rua = "Rua do parque privado 1", FreguesiaId = 1 });
             context.SaveChanges();
 
             context.Lugares.Add(new Lugar { Numero = 1, Fila = "A", Andar = -2, ParqueId = 1, Preco = 5.99 });

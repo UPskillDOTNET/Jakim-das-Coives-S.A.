@@ -34,10 +34,10 @@ namespace APICartao
             services.AddControllers();
             services.AddScoped<ICartaoRepository, CartaoRepository>();
             services.AddTransient<CartaoService>();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APICartao", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<APICartaoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("APICartaoContext")));
@@ -49,8 +49,8 @@ namespace APICartao
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICartao v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APICartao v1"));*/
             }
 
             app.UseHttpsRedirection();
