@@ -51,6 +51,10 @@ namespace API_Sistema_Central.Services
                         {
                             l.ParqueIdSC = parque.Id;
                             l.ApiUrl = parque.ApiUrl;
+                            if (l.NifProprietario == null)
+                            {
+                                l.NifProprietario = "999999999";
+                            }
                             listaLugares.Add(l);
                         }
                     }

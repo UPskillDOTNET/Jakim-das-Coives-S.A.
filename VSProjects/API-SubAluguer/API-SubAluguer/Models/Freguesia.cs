@@ -9,7 +9,6 @@ namespace API_SubAluguer.Models
     public class Freguesia
     {
         public int Id { get; set; }
-        [Required]
         public string Nome { get; set; }
     }
 }

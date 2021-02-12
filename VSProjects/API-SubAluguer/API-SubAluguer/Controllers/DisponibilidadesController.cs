@@ -42,25 +42,6 @@ namespace API_SubAluguer.Controllers
             return disponibilidade;
         }
 
-      /*  [HttpPut("{id}")]
-        public async Task<IActionResult> PutDisponibilidade(int id, Disponibilidade disponibilidade)
-        {
-            if (id != disponibilidade.Id)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                await _service.PutAsync(disponibilidade);
-            }
-            catch (Exception)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }*/
-
         [HttpPost]
         public async Task<ActionResult<Disponibilidade>> PostDisponibilidade(Disponibilidade disponibilidade)
         {

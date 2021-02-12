@@ -41,25 +41,6 @@ namespace API_SubAluguer.Controllers
             return reserva;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutReserva(int id, Reserva reserva)
-        {
-            if (id != reserva.Id)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                await _service.PutAsync(reserva);
-            }
-            catch (Exception)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
-
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {

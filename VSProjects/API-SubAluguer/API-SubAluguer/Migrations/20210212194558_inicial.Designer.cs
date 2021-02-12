@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_SubAluguer.Migrations
 {
     [DbContext(typeof(API_SubAluguerContext))]
-    [Migration("20210211180210_SubAluguer")]
-    partial class SubAluguer
+    [Migration("20210212194558_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,12 +44,18 @@ namespace API_SubAluguer.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("ReservaId")
+                    b.Property<DateTime>("Fim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LugarId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReservaId");
+                    b.HasIndex("LugarId");
 
                     b.ToTable("Disponibilidades");
                 });
@@ -62,7 +68,6 @@ namespace API_SubAluguer.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -81,7 +86,9 @@ namespace API_SubAluguer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Fila")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NifProprietario")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Numero")
@@ -150,13 +157,13 @@ namespace API_SubAluguer.Migrations
 
             modelBuilder.Entity("API_SubAluguer.Models.Disponibilidade", b =>
                 {
-                    b.HasOne("API_SubAluguer.Models.Reserva", "Reserva")
+                    b.HasOne("API_SubAluguer.Models.Lugar", "Lugar")
                         .WithMany()
-                        .HasForeignKey("ReservaId")
+                        .HasForeignKey("LugarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Reserva");
+                    b.Navigation("Lugar");
                 });
 
             modelBuilder.Entity("API_SubAluguer.Models.Lugar", b =>

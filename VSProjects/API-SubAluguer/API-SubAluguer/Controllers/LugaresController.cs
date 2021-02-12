@@ -29,56 +29,63 @@ namespace API_SubAluguer.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Lugar>> GetLugar(int id)
+        public async Task<ActionResult<Lugar>> GetLugarById(int id)
         {
-            var lugar = await _service.GetByIdAsync(id);
-
-            if (lugar == null)
-            {
-                return NotFound();
-            }
-
-            return lugar;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLugar(int id, Lugar lugar)
-        {
-            if (id != lugar.Id)
-            {
-                return BadRequest();
-            }
             try
             {
-                await _service.PutAsync(lugar);
+                return await _service.GetByIdAsync(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return NotFound();
+                return NotFound(e.Message);
             }
+        }
 
-            return NoContent();
+        [HttpGet("all/{nif}")]
+        public async Task<ActionResult<IEnumerable<Lugar>>> GetLugarByNif(string nif)
+        {
+            try
+            {
+                return await _service.GetByNifAsync(nif);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
         {
-            await _service.PostAsync(lugar);
-
-            return CreatedAtAction("GetLugar", new { id = lugar.Id }, lugar);
+            try
+            {
+                Lugar l = await _service.PostAsync(lugar);
+                return CreatedAtAction("GetReservaById", new { id = l.Id }, l);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLugar(int id)
         {
-            var lugar = await _service.GetByIdAsync(id);
-            if (lugar == null)
+            try
             {
-                return NotFound();
+                await _service.DeleteAsync(id);
+                return NoContent();
             }
-            await _service.DeleteAsync(id);
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
-            return NoContent();
+        [HttpGet("disponibilidade/{freguesiaId}/{inicio}/{fim}")]
+        public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
+        {
+            return _service.FindAvailable(freguesiaId, inicio, fim);
         }
     }
 }

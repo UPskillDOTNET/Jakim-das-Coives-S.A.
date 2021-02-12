@@ -10,17 +10,14 @@ namespace API_SubAluguer.Models
     public class Lugar
     {
         public int Id { get; set; }
-        [Required]
         public int ParqueId { get; set; }
-        [Required]
         public int Numero { get; set; }
-        [Required]
         public string Fila { get; set; }
-        [Required]
         public int Andar { get; set; }
-        [Required]
         [DataType(DataType.Currency)]
         public double Preco { get; set; }
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+        public string NifProprietario { get; set; }
 
 
         [ForeignKey("ParqueId")]

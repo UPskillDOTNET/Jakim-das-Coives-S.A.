@@ -10,10 +10,16 @@ namespace API_SubAluguer.Models
     public class Disponibilidade
     {
         public int Id { get; set; }
-        public int ReservaId { get; set; }
+        [Required]
+        public int LugarId { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Inicio { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Fim { get; set; }
 
-        [ForeignKey("ReservaId")]
-        public Reserva Reserva { get; set; }
-        
+        [ForeignKey("LugarId")]
+        public Lugar Lugar { get; set; }
     }
 }

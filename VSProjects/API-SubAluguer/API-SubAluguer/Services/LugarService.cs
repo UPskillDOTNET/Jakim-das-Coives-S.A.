@@ -11,10 +11,16 @@ namespace API_SubAluguer.Services
     public class LugarService : ILugarService
     {
         private readonly ILugarRepository _repository;
+        private readonly IParqueRepository _parqueRepository;
+        private readonly IReservaRepository _reservaRepository;
+        private readonly IDisponibilidadeRepository _disponibilidadeRepository;
 
-        public LugarService(ILugarRepository repository)
+        public LugarService(ILugarRepository repository, IParqueRepository parqueRepository, IReservaRepository reservaRepository, IDisponibilidadeRepository disponibilidadeRepository)
         {
             _repository = repository;
+            _parqueRepository = parqueRepository;
+            _reservaRepository = reservaRepository;
+            _disponibilidadeRepository = disponibilidadeRepository;
         }
 
         public async Task<ActionResult<IEnumerable<Lugar>>> GetAllAsync()
@@ -27,9 +33,15 @@ namespace API_SubAluguer.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task PutAsync(Lugar lugar)
+        public async Task<ActionResult<IEnumerable<Lugar>>> GetByNifAsync(string nif)
         {
-            await _repository.PutAsync(lugar);
+            var temp = await _repository.GetAllAsync();
+            var lista = temp.Value.Where(t => t.NifProprietario == nif);
+            if (!lista.Any())
+            {
+                throw new Exception("Não existem lugares associados a este NIF.");
+            }
+            return lista.ToList();
         }
 
         public async Task<Lugar> PostAsync(Lugar lugar)
@@ -41,5 +53,33 @@ namespace API_SubAluguer.Services
         {
             await _repository.DeleteAsync(id);
         }
+
+        public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
+        {
+            List<Lugar> todoslugares = new List<Lugar>();
+            var parques = _parqueRepository.GetAllAsync().Result.Value.Where(p => p.FreguesiaId == freguesiaId);
+            foreach (Parque p in parques)
+            {
+                var temp = _disponibilidadeRepository.GetAllIncludeAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim && r.Lugar.ParqueId == p.Id);
+                foreach (Disponibilidade d in temp)
+                {
+                    todoslugares.Add(d.Lugar);
+                }
+            }
+
+            List<Lugar> ocupados = new List<Lugar>();
+            var reservas = _reservaRepository.GetAllAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim);
+            foreach (Reserva r in reservas)
+            {
+                ocupados.Add(r.Lugar);
+            }
+
+            var disponiveis = todoslugares.Except(ocupados);
+
+            return disponiveis;
+        }
+
+
+
     }
 }

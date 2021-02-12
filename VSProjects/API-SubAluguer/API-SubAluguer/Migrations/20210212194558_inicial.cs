@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API_SubAluguer.Migrations
 {
-    public partial class SubAluguer : Migration
+    public partial class inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,7 @@ namespace API_SubAluguer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,9 +61,10 @@ namespace API_SubAluguer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ParqueId = table.Column<int>(type: "int", nullable: false),
                     Numero = table.Column<int>(type: "int", nullable: false),
-                    Fila = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Fila = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Andar = table.Column<int>(type: "int", nullable: false),
-                    Preco = table.Column<double>(type: "float", nullable: false)
+                    Preco = table.Column<double>(type: "float", nullable: false),
+                    NifProprietario = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,6 +73,27 @@ namespace API_SubAluguer.Migrations
                         name: "FK_Lugares_Parques_ParqueId",
                         column: x => x.ParqueId,
                         principalTable: "Parques",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Disponibilidades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LugarId = table.Column<int>(type: "int", nullable: false),
+                    Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fim = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Disponibilidades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Disponibilidades_Lugares_LugarId",
+                        column: x => x.LugarId,
+                        principalTable: "Lugares",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -104,29 +126,10 @@ namespace API_SubAluguer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Disponibilidades",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReservaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Disponibilidades", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Disponibilidades_Reservas_ReservaId",
-                        column: x => x.ReservaId,
-                        principalTable: "Reservas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_Disponibilidades_ReservaId",
+                name: "IX_Disponibilidades_LugarId",
                 table: "Disponibilidades",
-                column: "ReservaId");
+                column: "LugarId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lugares_ParqueId",
