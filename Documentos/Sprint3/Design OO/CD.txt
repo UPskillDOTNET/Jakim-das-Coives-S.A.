@@ -4,14 +4,16 @@ skinparam classAttributeIconSize 0
 package Services <<Folder>> {
 
 class PagamentoService {
-  - Pagar()
-  - Receber()
+  - Pay(PagamentoDTO payDTO)
+  - Reembolso(Transacao transacao)
 }
+interface IPagamentoService {}
 
 class EmailService {
-  - ObterQRCode()
-  - EnviarEmail()
+  - EnviarEmail(QRCodeDTO qr)
+  - EnviarEmailCancelamento(nome, id, email)
 }
+interface IEmailService {}
 
 class TokenService:ITokenService {
   - BuildToken(InfoUtilizadorDTO InfoUtilizadorDTO)
@@ -284,6 +286,25 @@ class RegistarUtilizadorDTO {
 class TokenUtilizadorDTO {
   -String token
   -DateTime expiration
+}
+
+class ParqueDTO {
+  -Int id
+  -String rua
+  -Int freguesiaId
+}
+
+class QRCodeDTO {
+  -Int idReserva
+  -String email
+  -String nomeUtilizador
+  -String nomeFreguesia
+  -String nomeParque
+  -Int numeroLugar
+  -String fila
+  -Int andar
+  -DateTime inicio
+  -DateTime fim
 }
 
 }

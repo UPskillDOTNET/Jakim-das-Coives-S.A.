@@ -29,6 +29,18 @@ namespace Api_DebitoDireto.Controllers
             return await _service.GetAllDebitoDireto();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<DebitoDireto>> GetDDById(int id)
+        {
+            try
+            {
+                return await _service.GetByIdAsync(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
 
         // POST: api/DebitosDiretos
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -37,7 +49,7 @@ namespace Api_DebitoDireto.Controllers
         {
             await _service.PostDebitoDireto(debitoDireto);
 
-            return CreatedAtAction("GetDebitoDireto", new { id = debitoDireto.Id }, debitoDireto);
+            return CreatedAtAction("GetDDById", new { id = debitoDireto.Id }, debitoDireto);
         }
 
 

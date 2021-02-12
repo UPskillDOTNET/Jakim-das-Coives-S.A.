@@ -11,7 +11,8 @@ namespace Api_DebitoDireto.Services
     public interface IDebitoDiretoService
     {
         public Task<ActionResult<IEnumerable<DebitoDireto>>> GetAllDebitoDireto();
-        public Task<DebitoDireto>PostDebitoDireto(DebitoDireto debitoDireto);
+        public Task<DebitoDireto> GetByIdAsync(int id);
+        public Task<DebitoDireto> PostDebitoDireto(DebitoDireto debitoDireto);
     }
 
 }

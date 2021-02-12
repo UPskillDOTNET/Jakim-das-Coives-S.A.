@@ -26,54 +26,68 @@ namespace API_Sistema_Central.Controllers
         [HttpGet("disponibilidade/{freguesiaNome}/{inicio}/{fim}")]
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
-            return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
+            try
+            {
+                return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet("all/{nif}")]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
         {
-            var reservas = await _service.GetByNifAsync(nif);
-
-            if (reservas == null)
+            try
             {
-                return NotFound();
+                return await _service.GetByNifAsync(nif);
             }
-
-            return reservas;
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Reserva>> GetReservaById(int id)
         {
-            var reserva = await _service.GetByIdAsync(id);
-
-            if (reserva == null)
+            try
             {
-                return NotFound();
+                return await _service.GetByIdAsync(id);
             }
-
-            return reserva;
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reservaDTO)
         {
-            Reserva reserva = await _service.PostAsync(reservaDTO);
-
-            return CreatedAtAction("GetReservaById", new { id = reserva.Id }, reserva);
+            try
+            {
+                Reserva reserva = await _service.PostAsync(reservaDTO);
+                return CreatedAtAction("GetReservaById", new { id = reserva.Id }, reserva);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReserva(int id)
         {
-            var reserva = await _service.GetByIdAsync(id);
-            if (reserva == null)
+            try
             {
-                return NotFound();
+                await _service.DeleteAsync(id);
+                return NoContent();
             }
-            await _service.DeleteAsync(id);
-
-            return NoContent();
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

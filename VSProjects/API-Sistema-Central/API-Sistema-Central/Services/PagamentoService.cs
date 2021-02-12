@@ -30,8 +30,15 @@ namespace API_Sistema_Central.Services
         public async Task Pay(PagamentoDTO payDTO) //pagar uma reserva
         {
             var method = payDTO.MetodoId;
-
-            Utilizador payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador); //retorna um utilizador com a sua credencial de pagamento incluída
+            Utilizador payingUser;
+            try
+            {
+                payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador); //retorna um utilizador com a sua credencial de pagamento incluída
+            }
+            catch (Exception)
+            {
+                throw new Exception("O utilizador não existe.");
+            }
 
             Credencial userCredentials = payingUser.Credencial;
 
@@ -54,7 +61,15 @@ namespace API_Sistema_Central.Services
                         if (userCredentials is not Cartao) throw new Exception("O utilizador não possui dados para cartão de crédito!"); //conversao de credencial generica para especifica do cartao
                         Cartao convUser = (Cartao)userCredentials;
                         CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
-                        await PayWithCartao(dto);
+                        try
+                        {
+                            await PayWithCartao(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("O pagamento com Cartão de Crédito falhou.");
+                        }
                         break;
                     }
 
@@ -67,10 +82,11 @@ namespace API_Sistema_Central.Services
                         try
                         {
                             await PayWithDebitoDireto(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
                         }
-                        catch
+                        catch (Exception)
                         {
-                            throw;
+                            throw new Exception("O pagamento com Débito Direto falhou.");
                         }
                         break;
                     }
@@ -80,16 +96,25 @@ namespace API_Sistema_Central.Services
                         //paypal
                         if (userCredentials is not PayPal) throw new Exception("O utilizador não possui dados para PayPal!");
                         PayPal convUser = (PayPal)userCredentials;
-                        Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        Utilizador receivingUser;
+                        try
+                        {
+                            receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("O utilizador recipiente do pagamento não existe.");
+                        }
                         string receiverEmail = receivingUser.Email;
                         PayPalDTO dto = PayPalDTOBuilder(convUser, receiverEmail, payDTO.Valor);
                         try
                         {
                             await PayWithPayPal(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
                         }
-                        catch
+                        catch (Exception)
                         {
-                            throw;
+                            throw new Exception("O pagamento com Paypal falhou.");
                         }
                         break;
                     }
@@ -100,7 +125,15 @@ namespace API_Sistema_Central.Services
                         if (payingUser.Carteira - payDTO.Valor < 0) throw new Exception("O utilizador não tem dinheiro suficiente na carteira.");
                         else
                         {
-                            Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                            Utilizador receivingUser;
+                            try
+                            {
+                                receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception("O utilizador recipiente do pagamento não existe.");
+                            }
                             await PayWithCarteira(payingUser, receivingUser, payDTO.Valor);
                         }
                         break;
@@ -109,69 +142,6 @@ namespace API_Sistema_Central.Services
                 default:
                     throw new Exception("Método de Pagamento Não Suportado!"); // metodo ainda nao implementado
             }
-        }
-
-        #region Payment Methods
-
-        public async Task PayWithCartao(CartaoDTO dTO)
-        {
-            MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
-            _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var cartaoURI = "api/cartoes";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor)
-        {
-            double pUOriginal = payingUser.Carteira;
-            double rUOriginal = receivingUser.Carteira;
-            try
-            {
-                payingUser.Carteira -= valor;
-                receivingUser.Carteira += valor;
-                await _userManager.UpdateAsync(payingUser);
-                await _userManager.UpdateAsync(receivingUser);
-            }
-            catch
-            {
-                payingUser.Carteira = pUOriginal;
-                receivingUser.Carteira = rUOriginal;
-                throw;
-            }
-        }
-
-        public async Task PayWithDebitoDireto(DebitoDiretoDTO dTO)
-        {
-            MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
-            _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var debitoDiretoURI = "api/DebitosDiretos";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task PayWithPayPal(PayPalDTO dTO)
-        {
-            MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
-            _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var payPalURI = "api/paypal";
-
-            HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
-            response.EnsureSuccessStatusCode();
         }
 
         public async Task Reembolso(Transacao transacao)
@@ -193,6 +163,83 @@ namespace API_Sistema_Central.Services
             {
                 reembolsadoUser.Carteira = pUOriginal; //reverter alterações
                 provedorUser.Carteira = rUOriginal;
+                throw;
+            }
+        }
+
+        #region Payment Methods
+
+        private async Task PayWithCartao(CartaoDTO dTO)
+        {
+            MetodoPagamento cartaoMetodo = await _repository.GetByIdAsync(1);
+            _client.BaseAddress = new Uri(cartaoMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var cartaoURI = "api/cartoes";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(cartaoURI, dTO);
+            response.EnsureSuccessStatusCode();
+        }
+
+        private async Task PayWithCarteira(Utilizador payingUser, Utilizador receivingUser, double valor)
+        {
+            double pUOriginal = payingUser.Carteira;
+            double rUOriginal = receivingUser.Carteira;
+            try
+            {
+                payingUser.Carteira -= valor;
+                receivingUser.Carteira += valor;
+                await _userManager.UpdateAsync(payingUser);
+                await _userManager.UpdateAsync(receivingUser);
+            }
+            catch
+            {
+                payingUser.Carteira = pUOriginal;
+                receivingUser.Carteira = rUOriginal;
+                throw;
+            }
+        }
+
+        private async Task PayWithDebitoDireto(DebitoDiretoDTO dTO)
+        {
+            MetodoPagamento debitoDiretoMetodo = await _repository.GetByIdAsync(2);
+            _client.BaseAddress = new Uri(debitoDiretoMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var debitoDiretoURI = "api/DebitosDiretos";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(debitoDiretoURI, dTO);
+            response.EnsureSuccessStatusCode();
+        }
+
+        private async Task PayWithPayPal(PayPalDTO dTO)
+        {
+            MetodoPagamento payPalMetodo = await _repository.GetByIdAsync(3);
+            _client.BaseAddress = new Uri(payPalMetodo.ApiUrl);
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var payPalURI = "api/paypal";
+
+            HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task PayUser(string nif, double valor)
+        {
+            Utilizador user = await _userManager.FindByIdAsync(nif); //identificar user para lhe mexer na carteira
+            try
+            {
+                user.Carteira += valor;
+                await _userManager.UpdateAsync(user);
+            }
+            catch
+            {
                 throw;
             }
         }
@@ -246,8 +293,5 @@ namespace API_Sistema_Central.Services
         }
 
         #endregion
-
-
-
     }
 }

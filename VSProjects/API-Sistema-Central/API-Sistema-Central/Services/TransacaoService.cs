@@ -19,13 +19,22 @@ namespace API_Sistema_Central.Services
 
         public async Task<Transacao> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            Transacao t = await _repository.GetByIdAsync(id);
+            if (t == null)
+            {
+                throw new Exception("Esta transação não existe.");
+            }
+            return t;
         }
 
         public async Task<ActionResult<IEnumerable<Transacao>>> GetByNifAsync(string nif)
         {
             var temp = await _repository.GetAllAsync();
             var lista = temp.Value.Where(t => t.NifPagador == nif);
+            if (!lista.Any())
+            {
+                throw new Exception("Não existem transações associadas a este NIF.");
+            }
             return lista.ToList();
         }
     }

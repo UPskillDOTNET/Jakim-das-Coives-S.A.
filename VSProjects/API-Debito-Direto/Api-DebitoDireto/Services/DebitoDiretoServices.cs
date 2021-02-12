@@ -8,7 +8,6 @@ using Api_DebitoDireto.Controllers;
 using Api_DebitoDireto.Repositories;
 
 
-
 namespace Api_DebitoDireto.Services
 {
     public class DebitoDiretoServices : IDebitoDiretoService
@@ -23,7 +22,15 @@ namespace Api_DebitoDireto.Services
         {
             return await _repository.ReturnAllDebitoDireto();
         }
-
+        public async Task<DebitoDireto> GetByIdAsync(int id)
+        {
+            var d = await _repository.GetByIdAsync(id);
+            if (d == null)
+            {
+                throw new Exception("O débito direto solicitado não existe.");
+            }
+            return d;
+        }
         public async Task<DebitoDireto> PostDebitoDireto(DebitoDireto debitoDireto)
         {
             return await _repository.PostDebitoDireto(debitoDireto);
