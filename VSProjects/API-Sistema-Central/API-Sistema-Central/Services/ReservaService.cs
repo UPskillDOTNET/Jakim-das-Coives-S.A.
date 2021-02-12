@@ -56,7 +56,7 @@ namespace API_Sistema_Central.Services
                     }
                 };
             }
-            if (listaLugares == null)
+            if (!listaLugares.Any())
             {
                 throw new Exception("Não existem lugares disponíveis para o local e período de tempo escolhidos.");
             }
@@ -67,7 +67,7 @@ namespace API_Sistema_Central.Services
         {
             var temp = await _repository.GetAllAsync();
             var lista = temp.Value.Where(t => t.NifUtilizador == nif);
-            if (lista == null)
+            if (!lista.Any())
             {
                 throw new Exception("Não existem reservas associadas a este NIF.");
             }
@@ -155,6 +155,10 @@ namespace API_Sistema_Central.Services
         public async Task DeleteAsync(int id)
         {
             Reserva reserva = await _repository.GetByIdAsync(id);
+            if (reserva == null)
+            {
+                throw new Exception("A reserva não existe.");
+            }
             Transacao t = await _transacaoRepository.GetByIdAsync(reserva.TransacaoId);
             if (t == null)
             {

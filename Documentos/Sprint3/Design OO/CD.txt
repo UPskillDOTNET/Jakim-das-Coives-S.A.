@@ -4,8 +4,8 @@ skinparam classAttributeIconSize 0
 package Services <<Folder>> {
 
 class PagamentoService {
-  - Pagar()
-  - Receber()
+  - Pay(PagamentoDTO payDTO)
+  - Reembolso(Transacao transacao)
 }
 interface IPagamentoService {}
 

@@ -30,8 +30,15 @@ namespace API_Sistema_Central.Services
         public async Task Pay(PagamentoDTO payDTO) //pagar uma reserva
         {
             var method = payDTO.MetodoId;
-
-            Utilizador payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador); //retorna um utilizador com a sua credencial de pagamento incluída
+            Utilizador payingUser;
+            try
+            {
+                payingUser = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == payDTO.NifPagador); //retorna um utilizador com a sua credencial de pagamento incluída
+            }
+            catch (Exception)
+            {
+                throw new Exception("O utilizador não existe.");
+            }
 
             Credencial userCredentials = payingUser.Credencial;
 
@@ -54,7 +61,14 @@ namespace API_Sistema_Central.Services
                         if (userCredentials is not Cartao) throw new Exception("O utilizador não possui dados para cartão de crédito!"); //conversao de credencial generica para especifica do cartao
                         Cartao convUser = (Cartao)userCredentials;
                         CartaoDTO dto = CartaoDTOBuilder(convUser, int.Parse(payDTO.NifRecipiente), payDTO.Valor);
-                        await PayWithCartao(dto);
+                        try
+                        {
+                            await PayWithCartao(dto);
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("O pagamento com Cartão de Crédito falhou.");
+                        }
                         break;
                     }
 
@@ -68,9 +82,9 @@ namespace API_Sistema_Central.Services
                         {
                             await PayWithDebitoDireto(dto);
                         }
-                        catch
+                        catch (Exception)
                         {
-                            throw;
+                            throw new Exception("O pagamento com Débito Direto falhou.");
                         }
                         break;
                     }
@@ -80,16 +94,24 @@ namespace API_Sistema_Central.Services
                         //paypal
                         if (userCredentials is not PayPal) throw new Exception("O utilizador não possui dados para PayPal!");
                         PayPal convUser = (PayPal)userCredentials;
-                        Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        Utilizador receivingUser;
+                        try
+                        {
+                            receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("O utilizador recipiente do pagamento não existe.");
+                        }
                         string receiverEmail = receivingUser.Email;
                         PayPalDTO dto = PayPalDTOBuilder(convUser, receiverEmail, payDTO.Valor);
                         try
                         {
                             await PayWithPayPal(dto);
                         }
-                        catch
+                        catch (Exception)
                         {
-                            throw;
+                            throw new Exception("O pagamento com Paypal falhou.");
                         }
                         break;
                     }
@@ -100,7 +122,15 @@ namespace API_Sistema_Central.Services
                         if (payingUser.Carteira - payDTO.Valor < 0) throw new Exception("O utilizador não tem dinheiro suficiente na carteira.");
                         else
                         {
-                            Utilizador receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                            Utilizador receivingUser;
+                            try
+                            {
+                                receivingUser = await _userManager.FindByIdAsync(payDTO.NifRecipiente);
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception("O utilizador recipiente do pagamento não existe.");
+                            }
                             await PayWithCarteira(payingUser, receivingUser, payDTO.Valor);
                         }
                         break;

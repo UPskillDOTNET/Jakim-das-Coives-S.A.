@@ -79,11 +79,6 @@ namespace API_Sistema_Central.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReserva(int id)
         {
-            var reserva = await _service.GetByIdAsync(id);
-            if (reserva == null)
-            {
-                return NotFound("Esta reserva não existe.");
-            }
             try
             {
                 await _service.DeleteAsync(id);

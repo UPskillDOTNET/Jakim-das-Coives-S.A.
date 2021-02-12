@@ -22,30 +22,30 @@ namespace API_Sistema_Central.Controllers
             _service = service;
         }
 
-        [HttpGet("{nif}")]
+        [HttpGet("all/{nif}")]
         public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacaoByNif(string nif)
         {
-            var transacoes = await _service.GetByNifAsync(nif);
-
-            if (transacoes == null)
+            try
             {
-                return NotFound();
+                return await _service.GetByNifAsync(nif);
             }
-
-            return transacoes;
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Transacao>> GetTransacaoById(int id)
         {
-            var transacao = await _service.GetByIdAsync(id);
-
-            if (transacao == null)
+            try
             {
-                return NotFound();
+                return await _service.GetByIdAsync(id);
             }
-
-            return transacao;
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
     }
 }
