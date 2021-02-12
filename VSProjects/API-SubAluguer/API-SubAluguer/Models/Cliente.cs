@@ -9,8 +9,8 @@ namespace API_SubAluguer.Models
 {
     public class Cliente
     {
-        public int Id { get; set; }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Range(typeof(int), "100000000", "999999999")]
         public int Nif { get; set; }
 

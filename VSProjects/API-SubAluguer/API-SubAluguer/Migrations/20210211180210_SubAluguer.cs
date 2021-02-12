@@ -8,20 +8,20 @@ namespace API_SubAluguer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cliente",
+                name: "Clientes",
                 columns: table => new
                 {
                     Nif = table.Column<int>(type: "int", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cliente", x => x.Nif);
+                    table.PrimaryKey("PK_Clientes", x => x.Nif);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Freguesia",
+                name: "Freguesias",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -30,31 +30,31 @@ namespace API_SubAluguer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Freguesia", x => x.Id);
+                    table.PrimaryKey("PK_Freguesias", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Parque",
+                name: "Parques",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Rua = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rua = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FreguesiaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parque", x => x.Id);
+                    table.PrimaryKey("PK_Parques", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Parque_Freguesia_FreguesiaId",
+                        name: "FK_Parques_Freguesias_FreguesiaId",
                         column: x => x.FreguesiaId,
-                        principalTable: "Freguesia",
+                        principalTable: "Freguesias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lugar",
+                name: "Lugares",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -67,17 +67,17 @@ namespace API_SubAluguer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Lugar", x => x.Id);
+                    table.PrimaryKey("PK_Lugares", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lugar_Parque_ParqueId",
+                        name: "FK_Lugares_Parques_ParqueId",
                         column: x => x.ParqueId,
-                        principalTable: "Parque",
+                        principalTable: "Parques",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reserva",
+                name: "Reservas",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -89,23 +89,23 @@ namespace API_SubAluguer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reserva", x => x.Id);
+                    table.PrimaryKey("PK_Reservas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reserva_Cliente_NifCliente",
+                        name: "FK_Reservas_Clientes_NifCliente",
                         column: x => x.NifCliente,
-                        principalTable: "Cliente",
+                        principalTable: "Clientes",
                         principalColumn: "Nif",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reserva_Lugar_LugarId",
+                        name: "FK_Reservas_Lugares_LugarId",
                         column: x => x.LugarId,
-                        principalTable: "Lugar",
+                        principalTable: "Lugares",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Disponibilidade",
+                name: "Disponibilidades",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -114,60 +114,60 @@ namespace API_SubAluguer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Disponibilidade", x => x.Id);
+                    table.PrimaryKey("PK_Disponibilidades", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Disponibilidade_Reserva_ReservaId",
+                        name: "FK_Disponibilidades_Reservas_ReservaId",
                         column: x => x.ReservaId,
-                        principalTable: "Reserva",
+                        principalTable: "Reservas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Disponibilidade_ReservaId",
-                table: "Disponibilidade",
+                name: "IX_Disponibilidades_ReservaId",
+                table: "Disponibilidades",
                 column: "ReservaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lugar_ParqueId",
-                table: "Lugar",
+                name: "IX_Lugares_ParqueId",
+                table: "Lugares",
                 column: "ParqueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parque_FreguesiaId",
-                table: "Parque",
+                name: "IX_Parques_FreguesiaId",
+                table: "Parques",
                 column: "FreguesiaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reserva_LugarId",
-                table: "Reserva",
+                name: "IX_Reservas_LugarId",
+                table: "Reservas",
                 column: "LugarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reserva_NifCliente",
-                table: "Reserva",
+                name: "IX_Reservas_NifCliente",
+                table: "Reservas",
                 column: "NifCliente");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Disponibilidade");
+                name: "Disponibilidades");
 
             migrationBuilder.DropTable(
-                name: "Reserva");
+                name: "Reservas");
 
             migrationBuilder.DropTable(
-                name: "Cliente");
+                name: "Clientes");
 
             migrationBuilder.DropTable(
-                name: "Lugar");
+                name: "Lugares");
 
             migrationBuilder.DropTable(
-                name: "Parque");
+                name: "Parques");
 
             migrationBuilder.DropTable(
-                name: "Freguesia");
+                name: "Freguesias");
         }
     }
 }
