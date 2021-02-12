@@ -64,6 +64,7 @@ namespace API_Sistema_Central.Services
                         try
                         {
                             await PayWithCartao(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
                         }
                         catch (Exception)
                         {
@@ -81,6 +82,7 @@ namespace API_Sistema_Central.Services
                         try
                         {
                             await PayWithDebitoDireto(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
                         }
                         catch (Exception)
                         {
@@ -108,6 +110,7 @@ namespace API_Sistema_Central.Services
                         try
                         {
                             await PayWithPayPal(dto);
+                            await PayUser(payDTO.NifRecipiente, payDTO.Valor);
                         }
                         catch (Exception)
                         {
@@ -225,6 +228,20 @@ namespace API_Sistema_Central.Services
 
             HttpResponseMessage response = await _client.PostAsJsonAsync(payPalURI, dTO);
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task PayUser(string nif, double valor)
+        {
+            Utilizador user = await _userManager.FindByIdAsync(nif); //identificar user para lhe mexer na carteira
+            try
+            {
+                user.Carteira += valor;
+                await _userManager.UpdateAsync(user);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         #endregion
