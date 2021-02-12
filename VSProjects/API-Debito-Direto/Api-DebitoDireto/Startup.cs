@@ -32,10 +32,10 @@ namespace Api_DebitoDireto
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api_DebitoDireto", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<Api_DebitoDiretoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Api_DebitoDiretoContext")));
@@ -52,8 +52,8 @@ namespace Api_DebitoDireto
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api_DebitoDireto v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api_DebitoDireto v1"));*/
             }
 
             app.UseHttpsRedirection();

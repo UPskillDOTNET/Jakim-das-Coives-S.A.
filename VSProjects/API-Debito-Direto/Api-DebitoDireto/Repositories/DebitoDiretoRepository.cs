@@ -22,6 +22,11 @@ namespace Api_DebitoDireto.Repositories
         {
             return await _context.DebitoDireto.ToListAsync();
         }
+        public async Task<DebitoDireto> GetByIdAsync(int id)
+        {
+            var result = await _context.Set<DebitoDireto>().FindAsync(id);
+            return result;
+        }
         public async Task<DebitoDireto> PostDebitoDireto(DebitoDireto debitoDireto)
         {
             EntityEntry<DebitoDireto> entry;
