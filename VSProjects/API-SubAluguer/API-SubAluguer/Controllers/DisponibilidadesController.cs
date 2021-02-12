@@ -25,6 +25,7 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Disponibilidade>>> GetAllDisponibilidade()
         {
+
             return await _service.GetAllAsync();
         }
 
@@ -41,7 +42,7 @@ namespace API_SubAluguer.Controllers
             return disponibilidade;
         }
 
-        [HttpPut("{id}")]
+      /*  [HttpPut("{id}")]
         public async Task<IActionResult> PutDisponibilidade(int id, Disponibilidade disponibilidade)
         {
             if (id != disponibilidade.Id)
@@ -58,7 +59,7 @@ namespace API_SubAluguer.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
         [HttpPost]
         public async Task<ActionResult<Disponibilidade>> PostDisponibilidade(Disponibilidade disponibilidade)

@@ -283,7 +283,7 @@ namespace API_Sistema_Central.Services
         {
             PayPalDTO createdDTO = new PayPalDTO
             {
-                Email = pCred.Password,
+                Email = pCred.Email,
                 Custo = custo,
                 Password = pCred.Password,
                 EmailDestinatario = emailDest,

@@ -33,7 +33,7 @@ namespace API_Sistema_Central.Data
             context.DebitosDiretos.Add(new DebitoDireto { Nome = "Teste Débito Direto", Rua = "Rua Teste", Freguesia = "Freguesia Teste", CodigoPostal = "4000-100", Iban = "PT50111111111111111111111", MetodoId = 2, DataSubscricao = DateTime.Now });
             context.SaveChanges();
 
-            context.PayPal.Add(new PayPal { Email = "testepaypal@upskill.pt", Password = "123Pa$$word", MetodoId = 3 });
+            context.PayPal.Add(new PayPal { Email = "testepaypaljakim@gmail.com", Password = "123Pa$$word", MetodoId = 3 });
             context.SaveChanges();
 
             context.Parques.Add(new Parque { ApiUrl = "https://localhost:5001/" });

@@ -32,10 +32,10 @@ namespace API_Paypal
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Paypal", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<API_PaypalContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("API_PaypalContext")));
@@ -50,8 +50,8 @@ namespace API_Paypal
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Paypal v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Paypal v1"));*/
             }
 
             app.UseHttpsRedirection();

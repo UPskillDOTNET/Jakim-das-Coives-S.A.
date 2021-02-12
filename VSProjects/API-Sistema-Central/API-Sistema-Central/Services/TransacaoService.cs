@@ -30,7 +30,7 @@ namespace API_Sistema_Central.Services
         public async Task<ActionResult<IEnumerable<Transacao>>> GetByNifAsync(string nif)
         {
             var temp = await _repository.GetAllAsync();
-            var lista = temp.Value.Where(t => t.NifPagador == nif);
+            var lista = temp.Value.Where(t => t.NifPagador == nif || t.NifRecipiente == nif);
             if (!lista.Any())
             {
                 throw new Exception("Não existem transações associadas a este NIF.");

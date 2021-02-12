@@ -44,7 +44,7 @@ namespace API_SubAluguer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCliente(int id, Cliente cliente)
         {
-            if (id != cliente.Id)
+            if (id != cliente.Nif)
             {
                 return BadRequest();
             }
@@ -65,7 +65,7 @@ namespace API_SubAluguer.Controllers
         {
             await _service.PostAsync(cliente);
 
-            return CreatedAtAction("GetCliente", new { id = cliente.Id }, cliente);
+            return CreatedAtAction("GetCliente", new { id = cliente.Nif }, cliente);
         }
 
         [HttpDelete("{id}")]
