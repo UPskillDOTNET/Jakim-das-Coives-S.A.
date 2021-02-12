@@ -25,7 +25,7 @@ namespace API_Parque_Privado2.Data
             );
             context.SaveChanges();
 
-            context.Freguesias.Add(new Freguesia { Nome = "Porto" });
+            context.Freguesias.Add(new Freguesia { Nome = "Lisboa" });
             context.SaveChanges();
 
             context.Parques.Add(new Parque { Rua = "Rua do parque privado 2", FreguesiaId = 1 });
