@@ -28,7 +28,7 @@ namespace API_Sistema_Central.Services
                     "<p>Parque: " + qr.NomeParque + "</p><br>" +
                     "<p>Data e Hora de início: " + qr.Inicio + "</p>" +
                     "<p>Data e Hora de fim: " + qr.Fim + "</p></td><td style='width: 30px'></td><td>" + qrcode + "</td></tr></table>";
-                
+
                 EnviarEmail(subject, qr.Email, body);
             }
             catch (Exception)
@@ -52,7 +52,7 @@ namespace API_Sistema_Central.Services
                 throw;
             }
         }
-        private void EnviarEmail(string subject, string email, string body)
+        private static void EnviarEmail(string subject, string email, string body)
         {
             MailMessage msg = new MailMessage();
             msg.From = new MailAddress("sistemacentraljakim@gmail.com");

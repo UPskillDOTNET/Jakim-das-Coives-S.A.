@@ -1,4 +1,5 @@
-﻿using API_SubAluguer.Models;
+﻿using API_SubAluguer.DTOs;
+using API_SubAluguer.Models;
 using API_SubAluguer.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -44,9 +45,21 @@ namespace API_SubAluguer.Services
             return lista.ToList();
         }
 
-        public async Task<Lugar> PostAsync(Lugar lugar)
+        public async Task<Lugar> PostAsync(SubAluguerDTO subAluguerDTO)
         {
-            return await _repository.PostAsync(lugar);
+            Lugar l = new Lugar { Numero = subAluguerDTO.Numero, Fila = subAluguerDTO.Fila, Andar = subAluguerDTO.Andar, ParqueId = subAluguerDTO.ParqueId, NifProprietario = subAluguerDTO.NifProprietario, Preco = subAluguerDTO.Preco };
+            Lugar lugar = await _repository.PostAsync(l);
+            if (lugar == null)
+            {
+                throw new Exception("O registo do lugar para sub-aluguer falhou.");
+            }
+            Disponibilidade d = new Disponibilidade { LugarId = lugar.Id, Inicio = subAluguerDTO.Inicio, Fim = subAluguerDTO.Fim };
+            Disponibilidade disponibilidade = await _disponibilidadeRepository.PostAsync(d);
+            if (disponibilidade == null)
+            {
+                throw new Exception("O registo da disponibilidade do lugar falhou.");
+            }
+            return lugar;
         }
 
         public async Task DeleteAsync(int id)
@@ -68,7 +81,11 @@ namespace API_SubAluguer.Services
             }
 
             List<Lugar> ocupados = new List<Lugar>();
-            var reservas = _reservaRepository.GetAllAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim);
+            var reservas = _reservaRepository.GetAllAsync().Result.Value.Where(r => 
+                r.Fim > inicio && r.Fim <= fim ||
+                r.Inicio >= inicio && r.Inicio < fim ||
+                r.Inicio >= inicio && r.Fim <= fim ||
+                r.Inicio <= inicio && r.Fim >= fim);
             foreach (Reserva r in reservas)
             {
                 ocupados.Add(r.Lugar);
@@ -78,8 +95,5 @@ namespace API_SubAluguer.Services
 
             return disponiveis;
         }
-
-
-
     }
 }

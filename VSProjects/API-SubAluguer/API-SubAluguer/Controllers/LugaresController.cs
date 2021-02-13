@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using API_SubAluguer.Data;
 using API_SubAluguer.Models;
 using API_SubAluguer.Services;
+using API_SubAluguer.DTOs;
 
 namespace API_SubAluguer.Controllers
 {
@@ -55,12 +56,12 @@ namespace API_SubAluguer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Lugar>> PostLugar(Lugar lugar)
+        public async Task<ActionResult<Lugar>> PostLugar(SubAluguerDTO subAluguerDTO)
         {
             try
             {
-                Lugar l = await _service.PostAsync(lugar);
-                return CreatedAtAction("GetReservaById", new { id = l.Id }, l);
+                Lugar l = await _service.PostAsync(subAluguerDTO);
+                return CreatedAtAction("GetLugarById", new { id = l.Id }, l);
             }
             catch (Exception e)
             {

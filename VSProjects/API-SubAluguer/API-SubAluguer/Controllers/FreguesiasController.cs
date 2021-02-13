@@ -23,5 +23,18 @@ namespace API_SubAluguer.Controllers
         {
             return await _service.GetAllAsync();
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Freguesia>> GetLugarById(int id)
+        {
+            try
+            {
+                return await _service.GetByIdAsync(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
     }
 }

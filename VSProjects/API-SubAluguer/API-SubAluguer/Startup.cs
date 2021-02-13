@@ -32,10 +32,10 @@ namespace API_SubAluguer
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_SubAluguer", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<API_SubAluguerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("API_SubAluguerContext")));
@@ -61,8 +61,8 @@ namespace API_SubAluguer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_SubAluguer v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_SubAluguer v1"));*/
             }
 
             app.UseHttpsRedirection();

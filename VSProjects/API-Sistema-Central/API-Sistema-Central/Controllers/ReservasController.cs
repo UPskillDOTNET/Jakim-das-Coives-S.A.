@@ -62,6 +62,20 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
+        [HttpPost("subaluguer")]
+        public async Task<IActionResult> PostSubAlugarLugarAsync(SubAluguerDTO subAluguerDTO)
+        {
+            try
+            {
+                await _service.SubAlugarLugarAsync(subAluguerDTO);
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reservaDTO)
         {
