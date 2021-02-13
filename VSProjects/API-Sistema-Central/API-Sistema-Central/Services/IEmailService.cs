@@ -8,7 +8,7 @@ namespace API_Sistema_Central.Services
 {
     public interface IEmailService
     {
-        public void EnviarEmail(QRCodeDTO qr);
+        public void EnviarEmailReserva(QRCodeDTO qr);
         public void EnviarEmailCancelamento(string nome, int id, string email);
     }
 }

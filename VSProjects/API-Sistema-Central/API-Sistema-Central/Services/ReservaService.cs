@@ -132,7 +132,7 @@ namespace API_Sistema_Central.Services
             QRCodeDTO qr = QRCodeDTOAsync(reservaDTO, reserva.ReservaParqueId).Result;
             try
             {
-                _emailService.EnviarEmail(qr);
+                _emailService.EnviarEmailReserva(qr);
             }
             catch (Exception)
             {
