@@ -17,6 +17,7 @@ namespace API_Sistema_Central.DTOs
         public double Preco { get; set; }
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifProprietario { get; set; }
+        public int ReservaOriginalId { get; set; }
         public int ParqueIdSC { get; set; }
         public string ApiUrl { get; set; }
     }

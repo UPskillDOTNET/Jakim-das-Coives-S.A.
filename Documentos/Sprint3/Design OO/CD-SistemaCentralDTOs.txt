@@ -1,0 +1,147 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package DTOs <<Folder>> {
+
+class FreguesiaDTO {
+  -Int id
+  -String nome
+}
+
+class LugarDTO {
+  -Int id
+  -Int parqueId
+  -Int numero
+  -String fila
+  -Int andar
+  -Double preco
+  -String nifProprietario
+  -Int reservaOriginalId
+  -Int parqueIdSC
+  -String apiUrl
+}
+
+class PagamentoDTO {
+  -String nifPagador
+  -String nifRecipiente
+  -Int metodoId
+  -Double valor
+}
+
+class ReservaDTO {
+  -String nifUtilizador
+  -String nifVendedor
+  -Int parqueId
+  -String apiUrl
+  -Int metodoId
+  -Int reservaOriginalId
+  -Double preco
+  -Int lugarId
+  -DateTime inicio
+  -DateTime fim
+}
+
+class ReservaAPIParqueDTO {
+  -Int id
+  -Int nifCliente
+  -Int lugarId
+  -DateTime inicio
+  -DateTime fim
+}
+
+class PayPalDTO {
+  -String email
+  -String emailDestinatario
+  -DateTime data
+  -String password
+  -Double custo
+}
+
+class CartaoDTO {
+  -String numero
+  -String nome
+  -String dataValidade
+  -String cvv
+  -Double custo
+  -Int nifDestinatario
+  -DateTime data
+}
+
+class DebitoDiretoDTO {
+  -String iban
+  -String nome
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -Double custo
+  -Int nifDestinatario
+  -DateTime data
+}
+
+class InfoUtilizadorDTO {
+  -String email
+  -String password
+}
+
+class RegistarUtilizadorDTO {
+  -String nif
+  -String nomeUtilizador
+  -String emailUtilizador
+  -String passwordUtilizador
+  -Int metodoId
+
+  -String numero
+  -String nomeCartao
+  -String dataValidade
+  -String cvv
+
+  -String iban
+  -String nomeDebitoDireto
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -DateTime DataSubscricao
+
+  -String emailPayPal
+  -String passwordPayPal
+}
+
+class TokenUtilizadorDTO {
+  -String token
+  -DateTime expiration
+}
+
+class ParqueDTO {
+  -Int id
+  -String rua
+  -Int freguesiaId
+}
+
+class QRCodeDTO {
+  -Int idReserva
+  -String email
+  -String nomeUtilizador
+  -String nomeFreguesia
+  -String nomeParque
+  -Int numeroLugar
+  -String fila
+  -Int andar
+  -DateTime inicio
+  -DateTime fim
+}
+
+class SubAluguerDTO {
+  -Int id
+  -Int parqueId
+  -Int numero
+  -String fila
+  -Int andar
+  -Double preco
+  -String nifProprietario
+  -Int reservaOriginalId
+  -DateTime inicio
+  -DateTime fim
+}
+
+}
+@enduml
