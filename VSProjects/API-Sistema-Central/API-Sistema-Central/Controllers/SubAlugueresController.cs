@@ -48,7 +48,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubAluguerDTO>> PostSubAlugarLugarAsync(SubAluguerDTO subAluguerDTO)
+        public async Task<ActionResult<SubAluguerDTO>> PostSubAluguer(SubAluguerDTO subAluguerDTO)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReserva(int id)
+        public async Task<IActionResult> DeleteSubAluguer(int id)
         {
             try
             {
