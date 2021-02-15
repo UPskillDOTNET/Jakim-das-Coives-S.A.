@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
+    //[Authorize]
     [Route("api/subalugueres")]
     [ApiController]
     public class SubAlugueresController : ControllerBase

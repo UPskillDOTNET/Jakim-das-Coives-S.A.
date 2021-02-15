@@ -37,6 +37,31 @@ namespace API_Sistema_Central.Services
             }
         }
 
+        public void EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
+        {
+            try
+            {
+                string subject = "Confirmação de reserva";
+                string conteudoqr = "Reserva nº " + reservaOriginalId + ", Sub-Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
+                string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
+                string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
+                    "<h2>A sua reserva número " + reservaOriginalId + ", sub-reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                    "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>" +
+                    "<p><b>Fila: " + qr.Fila + "</b></p>" +
+                    "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
+                    "<p>Freguesia: " + qr.NomeFreguesia + "</p>" +
+                    "<p>Parque: " + qr.NomeParque + "</p><br>" +
+                    "<p>Data e Hora de início: " + qr.Inicio + "</p>" +
+                    "<p>Data e Hora de fim: " + qr.Fim + "</p></td><td style='width: 30px'></td><td>" + qrcode + "</td></tr></table>";
+
+                EnviarEmail(subject, qr.Email, body);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public void EnviarEmailCancelamento(string nome, int id, string email)
         {
             try

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.Data;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_Sistema_Central.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TransacoesController : ControllerBase

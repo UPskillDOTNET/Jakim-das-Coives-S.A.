@@ -132,7 +132,14 @@ namespace API_Sistema_Central.Services
             try
             {
                 QRCodeDTO qr = QRCodeDTOAsync(reservaDTO, reserva.ReservaParqueId).Result;
-                _emailService.EnviarEmailReserva(qr);
+                if (reservaDTO.ApiUrl == "https://localhost:5005/")
+                {
+                    _emailService.EnviarEmailSubAluguer(qr, reservaDTO.ReservaOriginalId);
+                }
+                else
+                {
+                    _emailService.EnviarEmailReserva(qr);
+                }
             }
             catch (Exception)
             {
@@ -228,8 +235,6 @@ namespace API_Sistema_Central.Services
                 throw new Exception("O cancelamento no parque de destino falhou.");
             }
         }
-
-
 
         private async Task<QRCodeDTO> QRCodeDTOAsync(ReservaDTO reservaDTO, int reservaParqueId)
         {

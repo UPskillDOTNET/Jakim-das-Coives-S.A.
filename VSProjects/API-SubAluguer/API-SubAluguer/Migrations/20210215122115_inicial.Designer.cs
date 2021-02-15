@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_SubAluguer.Migrations
 {
     [DbContext(typeof(API_SubAluguerContext))]
-    [Migration("20210215105607_inicial")]
+    [Migration("20210215122115_inicial")]
     partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,9 @@ namespace API_SubAluguer.Migrations
 
                     b.Property<double>("Preco")
                         .HasColumnType("float");
+
+                    b.Property<int>("ReservaOriginalId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
