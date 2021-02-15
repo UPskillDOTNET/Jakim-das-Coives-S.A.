@@ -31,7 +31,7 @@ namespace SCUnitTests
                         NifPagador = "222222222",
                         NifRecipiente = "999999999",
                         Valor = 321
-                    },
+                    }
                 });
             TransacoesController testController = new TransacoesController(mock.Object);
             var result = await testController.GetTransacaoByNif("999999999");
@@ -40,5 +40,35 @@ namespace SCUnitTests
             Assert.Equal("999999999", items[0].NifPagador);
             Assert.Equal("999999999", items[1].NifRecipiente);
         }
+
+
+        [Fact]
+        public async void GetTransacaoById_ShouldReturnFirstTransacao()
+        {
+            //Arrange
+            var mock = new Mock<ITransacaoService>();
+            mock.Setup(p => p.GetByIdAsync(1))
+                .ReturnsAsync(new Transacao
+                {
+                    Id = 1,
+                    DataHora = DateTime.Now,
+                    MetodoId = 1,
+                    NifPagador = "999999999",
+                    NifRecipiente = "111111111",
+                    Valor = 123
+                });
+            TransacoesController testController = new TransacoesController(mock.Object);
+            
+            //Act
+            
+            var result = await testController.GetTransacaoById(1);
+            
+            //Assert
+            
+            var item = Assert.IsType<Transacao>(result.Value);
+            Assert.Equal("999999999", item.NifPagador);
+            Assert.Equal("111111111", item.NifRecipiente);
+        }
+
     }
 }
