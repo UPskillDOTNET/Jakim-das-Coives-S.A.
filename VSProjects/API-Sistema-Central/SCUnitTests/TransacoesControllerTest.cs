@@ -11,7 +11,7 @@ namespace SCUnitTests
     public class TransacoesControllerTest
     {
         [Fact]
-        public void GetAllTransacoesByNif_ShouldReturnMultipleTransacoesFrom999999999()
+        public async void GetAllTransacoesByNif_ShouldReturnMultipleTransacoesFrom999999999()
         {
             var mock = new Mock<ITransacaoService>();
             mock.Setup(p => p.GetByNifAsync("999999999"))
@@ -34,7 +34,11 @@ namespace SCUnitTests
                     },
                 });
             TransacoesController testController = new TransacoesController(mock.Object);
-            var result = testController.GetTransacaoByNif("999999999");
+            var result = await testController.GetTransacaoByNif("999999999");
+            var items = Assert.IsType<List<Transacao>>(result.Value);
+            Assert.Equal(2, items.Count);
+            Assert.Equal("999999999", items[0].NifPagador);
+            Assert.Equal("999999999", items[1].NifRecipiente);
         }
     }
 }
