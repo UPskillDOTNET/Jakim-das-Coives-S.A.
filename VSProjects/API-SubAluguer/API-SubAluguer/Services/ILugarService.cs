@@ -1,5 +1,4 @@
-﻿using API_SubAluguer.DTOs;
-using API_SubAluguer.Models;
+﻿using API_SubAluguer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace API_SubAluguer.Services
         public Task<ActionResult<IEnumerable<Lugar>>> GetAllAsync();
         public Task<Lugar> GetByIdAsync(int id);
         public Task<ActionResult<IEnumerable<Lugar>>> GetByNifAsync(string nif);
-        public Task<Lugar> PostAsync(SubAluguerDTO subAluguerDTO);
+        public Task<Lugar> PostAsync(Lugar lugar);
         public Task DeleteAsync(int id);
         public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim);
     }

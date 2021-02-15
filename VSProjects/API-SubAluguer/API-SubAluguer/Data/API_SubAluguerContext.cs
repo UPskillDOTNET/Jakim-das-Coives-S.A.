@@ -23,7 +23,5 @@ namespace API_SubAluguer.Data
         public DbSet<API_SubAluguer.Models.Parque> Parques { get; set; }
 
         public DbSet<API_SubAluguer.Models.Reserva> Reservas { get; set; }
-
-        public DbSet<API_SubAluguer.Models.Disponibilidade> Disponibilidades { get; set; }
     }
 }

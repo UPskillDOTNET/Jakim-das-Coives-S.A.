@@ -64,7 +64,9 @@ namespace API_SubAluguer.Migrations
                     Fila = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Andar = table.Column<int>(type: "int", nullable: false),
                     Preco = table.Column<double>(type: "float", nullable: false),
-                    NifProprietario = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    NifProprietario = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Fim = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,27 +75,6 @@ namespace API_SubAluguer.Migrations
                         name: "FK_Lugares_Parques_ParqueId",
                         column: x => x.ParqueId,
                         principalTable: "Parques",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Disponibilidades",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LugarId = table.Column<int>(type: "int", nullable: false),
-                    Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Fim = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Disponibilidades", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Disponibilidades_Lugares_LugarId",
-                        column: x => x.LugarId,
-                        principalTable: "Lugares",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -127,11 +108,6 @@ namespace API_SubAluguer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Disponibilidades_LugarId",
-                table: "Disponibilidades",
-                column: "LugarId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Lugares_ParqueId",
                 table: "Lugares",
                 column: "ParqueId");
@@ -154,9 +130,6 @@ namespace API_SubAluguer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Disponibilidades");
-
             migrationBuilder.DropTable(
                 name: "Reservas");
 

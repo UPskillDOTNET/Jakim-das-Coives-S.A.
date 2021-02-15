@@ -15,6 +15,5 @@ namespace API_Sistema_Central.Services
         public Task<Reserva> GetByIdAsync(int id);
         public Task<Reserva> PostAsync(ReservaDTO reservaDTO);
         public Task DeleteAsync(int id);
-        public Task SubAlugarLugarAsync(SubAluguerDTO subAluguerDTO);
     }
 }

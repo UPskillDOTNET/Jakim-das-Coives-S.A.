@@ -15,9 +15,9 @@ namespace API_SubAluguer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.2");
+                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("API_SubAluguer.Models.Cliente", b =>
                 {
@@ -35,35 +35,12 @@ namespace API_SubAluguer.Migrations
                     b.ToTable("Clientes");
                 });
 
-            modelBuilder.Entity("API_SubAluguer.Models.Disponibilidade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("Fim")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Inicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LugarId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LugarId");
-
-                    b.ToTable("Disponibilidades");
-                });
-
             modelBuilder.Entity("API_SubAluguer.Models.Freguesia", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
@@ -78,13 +55,19 @@ namespace API_SubAluguer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Andar")
                         .HasColumnType("int");
 
                     b.Property<string>("Fila")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Inicio")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NifProprietario")
                         .HasColumnType("nvarchar(max)");
@@ -110,7 +93,7 @@ namespace API_SubAluguer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("FreguesiaId")
                         .HasColumnType("int");
@@ -130,7 +113,7 @@ namespace API_SubAluguer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Fim")
                         .HasColumnType("datetime2");
@@ -151,17 +134,6 @@ namespace API_SubAluguer.Migrations
                     b.HasIndex("NifCliente");
 
                     b.ToTable("Reservas");
-                });
-
-            modelBuilder.Entity("API_SubAluguer.Models.Disponibilidade", b =>
-                {
-                    b.HasOne("API_SubAluguer.Models.Lugar", "Lugar")
-                        .WithMany()
-                        .HasForeignKey("LugarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lugar");
                 });
 
             modelBuilder.Entity("API_SubAluguer.Models.Lugar", b =>

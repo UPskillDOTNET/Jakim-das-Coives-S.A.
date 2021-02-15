@@ -229,10 +229,7 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        public async Task SubAlugarLugarAsync(SubAluguerDTO subAluguerDTO)
-        {
-            await PostLugarInSubAluguerAPIAsync(subAluguerDTO);
-        }
+
 
         private async Task<QRCodeDTO> QRCodeDTOAsync(ReservaDTO reservaDTO, int reservaParqueId)
         {
@@ -321,16 +318,6 @@ namespace API_Sistema_Central.Services
                 f = listaFreguesias.Find(z => z.Nome == nome);
             }
             return f;
-        }
-        private static async Task PostLugarInSubAluguerAPIAsync(SubAluguerDTO subAluguerDTO)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(subAluguerDTO), Encoding.UTF8, "application/json");
-                string endpoint = "https://localhost:5005/api/lugares";
-                var response = await client.PostAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
-            }
         }
     }
 }

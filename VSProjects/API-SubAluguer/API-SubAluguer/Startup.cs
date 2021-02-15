@@ -41,14 +41,12 @@ namespace API_SubAluguer
                     options.UseSqlServer(Configuration.GetConnectionString("API_SubAluguerContext")));
 
             services.AddTransient<IClienteService, ClienteService>();
-            services.AddTransient<IDisponibilidadeService, DisponibilidadeService>();
             services.AddTransient<IFreguesiaService, FreguesiaService>();
             services.AddTransient<ILugarService, LugarService>();
             services.AddTransient<IParqueService, ParqueService>();
             services.AddTransient<IReservaService, ReservaService>();
 
             services.AddScoped<IClienteRepository, ClienteRepository>();
-            services.AddScoped<IDisponibilidadeRepository, DisponibilidadeRepository>();
             services.AddScoped<IFreguesiaRepository, FreguesiaRepository>();
             services.AddScoped<IParqueRepository, ParqueRepository>();
             services.AddScoped<ILugarRepository, LugarRepository>();

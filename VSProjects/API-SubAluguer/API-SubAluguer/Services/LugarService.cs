@@ -1,5 +1,4 @@
-﻿using API_SubAluguer.DTOs;
-using API_SubAluguer.Models;
+﻿using API_SubAluguer.Models;
 using API_SubAluguer.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,14 +13,12 @@ namespace API_SubAluguer.Services
         private readonly ILugarRepository _repository;
         private readonly IParqueRepository _parqueRepository;
         private readonly IReservaRepository _reservaRepository;
-        private readonly IDisponibilidadeRepository _disponibilidadeRepository;
 
-        public LugarService(ILugarRepository repository, IParqueRepository parqueRepository, IReservaRepository reservaRepository, IDisponibilidadeRepository disponibilidadeRepository)
+        public LugarService(ILugarRepository repository, IParqueRepository parqueRepository, IReservaRepository reservaRepository)
         {
             _repository = repository;
             _parqueRepository = parqueRepository;
             _reservaRepository = reservaRepository;
-            _disponibilidadeRepository = disponibilidadeRepository;
         }
 
         public async Task<ActionResult<IEnumerable<Lugar>>> GetAllAsync()
@@ -31,7 +28,12 @@ namespace API_SubAluguer.Services
 
         public async Task<Lugar> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            Lugar l = await _repository.GetByIdAsync(id);
+            if (l == null)
+            {
+                throw new Exception("Este lugar não existe.");
+            }
+            return l;
         }
 
         public async Task<ActionResult<IEnumerable<Lugar>>> GetByNifAsync(string nif)
@@ -45,21 +47,14 @@ namespace API_SubAluguer.Services
             return lista.ToList();
         }
 
-        public async Task<Lugar> PostAsync(SubAluguerDTO subAluguerDTO)
+        public async Task<Lugar> PostAsync(Lugar lugar)
         {
-            Lugar l = new Lugar { Numero = subAluguerDTO.Numero, Fila = subAluguerDTO.Fila, Andar = subAluguerDTO.Andar, ParqueId = subAluguerDTO.ParqueId, NifProprietario = subAluguerDTO.NifProprietario, Preco = subAluguerDTO.Preco };
-            Lugar lugar = await _repository.PostAsync(l);
-            if (lugar == null)
+            Lugar l = await _repository.PostAsync(lugar);
+            if (l == null)
             {
                 throw new Exception("O registo do lugar para sub-aluguer falhou.");
             }
-            Disponibilidade d = new Disponibilidade { LugarId = lugar.Id, Inicio = subAluguerDTO.Inicio, Fim = subAluguerDTO.Fim };
-            Disponibilidade disponibilidade = await _disponibilidadeRepository.PostAsync(d);
-            if (disponibilidade == null)
-            {
-                throw new Exception("O registo da disponibilidade do lugar falhou.");
-            }
-            return lugar;
+            return l;
         }
 
         public async Task DeleteAsync(int id)
@@ -73,10 +68,10 @@ namespace API_SubAluguer.Services
             var parques = _parqueRepository.GetAllAsync().Result.Value.Where(p => p.FreguesiaId == freguesiaId);
             foreach (Parque p in parques)
             {
-                var temp = _disponibilidadeRepository.GetAllIncludeAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim && r.Lugar.ParqueId == p.Id);
-                foreach (Disponibilidade d in temp)
+                var temp = _repository.GetAllAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim && r.ParqueId == p.Id);
+                foreach (Lugar l in temp)
                 {
-                    todoslugares.Add(d.Lugar);
+                    todoslugares.Add(l);
                 }
             }
 

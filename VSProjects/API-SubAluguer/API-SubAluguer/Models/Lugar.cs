@@ -18,6 +18,12 @@ namespace API_SubAluguer.Models
         public double Preco { get; set; }
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifProprietario { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Inicio { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Fim { get; set; }
 
 
         [ForeignKey("ParqueId")]

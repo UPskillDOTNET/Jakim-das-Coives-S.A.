@@ -2,42 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using API_Sistema_Central.DTOs;
-using API_Sistema_Central.Data;
-using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
-    [Route("api/reservas")]
+    [Route("api/subalugueres")]
     [ApiController]
-    public class ReservasController : ControllerBase
+    public class SubAlugueresController : ControllerBase
     {
-        private readonly IReservaService _service;
+        private readonly ISubAluguerService _service;
 
-        public ReservasController(IReservaService service)
+        public SubAlugueresController(ISubAluguerService service)
         {
             _service = service;
         }
 
-        [HttpGet("disponibilidade/{freguesiaNome}/{inicio}/{fim}")]
-        public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
-        {
-            try
-            {
-                return await _service.FindAvailableAsync(freguesiaNome, inicio, fim);
-            }
-            catch (Exception e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-
         [HttpGet("all/{nif}")]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
+        public async Task<ActionResult<IEnumerable<SubAluguerDTO>>> GetSubAluguerByNif(string nif)
         {
             try
             {
@@ -50,7 +33,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserva>> GetReservaById(int id)
+        public async Task<ActionResult<SubAluguerDTO>> GetSubAluguerById(int id)
         {
             try
             {
@@ -63,12 +46,12 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Reserva>> PostReserva(ReservaDTO reservaDTO)
+        public async Task<ActionResult<SubAluguerDTO>> PostSubAlugarLugarAsync(SubAluguerDTO subAluguerDTO)
         {
             try
             {
-                Reserva reserva = await _service.PostAsync(reservaDTO);
-                return CreatedAtAction("GetReservaById", new { id = reserva.Id }, reserva);
+                SubAluguerDTO result = await _service.PostSubAluguerAsync(subAluguerDTO);
+                return CreatedAtAction("GetSubAluguerById", new { id = result.Id }, result);
             }
             catch (Exception e)
             {
@@ -81,7 +64,7 @@ namespace API_Sistema_Central.Controllers
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.DeleteSubAluguerAsync(id);
                 return NoContent();
             }
             catch (Exception e)
