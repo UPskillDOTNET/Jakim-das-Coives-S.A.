@@ -17,6 +17,7 @@ namespace SCUnitTests
         [Fact]
         public async void GetAllSubAluguerByNif_ShouldReturnMultipleSubAlugueresFrom999999999()
         {
+            //Arrange
             var mock = new Mock<ISubAluguerService>();
             mock.Setup(s => s.GetByNifAsync("999999999"))
                 .ReturnsAsync(new List<SubAluguerDTO>{
@@ -33,11 +34,14 @@ namespace SCUnitTests
                         Fim = DateTime.Parse("2021-02-01T13:00:00"),
                     }
             });
-            //Arrange
+
+            SubAlugueresController testController = new SubAlugueresController(mock.Object);
 
             //Act
+            var result = await testController.GetSubAluguerByNif("999999999");
 
             //Assert
+            var items = Assert.IsType<List<SubAluguerDTO>>(result.Value);
 
         }
     }
