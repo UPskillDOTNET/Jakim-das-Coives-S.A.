@@ -1,21 +1,10 @@
 @startuml
 autonumber
 actor "Utilizador" as User
-participant ":API.SubAluguer" as API
+participant ":API.Sistema Central" as API
 
 activate User
-User -> API : inicia pedido de sub-aluguer
-activate API
-API --> User : solicita dados pretendidos \n(reservaId)
-deactivate API
-
-User -> API : introduz os dados solicitados
-activate API
-
-API --> User : solicita novo preço do lugar
-deactivate API
-
-User -> API : introduz novo preço do lugar
+User -> API : inicia pedido de sub-aluguer (subAluguerDTO)
 activate API
 
 API --> User : operação bem sucedida
