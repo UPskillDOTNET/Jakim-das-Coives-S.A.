@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
+    //[Authorize]
     [Route("api/subalugueres")]
     [ApiController]
     public class SubAlugueresController : ControllerBase
@@ -46,7 +48,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubAluguerDTO>> PostSubAlugarLugarAsync(SubAluguerDTO subAluguerDTO)
+        public async Task<ActionResult<SubAluguerDTO>> PostSubAluguer(SubAluguerDTO subAluguerDTO)
         {
             try
             {
@@ -60,7 +62,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReserva(int id)
+        public async Task<IActionResult> DeleteSubAluguer(int id)
         {
             try
             {

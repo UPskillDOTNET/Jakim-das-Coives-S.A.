@@ -10,7 +10,8 @@ class PagamentoService {
 interface IPagamentoService {}
 
 class EmailService {
-  - EnviarEmail(QRCodeDTO qr)
+  - EnviarEmailReserva(QRCodeDTO qr)
+  - EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
   - EnviarEmailCancelamento(nome, id, email)
 }
 interface IEmailService {}
@@ -41,6 +42,14 @@ class UtilizadorService:IUtilizadorService {
 }
 interface IUtilizadorService {}
 
+class SubAluguerService:ISubAluguerService {
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+  - PostSubAluguerAsync(SubAluguerDTO subAluguerDTO)
+  - DeleteSubAluguerAsync(int id)
+}
+interface ISubAluguerService {}
+
 }
 
 package Repositories <<Folder>> {
@@ -68,6 +77,7 @@ interface IParqueRepository {}
 interface IPayPalRepository {}
 interface IReservaRepository {}
 interface ITransacaoRepository {}
+interface IRepositoryBase {}
 }
 
 package Controllers <<Folder>> {
@@ -81,8 +91,15 @@ class ReservasController {
   +FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
   +Get GetReservaByNif(string nif)
   +Get GetReservaById(int id)
-  +Post PostReserva()
+  +Post PostReserva(ReservaDTO reservaDTO)
   +Delete DeleteReserva(int id)
+}
+
+class SubAlugueresController {
+  +Get GetSubAluguerByNif(string nif)
+  +Get GetSubAluguerById(int id)
+  +Post PostSubAluguer(SubAluguerDTO subAluguerDTO)
+  +Delete DeleteSubAluguer(int id)
 }
 
 class TransacoesController {
