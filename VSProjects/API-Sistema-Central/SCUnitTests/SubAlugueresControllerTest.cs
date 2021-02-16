@@ -136,7 +136,7 @@ namespace SCUnitTests
             Assert.IsType<NoContentResult>(result);
         }
         [Fact]
-        public async Task PostCountryAsync_ShouldCreateAnCountryAsync()
+        public async Task PostSubAluguer_ShouldUpdataExistingSubAluguer()
         {
            // Arrange       
             var theController = new SubAlugueresController(serviceMock);
