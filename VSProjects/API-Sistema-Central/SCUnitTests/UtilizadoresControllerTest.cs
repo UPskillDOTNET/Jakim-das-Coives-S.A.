@@ -5,59 +5,50 @@ using Moq;
 using System.Collections.Generic;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Controllers;
+using API_Sistema_Central.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace SCUnitTests
 {
-    /*public class UtilizadoresControllerTest
-    {
-            [Fact]
-            public async void RegistarUtilizador_DeveRegistarUmUtilizador()
+   /* public class UtilizadoresControllerTest {
+        [Fact]
+        public async Task PostRegistoUtilizador_ShouldPostOneRegisto()
+        {
+            //Arrange
+            var mock = new Mock<IUtilizadorService>();
+            mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>())).ReturnsAsync(new Utilizador
             {
-                var mock = new Mock<IUtilizadorService>();
-                mock.Setup(p => p.RegistarUtilizador())
-                    .ReturnsAsync(new Utilizador {
-                    new Utilizador {
-                        Id = "999999999",
-                        Nome = "Jakim das Coives",
-                        //UserName = "Coives",
-                        Carteira = 500,
-                        CredencialId = 1
-                    });
-                UtilizadoresController testController = new UtilizadoresController(mock.Object);
-                var result = await testController.RegistarUtilizador();
-                var item = Assert.IsType<Utilizador>(result.Value);
-                Assert.Equal("Jakim das Coives", item.Nome);
-                Assert.Equal(500, item.Carteira);
-            }
-    }
+                Id = "9",
+                Nome = "Jakim das Coives",
+                Carteira = 500,
+                CredencialId = 1
+            });
+
+            var theNewRegisto = new RegistarUtilizadorDTO
+            {
+                Nif = "999999999",
+                NomeUtilizador = "Jakim das Coives",
+                EmailUtilizador = "test@test.com",
+                PasswordUtilizador = "123Pa$$word",
+                MetodoId = 3,
+                EmailPayPal = "test@test.com",
+                PasswordPayPal = "123Pa$$word"
+            }; 
+            UtilizadoresController testController = new UtilizadoresController(mock.Object);
+
+            var response = await testController.RegistarUtilizador(theNewRegisto);
+            var result = GetObjectResultContent(response);
+
+            Assert.NotNull(response);
+            Assert.IsNotType<BadRequestObjectResult>(result);
+            Assert.IsType<Reserva>(result);
+            Assert.Equal("test@test.com", theNewRegisto.EmailPayPal);
+        }
+        private static T GetObjectResultContent<T>(ActionResult<T> result)
+        {
+            return (T)((ObjectResult)result.Result).Value;
+        }
+    }*/
 }
 
-
-            [Fact]
-            public async void GetTransacaoById_ShouldReturnFirstTransacao()
-            {
-                //Arrange
-                var mock = new Mock<ITransacaoService>();
-                mock.Setup(p => p.Login(1))
-                    .ReturnsAsync(new Transacao
-                    {
-                        Id = 1,
-                        DataHora = DateTime.Now,
-                        MetodoId = 1,
-                        NifPagador = "999999999",
-                        NifRecipiente = "111111111",
-                        Valor = 123
-                    });
-                TransacoesController testController = new TransacoesController(mock.Object);
-
-                //Act
-
-                var result = await testController.GetTransacaoById(1);
-
-                //Assert
-
-                var item = Assert.IsType<Transacao>(result.Value);
-                Assert.Equal("999999999", item.NifPagador);
-                Assert.Equal("111111111", item.NifRecipiente);
-            }*/
-}
