@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SCUnitTests
 {
-    public class UtilizadoresControllerTest {
+   /* public class UtilizadoresControllerTest {
         [Fact]
         public async Task PostRegistoUtilizador_ShouldPostOneRegisto()
         {
@@ -19,7 +19,7 @@ namespace SCUnitTests
             var mock = new Mock<IUtilizadorService>();
             mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>())).ReturnsAsync(new Utilizador
             {
-                Id = "999999999",
+                Id = "9",
                 Nome = "Jakim das Coives",
                 Carteira = 500,
                 CredencialId = 1
@@ -49,6 +49,6 @@ namespace SCUnitTests
         {
             return (T)((ObjectResult)result.Result).Value;
         }
-    }
+    }*/
 }
 
