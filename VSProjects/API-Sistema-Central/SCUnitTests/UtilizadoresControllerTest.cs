@@ -7,23 +7,22 @@ using API_Sistema_Central.Models;
 using API_Sistema_Central.Controllers;
 using API_Sistema_Central.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace SCUnitTests
 {
-   /* public class UtilizadoresControllerTest {
+   public class UtilizadoresControllerTest {
         [Fact]
-        public async Task PostRegistoUtilizador_ShouldPostOneRegisto()
+        public async Task RegistoUtilizador_ShouldReturnAToken()
         {
             //Arrange
             var mock = new Mock<IUtilizadorService>();
-            mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>())).ReturnsAsync(new Utilizador
-            {
-                Id = "9",
-                Nome = "Jakim das Coives",
-                Carteira = 500,
-                CredencialId = 1
-            });
+            mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>())).ReturnsAsync(IdentityResult.Success);
+
+            var tokenMock = new Mock<ITokenService>();
+            tokenMock.Setup(x => x.BuildToken(It.IsAny<InfoUtilizadorDTO>())).Returns(new TokenUtilizadorDTO { Token = "TestToken", Expiration = DateTime.Now});
 
             var theNewRegisto = new RegistarUtilizadorDTO
             {
@@ -35,20 +34,37 @@ namespace SCUnitTests
                 EmailPayPal = "test@test.com",
                 PasswordPayPal = "123Pa$$word"
             }; 
-            UtilizadoresController testController = new UtilizadoresController(mock.Object);
+            UtilizadoresController testController = new UtilizadoresController(tokenMock.Object, mock.Object);
 
             var response = await testController.RegistarUtilizador(theNewRegisto);
-            var result = GetObjectResultContent(response);
 
+            var item = Assert.IsType<TokenUtilizadorDTO>(response.Value);
             Assert.NotNull(response);
-            Assert.IsNotType<BadRequestObjectResult>(result);
-            Assert.IsType<Reserva>(result);
-            Assert.Equal("test@test.com", theNewRegisto.EmailPayPal);
+            Assert.NotNull(item);
+            Assert.Equal("TestToken", item.Token);
         }
-        private static T GetObjectResultContent<T>(ActionResult<T> result)
+
+        [Fact]
+        public async Task LoginUtilizador_ShouldReturnAToken()
         {
-            return (T)((ObjectResult)result.Result).Value;
+            //Arrange
+            var mock = new Mock<IUtilizadorService>();
+            mock.Setup(x => x.Login(It.IsAny<InfoUtilizadorDTO>())).ReturnsAsync(SignInResult.Success);
+
+            var tokenMock = new Mock<ITokenService>();
+            tokenMock.Setup(x => x.BuildToken(It.IsAny<InfoUtilizadorDTO>())).Returns(new TokenUtilizadorDTO { Token = "TestToken", Expiration = DateTime.Now });
+
+            var theNewRegisto = new InfoUtilizadorDTO { Email = "jakimdascoives@test.pt", Password = "coivinhas123"};
+
+            UtilizadoresController testController = new UtilizadoresController(tokenMock.Object, mock.Object);
+
+            var response = await testController.Login(theNewRegisto);
+
+            var item = Assert.IsType<TokenUtilizadorDTO>(response.Value);
+            Assert.NotNull(response);
+            Assert.NotNull(item);
+            Assert.Equal("TestToken", item.Token);
         }
-    }*/
+    }
 }
 
