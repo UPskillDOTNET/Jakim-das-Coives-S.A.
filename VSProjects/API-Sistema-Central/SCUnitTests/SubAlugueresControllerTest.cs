@@ -257,21 +257,22 @@ namespace SCUnitTests
 
             mock.Setup(s => s.GetByNifAsync("999999999")).ReturnsAsync(new List<SubAluguerDTO> { SubAluguerList[1], SubAluguerList[2], SubAluguerList[3] });
             mock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync(SubAluguerList[0]);
-
-
-           // mock.Setup(s => s.GetByIdAsync(1));
-
+            mock.Setup(x => x.PostSubAluguerAsync(It.IsAny<SubAluguerDTO>())).ReturnsAsync(new SubAluguerDTO
+            {
+                Id = 5,
+                ParqueId = 2,
+                Numero = 2,
+                Fila = "B",
+                Andar = 0,
+                Preco = 4.99,
+                NifProprietario = "999999999",
+                Inicio = DateTime.Parse("2021-02-01T12:00:00"),
+                Fim = DateTime.Parse("2021-02-01T13:00:00"),
+            });
 
             // mock.Setup(s => s.DeleteSubAluguerAsync(It.Is<SubAluguerDTO>(s => Equals(s.Id, 1)))).Returns(Task.FromResult(true));
 
-            //var mock = new Mock<ISubAluguerService>();
-
-
-
-            // mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
-            // mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "NoExCod")))).Returns(Task.FromResult(false));*/
-
-            serviceMock = mock.Object;
+                        serviceMock = mock.Object;
         }
 
 
@@ -316,6 +317,38 @@ namespace SCUnitTests
 
             // Assert
             Assert.IsType<NoContentResult>(result);
+        }
+        [Fact]
+        public async Task PostCountryAsync_ShouldCreateAnCountryAsync()
+        {
+           // Arrange       
+            var theController = new SubAlugueresController(serviceMock);
+            var newSubAluguer = new SubAluguerDTO
+            {
+                ParqueId = 2,
+                Numero = 2,
+                Fila = "B",
+                Andar = 0,
+                Preco = 4.99,
+                NifProprietario = "999999999",
+                Inicio = DateTime.Parse("2021-02-01T12:00:00"),
+                Fim = DateTime.Parse("2021-02-01T13:00:00"),
+            };
+
+            // Act
+            var response = await theController.PostSubAluguer(newSubAluguer);
+            var result = response.Result as CreatedAtActionResult;
+
+            // Assert
+            Assert.IsNotType<BadRequestObjectResult>(result);
+            Assert.NotNull(response);
+            var value = GetObjectResultContent(response);
+            Assert.IsType<SubAluguerDTO>(value);
+            Assert.Equal(5, value.Id);
+        }
+        private static T GetObjectResultContent<T>(ActionResult<T> result)
+        {
+            return (T)((ObjectResult)result.Result).Value;
         }
     }
 }
