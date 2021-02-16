@@ -133,7 +133,7 @@ namespace SCUnitTests
 
             Assert.NotNull(response);
             Assert.IsNotType<BadRequestObjectResult>(result);
-            Assert.IsType<Reserva>(result)
+            Assert.IsType<Reserva>(result);
             Assert.Equal("randomLink", theNewReserva.ApiUrl);
         }
 
