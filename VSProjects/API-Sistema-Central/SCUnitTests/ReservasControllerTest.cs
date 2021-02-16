@@ -101,6 +101,15 @@ namespace SCUnitTests
         {
             //Arrange
             var mock = new Mock<IReservaService>();
+            mock.Setup(x => x.PostAsync(It.IsAny<ReservaDTO>())).ReturnsAsync(new Reserva
+            {
+                Id = 1,
+                NifUtilizador = "999999999",
+                ParqueId = 1,
+                Custo = 200,
+                TransacaoId = 1,
+                ReservaParqueId = 1
+            });
 
             var theNewReserva = new ReservaDTO
             {
@@ -120,13 +129,11 @@ namespace SCUnitTests
             ReservasController testController = new ReservasController(mock.Object);
 
             var response = await testController.PostReserva(theNewReserva);
-            var result = response.Result as CreatedAtActionResult;
+            var result = GetObjectResultContent(response);
 
             Assert.NotNull(response);
             Assert.IsNotType<BadRequestObjectResult>(result);
-            //Assert.IsType<ReservaDTO>(result.Value);
-
-            //var thenewReserva = result.Value as ReservaDTO;
+            Assert.IsType<Reserva>(result)
             Assert.Equal("randomLink", theNewReserva.ApiUrl);
         }
 
@@ -158,5 +165,11 @@ namespace SCUnitTests
                 Assert.Equal("999999999", item.NifUtilizador);
                 Assert.Equal(1, item.ParqueId);
         }*/
+
+        private static T GetObjectResultContent<T>(ActionResult<T> result)
+        {
+            return (T)((ObjectResult)result.Result).Value;
+        }
+
     }
 }
