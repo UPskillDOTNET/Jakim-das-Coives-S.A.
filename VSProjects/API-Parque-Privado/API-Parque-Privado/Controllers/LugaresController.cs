@@ -52,9 +52,13 @@ namespace API_Parque_Privado.Controllers
                 var ltemp = _context.Lugares.Where(l => l.ParqueId == p.Id);
                 todoslugares.AddRange(ltemp);
             }
-            
+
             List<Lugar> ocupados = new List<Lugar>();
-            var reservas = _context.Reservas.Include(r => r.Lugar).Where(r => r.Inicio <= inicio && r.Fim >= fim);
+            var reservas = _context.Reservas.Include(r => r.Lugar).Where(r =>
+                r.Fim > inicio && r.Fim <= fim ||
+                r.Inicio >= inicio && r.Inicio < fim ||
+                r.Inicio >= inicio && r.Fim <= fim ||
+                r.Inicio <= inicio && r.Fim >= fim);
             foreach (Reserva r in reservas)
             {
                 ocupados.Add(r.Lugar);

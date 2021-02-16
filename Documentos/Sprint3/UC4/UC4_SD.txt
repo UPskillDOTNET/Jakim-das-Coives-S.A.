@@ -1,0 +1,43 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":api/ReservaController" as RC
+participant ":api/ReservaService" as RS
+participant ":api/ParqueRepository" as PR
+participant "API:Parque" as API
+
+activate U
+
+U --> RC: solicita lugares disponiveis
+activate RC
+
+RC --> RS: FindAvailableAsync(freguesiaNome, inicio, fim)
+activate RS
+
+RS --> PR: GetAllAsync()
+activate PR
+
+PR --> RS: return listaParques
+deactivate PR
+
+loop foreach parque
+RS --> API: GetFreguesiaByNome()
+activate API
+
+API --> RS: return freguesia 
+deactivate API
+
+RS --> API: FindAvailable()
+activate API
+
+API --> RS: return listaLugares
+deactivate API
+end
+
+RS --> RC: return listaLugares
+deactivate RS
+
+RC --> U: return listaLugares\noperação bem sucedida
+deactivate RC
+deactivate U
+@enduml

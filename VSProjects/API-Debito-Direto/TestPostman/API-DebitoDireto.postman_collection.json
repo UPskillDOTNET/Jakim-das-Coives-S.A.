@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "db6c5c03-9820-4a71-bd60-07b0c863e163",
+		"name": "API-DebitoDireto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Check if any DebitosDiretos exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if 1 exists\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5022/api/DebitosDiretos",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5022",
+					"path": [
+						"api",
+						"DebitosDiretos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post on DebitosDiretos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post 159487263\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"iban\": \"PT50123456789123456789123\",\r\n  \"nome\": \"Jakim\",\r\n  \"rua\": \"Das Coives\",\r\n  \"codigoPostal\": \"4730-390\",\r\n  \"freguesia\": \"Braga\",\r\n  \"data\": \"2021-02-11T15:37:25\",\r\n  \"nifDestinatario\": 159487263,\r\n  \"custo\": 9\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5022/api/DebitosDiretos",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5022",
+					"path": [
+						"api",
+						"DebitosDiretos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check if it was Posted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Check if 1 was created\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5022/api/DebitosDiretos",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5022",
+					"path": [
+						"api",
+						"DebitosDiretos"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

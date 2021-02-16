@@ -1,19 +1,15 @@
 @startuml
 autonumber
-actor "Cliente" as UserNR
-participant ":API.SistemaCentral" as API
+actor "Utilizador" as User
+participant ":API.Sistema Central" as API
 
-activate UserNR
-UserNR -> "API" : inicia pesquisa de disponibilidade
-activate "API"
-"API" --> UserNR : solicita dados cliente \n(localidade, inicio, fim)
-deactivate "API"
+activate User
+User -> API : inicia pedido de sub-aluguer (subAluguerDTO)
+activate API
 
-UserNR -> "API" : introduz os dados solicitados
-activate "API"
+API --> User : operação bem sucedida
 
-"API" --> UserNR : operação bem sucedida
-deactivate "API"
+deactivate API
 
-deactivate UserNR
+deactivate User
 @enduml

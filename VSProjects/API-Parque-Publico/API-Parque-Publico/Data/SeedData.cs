@@ -16,44 +16,50 @@ namespace API_Parque_Publico.Data
                 return;   // DB was already seeded
             }
 
-            context.Clientes.AddRange(
-                new Cliente { Nif = 111222333 , Nome = "Sistema Central", Email = "jakimdascoives@upskill.pt" }
-            );
+            context.Clientes.Add(new Cliente { Nif = 999999999, Nome = "Sistema Central", Email = "sistemacentraljakim@gmail.com" });
             context.SaveChanges();
 
-            context.Freguesias.AddRange(
-                new Freguesia { Nome = "Porto" },
-                new Freguesia { Nome = "Lisboa" },
-                new Freguesia { Nome = "Braga" },
-                new Freguesia { Nome = "Portimão" },
-                new Freguesia { Nome = "Évora" }
-            );
+            context.Freguesias.Add(new Freguesia { Nome = "Porto" });
+            context.SaveChanges();
+            context.Freguesias.Add(new Freguesia { Nome = "Lisboa" });
             context.SaveChanges();
 
-            context.Parques.AddRange(
-                new Parque { Rua = "D. Joao", FreguesiaId = 1 },
-                new Parque { Rua = "D. Jose", FreguesiaId = 1 },
-                new Parque { Rua = "Da. Maria", FreguesiaId = 1 },
-                new Parque { Rua = "D. Daniel", FreguesiaId = 1 },
-                new Parque { Rua = "D. Raphael", FreguesiaId = 1 }
-            );
+            context.Parques.Add(new Parque { Rua = "Parque Subterrâneo da Rua Porto 1", FreguesiaId = 1 });
+            context.SaveChanges();
+            context.Parques.Add(new Parque { Rua = "Rua Porto 2", FreguesiaId = 1 });
+            context.SaveChanges();
+            context.Parques.Add(new Parque { Rua = "Parque Coberto da Rua Porto 3", FreguesiaId = 1 });
+            context.SaveChanges();
+            context.Parques.Add(new Parque { Rua = "Parque Subterrâneo da Rua Lisboa 1", FreguesiaId = 2 });
+            context.SaveChanges();
+            context.Parques.Add(new Parque { Rua = "Rua Lisboa 2", FreguesiaId = 2 });
+            context.SaveChanges();
+            context.Parques.Add(new Parque { Rua = "Parque Coberto da Rua Lisboa 3", FreguesiaId = 2 });
             context.SaveChanges();
 
-            context.Lugares.AddRange(
-                new Lugar { Numero = 1, Fila = "A", Andar = -2, ParqueId = 1, Preco = 5.99 },
-                new Lugar { Numero = 2, Fila = "B", Andar = -1, ParqueId = 2, Preco = 5.99 },
-                new Lugar { Numero = 3, Fila = "C", Andar = 0, ParqueId = 3, Preco = 5.99 },
-                new Lugar { Numero = 4, Fila = "D", Andar = 1, ParqueId = 4, Preco = 5.99 },
-                new Lugar { Numero = 5, Fila = "E", Andar = 2, ParqueId = 5, Preco = 5.99 }
-            );
+            context.Lugares.Add(new Lugar { Numero = 12, Fila = "A", Andar = -2, ParqueId = 1, Preco = 5.99 });
             context.SaveChanges();
-
-            context.Reservas.AddRange(
-                new Reserva { NifCliente = 111222333, LugarId = 1, Inicio = DateTime.Parse("2021-01-30 11:00:00"), Fim = DateTime.Parse("2021-01-30 12:00:00") },
-                new Reserva { NifCliente = 111222333, LugarId = 2, Inicio = DateTime.Parse("2021-01-29 21:00:00"), Fim = DateTime.Parse("2021-01-31 10:00:00") },
-                new Reserva { NifCliente = 111222333, LugarId = 3, Inicio = DateTime.Parse("2021-01-30 10:00:00"), Fim = DateTime.Parse("2021-01-30 13:00:00") },
-                new Reserva { NifCliente = 111222333, LugarId = 4, Inicio = DateTime.Parse("2021-01-30 11:00:00"), Fim = DateTime.Parse("2021-01-30 13:00:00") }
-            );
+            context.Lugares.Add(new Lugar { Numero = 27, Fila = "B", Andar = -1, ParqueId = 1, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 4, Fila = "Lado Par da Rua", Andar = 0, ParqueId = 2, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 7, Fila = "Lado Ímpar da Rua", Andar = 0, ParqueId = 2, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 57, Fila = "E", Andar = 2, ParqueId = 3, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 12, Fila = "A", Andar = -2, ParqueId = 3, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 2, Fila = "B", Andar = -1, ParqueId = 4, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 36, Fila = "C", Andar = -2, ParqueId = 4, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 8, Fila = "Lado Par da Rua", Andar = 0, ParqueId = 5, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 5, Fila = "Lado Ímpar da Rua", Andar = 0, ParqueId = 5, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 18, Fila = "D", Andar = 0, ParqueId = 6, Preco = 5.99 });
+            context.SaveChanges();
+            context.Lugares.Add(new Lugar { Numero = 33, Fila = "E", Andar = 2, ParqueId = 6, Preco = 5.99 });
             context.SaveChanges();
         }
     }

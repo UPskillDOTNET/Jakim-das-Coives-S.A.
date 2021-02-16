@@ -1,0 +1,275 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package Services <<Folder>> {
+
+class PagamentoService:IPagamentoService {
+  - Pay(PagamentoDTO payDTO)
+  - Reembolso(Transacao transacao)
+}
+interface IPagamentoService {}
+
+class EmailService:IEmailService {
+  - EnviarEmailReserva(QRCodeDTO qr)
+  - EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
+  - EnviarEmailCancelamento(nome, id, email)
+}
+interface IEmailService {}
+
+class TokenService:ITokenService {
+  - BuildToken(InfoUtilizadorDTO InfoUtilizadorDTO)
+}
+interface ITokenService {}
+
+class ReservaService:IReservaService {
+  - FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+  - PostAsync(ReservaDTO reservaDTO)
+  - DeleteAsync(int id)
+}
+interface IReservaService {}
+
+class TransacaoService:ITransacaoService {
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+}
+interface ITransacaoService {}
+
+class UtilizadorService:IUtilizadorService {
+  - RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
+  - Login(InfoUtilizadorDTO infoUtilizadorDTO)
+}
+interface IUtilizadorService {}
+
+class SubAluguerService:ISubAluguerService {
+  - GetByNifAsync(string nif)
+  - GetByIdAsync(int id)
+  - PostSubAluguerAsync(SubAluguerDTO subAluguerDTO)
+  - DeleteSubAluguerAsync(int id)
+}
+interface ISubAluguerService {}
+
+}
+
+package Repositories <<Folder>> {
+
+abstract class "RepositoryBase<T>:IRepositoryBase<T> where T : class" {
+  - GetAllAsync()
+  - GetByIdAsync(int id)
+  - PutAsync(T entity)
+  - PostAsync(T entity)
+  - DeleteAsync(int id)
+}
+
+class "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository" {}
+class "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository" {}
+class "MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository" {}
+class "ParqueRepository:RepositoryBase<Parque>, IParqueRepository" {}
+class "PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository" {}
+class "ReservaRepository:RepositoryBase<Reserva>, IReservaRepository" {}
+class "TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository" {}
+
+interface ICartaoRepository {}
+interface IDebitoDiretoRepository {}
+interface IMetodoPagamentoRepository {}
+interface IParqueRepository {}
+interface IPayPalRepository {}
+interface IReservaRepository {}
+interface ITransacaoRepository {}
+interface IRepositoryBase {}
+}
+
+package Controllers <<Folder>> {
+
+class UtilizadoresController {
+  +Post RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
+  +Post Login(InfoUtilizadorDTO infoUtilizadorDTO)
+}
+
+class ReservasController {
+  +FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+  +Get GetReservaByNif(string nif)
+  +Get GetReservaById(int id)
+  +Post PostReserva(ReservaDTO reservaDTO)
+  +Delete DeleteReserva(int id)
+}
+
+class SubAlugueresController {
+  +Get GetSubAluguerByNif(string nif)
+  +Get GetSubAluguerById(int id)
+  +Post PostSubAluguer(SubAluguerDTO subAluguerDTO)
+  +Delete DeleteSubAluguer(int id)
+}
+
+class TransacoesController {
+  +Get GetTransacaoByNif(string nif)
+  +Get GetTransacaoById(int id)
+}
+
+}
+
+package Models <<Folder>> {
+
+class Utilizador:IdentityUser{
+  -String nome
+  -Double carteira
+  -Int credencialId FK
+}
+
+class Reserva {
+  -Int id PK
+  -String nifUtilizador FK
+  -Int parqueId FK
+  -Double custo
+  -Int transacaoID FK
+  -Int reservaParqueId
+}
+
+class Transacao {
+  -Int id PK
+  -String nifPagador FK
+  -String nifRecipiente FK
+  -Double valor
+  -DateTime dataHora
+  -Int metodoId FK
+}
+
+class Parque {
+  -Int id PK
+  -String apiUrl
+}
+
+class MetodoPagamento {
+  -Int id PK
+  -String nome
+  -String apiUrl
+}
+
+package "Abstract Class Credencial" <<Frame>> {
+
+abstract class Credencial {
+  -Int id PK
+  -Int metodoId
+}
+
+abstract PayPal:Credencial {
+  -Override Int id PK
+  -String email
+  -String password
+  -Override Int metodoId FK
+}
+
+abstract Cartao:Credencial {
+  -Override Int id PK
+  -String numero
+  -String nome
+  -String dataValidade
+  -String cvv
+  -Override Int metodoId FK
+}
+
+abstract DebitoDireto:Credencial {
+  -Override Int id PK
+  -String iban
+  -String nome
+  -String rua
+  -String codigoPostal
+  -String freguesia
+  -DateTime dataSubscricao
+  -Override Int metodoId FK
+}
+
+}
+
+}
+
+package Data <<Folder>> {
+
+class "SCContext : IdentityDbContext" {
+  -DbSet<Reserva> Reservas
+  -DbSet<Transacao> Transacoes
+  -DbSet<Parque> Parques
+  -DbSet<MetodoPagamento> MetodosPagamento
+  -DbSet<Paypal> Paypal
+  -DbSet<Cartao> Cartoes
+  -DbSet<DebitoDireto> DebitosDiretos
+}
+
+}
+
+package Identity <<Folder>> {
+
+class "SignInManager<Utilizador>" {}
+
+class "UserManager<Utilizador>" {}
+
+}
+
+UtilizadoresController --> "IUtilizadorService"
+UtilizadoresController --> "ITokenService"
+ReservasController --> "IReservaService"
+TransacoesController --> "ITransacaoService"
+SubAlugueresController --> "ISubAluguerService"
+
+"IUtilizadorService" ..> "UtilizadorService:IUtilizadorService"
+"IReservaService" ..> "ReservaService:IReservaService"
+"ITransacaoService" ..> "TransacaoService:ITransacaoService"
+"ITokenService" ..> "TokenService:ITokenService"
+"ISubAluguerService" ..> "SubAluguerService:ISubAluguerService"
+"IEmailService" ..> "EmailService:IEmailService"
+"IPagamentoService" ..> "PagamentoService:IPagamentoService"
+
+"UtilizadorService:IUtilizadorService" --> ICartaoRepository
+"UtilizadorService:IUtilizadorService" --> IDebitoDiretoRepository
+"UtilizadorService:IUtilizadorService" --> IPayPalRepository
+"UtilizadorService:IUtilizadorService" --> "UserManager<Utilizador>"
+"UtilizadorService:IUtilizadorService" --> "SignInManager<Utilizador>"
+"ReservaService:IReservaService" --> IReservaRepository
+"ReservaService:IReservaService" --> IParqueRepository
+"ReservaService:IReservaService" --> ITransacaoRepository
+"ReservaService:IReservaService" --> IEmailService
+"ReservaService:IReservaService" --> "UserManager<Utilizador>"
+"ReservaService:IReservaService" --> IPagamentoService
+"TransacaoService:ITransacaoService" --> ITransacaoRepository
+"PagamentoService:IPagamentoService" --> IMetodoPagamentoRepository
+"PagamentoService:IPagamentoService" --> "UserManager<Utilizador>"
+
+ICartaoRepository ..> "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository"
+IDebitoDiretoRepository ..> "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository"
+IMetodoPagamentoRepository ..> "MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository"
+IParqueRepository ..> "ParqueRepository:RepositoryBase<Parque>, IParqueRepository"
+IPayPalRepository ..> "PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository"
+IReservaRepository ..> "ReservaRepository:RepositoryBase<Reserva>, IReservaRepository"
+ITransacaoRepository ..> "TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository"
+IRepositoryBase ..> "RepositoryBase<T>:IRepositoryBase<T> where T : class"
+
+"CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository" --> "SCContext : IdentityDbContext"
+"DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository" --> "SCContext : IdentityDbContext"
+"MetodoPagamentoRepository:RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository" --> "SCContext : IdentityDbContext"
+"ParqueRepository:RepositoryBase<Parque>, IParqueRepository" --> "SCContext : IdentityDbContext"
+"PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository" --> "SCContext : IdentityDbContext"
+"ReservaRepository:RepositoryBase<Reserva>, IReservaRepository" --> "SCContext : IdentityDbContext"
+"TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository" --> "SCContext : IdentityDbContext"
+
+"SCContext : IdentityDbContext" "1" --> "0..*" "Utilizador:IdentityUser": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Reserva: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Transacao: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" Parque: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" MetodoPagamento: tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "PayPal:Credencial": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "Cartao:Credencial": tem
+"SCContext : IdentityDbContext" "1" --> "0..*" "DebitoDireto:Credencial": tem
+
+Reserva "0..*" --> "1" "Utilizador:IdentityUser": tem
+Reserva "0..*" --> "1" Transacao: tem
+Transacao"0..*" --> "1" MetodoPagamento: tem
+Parque "1" --> "0..*" Reserva: tem
+"Utilizador:IdentityUser" "1" --> "1" Credencial: tem
+Credencial --> "PayPal:Credencial": pode ser
+Credencial --> "Cartao:Credencial": pode ser
+Credencial --> "DebitoDireto:Credencial": pode ser
+"PayPal:Credencial" "0..*" --> "1" MetodoPagamento: tem
+"Cartao:Credencial" "0..*" --> "1" MetodoPagamento: tem
+"DebitoDireto:Credencial" "0..*" --> "1" MetodoPagamento: tem
+@enduml
