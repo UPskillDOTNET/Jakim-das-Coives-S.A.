@@ -195,10 +195,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SCUnitTests
 {
-    [Collection("Testes SubAluguer")]
+    [Collection("Sequential")]
     public class SubAlugueresControllerTest
     {
-        ISubAluguerService serviceMocker;
+        ISubAluguerService serviceMock;
         public SubAlugueresControllerTest()
         {
 
@@ -255,38 +255,76 @@ namespace SCUnitTests
 
             var mock = new Mock<ISubAluguerService>();
 
-           // mock.Setup(s => s.GetByNifAsync("999999999")).ReturnsAsync(new List<SubAluguerDTO>{
+            mock.Setup(s => s.GetByNifAsync("999999999")).ReturnsAsync(new List<SubAluguerDTO> { SubAluguerList[1], SubAluguerList[2], SubAluguerList[3] });
+            mock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync(SubAluguerList[0]);
+            mock.Setup(s => s.GetByIdAsync(1));
 
-            mock.Setup(x => x.GetByNifAsync("999999999")).ReturnsAsync(Task.FromResult(SubAluguerList[0]));
+           // mock.Setup(s => s.DeleteSubAluguerAsync(It.Is<SubAluguerDTO>(s => Equals(s.Id, 1)))).Returns(Task.FromResult(true));
 
-            mock.Setup(x => x.DeleteAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
+            var mock = new Mock<ISubAluguerService>();
+            mock.Setup(s => s.GetByIdAsync(1))
 
-            mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
-            mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "NoExCod")))).Returns(Task.FromResult(false));
 
-            serviceMocker = srv.Object;
+               mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
+               mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "NoExCod")))).Returns(Task.FromResult(false));*/
+
+            serviceMock = mock.Object;
         }
 
 
         [Fact]
-        public async Task GetAllCountriesAsync_ShouldReturnAllCountriesAsync()
+        public async Task GetSubAluguerbyyNif_ShouldTeturnAll9999999999()
         {
             // Arrange
-            var theController = new CountryController(theMockedService);
+            var theController = new SubAlugueresController(serviceMock);
 
             // Act
-            var result = await theController.GetCountries();
+            var result = await theController.GetSubAluguerByNif("999999999");
 
             // Assert
-            var countries = Assert.IsType<List<Country>>(result.Value);
-            Assert.Equal(5, countries.Count());
+            var subAlugueres = Assert.IsType<List<SubAluguerDTO>>(result.Value);
+            Assert.Equal(3, subAlugueres.Count());
+        }
+        [Fact]
+        public async Task GetSubAluguerById_ShouldReturnOneSubAluguer()
+        {
+            //Arrange        
+            var theController = new SubAlugueresController(serviceMock);
+            var SubAluguerId = 1;
+
+            //Act
+            var result = await theController.GetSubAluguerById(SubAluguerId);
+            var SubAluguer = result.Value;
+
+            //Assert     
+            Assert.IsType<SubAluguerDTO>(SubAluguer);
+            Assert.Equal(SubAluguer, (SubAluguer as SubAluguerDTO).SubAluguerId);
         }
 
+
         [Fact]
+        public async Task GetSubAluguerById_ShouldReturnOneSubAluguer()
+        {
+            //Arrange        
+            var theController = new CountryController(theMockedService);
+            var testCod = 1;
+
+            //Act
+            var result = await theController.GetCountry(testCod);
+            var countryItem = result.Value;
+
+            //Assert     
+            Assert.IsType<Country>(countryItem);
+            Assert.Equal(testCod, (countryItem as Country).CountryCode);
+        }
+    }
+}
+
+     /*   [Fact]
         public async Task GetCountryAsync_ShouldReturnNotFound()
         {
             // Arrange      
-            var theController = new CountryController(theMockedService);
+            var theController = new CountryController(serviceMocker);
             var testCod = "C0";
 
             // Act
@@ -297,11 +335,11 @@ namespace SCUnitTests
         }
 
         [Fact]
-        public async Task GetCountryAsync_ShouldReturnCountry()
+        public async Task GetSubAluguerByNifAsync_ShouldReturnAllSubAlugueresFrom1Nif()
         {
             // Arrange       
-            var theController = new CountryController(theMockedService);
-            var testCod = "C1";
+            var theController = new SubAlugueresController(serviceMocker);
+            var testCod = "999999999";
 
             // Act
             var result = await theController.GetCountry(testCod);
@@ -536,3 +574,4 @@ namespace SCUnitTests
         }
     }
 }
+     */
