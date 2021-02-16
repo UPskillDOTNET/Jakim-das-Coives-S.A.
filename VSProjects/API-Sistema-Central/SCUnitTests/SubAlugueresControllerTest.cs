@@ -257,7 +257,6 @@ namespace SCUnitTests
 
             mock.Setup(s => s.GetByNifAsync("999999999")).ReturnsAsync(new List<SubAluguerDTO> { SubAluguerList[1], SubAluguerList[2], SubAluguerList[3] });
             mock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync(SubAluguerList[0]);
-           // mock.Setup(s => s.GetByIdAsync(1));
 
 
            // mock.Setup(s => s.GetByIdAsync(1));
@@ -303,10 +302,21 @@ namespace SCUnitTests
             //Assert     
             Assert.IsType<SubAluguerDTO>(result.Value);
 
-          //  var item = Assert.IsType<SubAluguerDTO>(result.Value);
-           // Assert.Equal(1, item.Id);
+        }
+        [Fact]
+        public async Task DeleteExistingSubAluguerAsync_ShouldRemoveSubAluguer()
+        {
+            // Arrange       
+            var theController = new SubAlugueresController(serviceMock);
+            var testCod = 1;
 
-        } 
+            // Act
+            var result = await theController.DeleteSubAluguer(testCod);
+
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+        }
     }
 }
       /*  [Fact]
