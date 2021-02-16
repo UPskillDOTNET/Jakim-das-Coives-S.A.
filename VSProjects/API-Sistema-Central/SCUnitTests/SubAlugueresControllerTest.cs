@@ -257,23 +257,27 @@ namespace SCUnitTests
 
             mock.Setup(s => s.GetByNifAsync("999999999")).ReturnsAsync(new List<SubAluguerDTO> { SubAluguerList[1], SubAluguerList[2], SubAluguerList[3] });
             mock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync(SubAluguerList[0]);
-            mock.Setup(s => s.GetByIdAsync(1));
-
-           // mock.Setup(s => s.DeleteSubAluguerAsync(It.Is<SubAluguerDTO>(s => Equals(s.Id, 1)))).Returns(Task.FromResult(true));
-
-            var mock = new Mock<ISubAluguerService>();
-            mock.Setup(s => s.GetByIdAsync(1))
+           // mock.Setup(s => s.GetByIdAsync(1));
 
 
-               mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
-               mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "NoExCod")))).Returns(Task.FromResult(false));*/
+           // mock.Setup(s => s.GetByIdAsync(1));
+
+
+            // mock.Setup(s => s.DeleteSubAluguerAsync(It.Is<SubAluguerDTO>(s => Equals(s.Id, 1)))).Returns(Task.FromResult(true));
+
+            //var mock = new Mock<ISubAluguerService>();
+
+
+
+            // mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "C1")))).Returns(Task.FromResult(true));
+            // mock.Setup(x => x.UpdateAsync(It.Is<SubAluguerDTO>(c => string.Equals(c.CountryCode, "NoExCod")))).Returns(Task.FromResult(false));*/
 
             serviceMock = mock.Object;
         }
 
 
         [Fact]
-        public async Task GetSubAluguerbyyNif_ShouldTeturnAll9999999999()
+        public async Task GetSubAluguerbyNif_ShouldTeturnAll9999999999()
         {
             // Arrange
             var theController = new SubAlugueresController(serviceMock);
@@ -285,7 +289,27 @@ namespace SCUnitTests
             var subAlugueres = Assert.IsType<List<SubAluguerDTO>>(result.Value);
             Assert.Equal(3, subAlugueres.Count());
         }
+
         [Fact]
+        public async Task GetSubAluguerById_ShouldReturnOneSubAluguer()
+        {
+            // Arrange       
+            var theController = new SubAlugueresController(serviceMock);
+            var testCod = 1;
+
+            // Act
+            var result = await theController.GetSubAluguerById(testCod);
+
+            //Assert     
+            Assert.IsType<SubAluguerDTO>(result.Value);
+
+          //  var item = Assert.IsType<SubAluguerDTO>(result.Value);
+           // Assert.Equal(1, item.Id);
+
+        } 
+    }
+}
+      /*  [Fact]
         public async Task GetSubAluguerById_ShouldReturnOneSubAluguer()
         {
             //Arrange        
@@ -298,11 +322,11 @@ namespace SCUnitTests
 
             //Assert     
             Assert.IsType<SubAluguerDTO>(SubAluguer);
-            Assert.Equal(SubAluguer, (SubAluguer as SubAluguerDTO).SubAluguerId);
+            Assert.Equal(SubAluguer, (SubAluguer as SubAluguerDTO).Id);
         }
+      */
 
-
-        [Fact]
+        /*[Fact]
         public async Task GetSubAluguerById_ShouldReturnOneSubAluguer()
         {
             //Arrange        
