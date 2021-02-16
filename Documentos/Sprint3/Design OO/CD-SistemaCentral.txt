@@ -3,13 +3,13 @@ skinparam classAttributeIconSize 0
 
 package Services <<Folder>> {
 
-class PagamentoService {
+class PagamentoService:IPagamentoService {
   - Pay(PagamentoDTO payDTO)
   - Reembolso(Transacao transacao)
 }
 interface IPagamentoService {}
 
-class EmailService {
+class EmailService:IEmailService {
   - EnviarEmailReserva(QRCodeDTO qr)
   - EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
   - EnviarEmailCancelamento(nome, id, email)
@@ -198,134 +198,6 @@ class "SCContext : IdentityDbContext" {
 
 }
 
-package DTOs <<Folder>> {
-
-class FreguesiaDTO {
-  -Int id
-  -String nome
-}
-
-class LugarDTO {
-  -Int id
-  -Int parqueId
-  -Int numero
-  -String fila
-  -Int andar
-  -Double preco
-  -Int parqueIdSC
-  -String apiUrl
-}
-
-class PagamentoDTO {
-  -String nifPagador
-  -String nifRecipiente
-  -Int metodoId
-  -Double valor
-}
-
-class ReservaDTO {
-  -String nifUtilizador
-  -String nifVendedor
-  -Int parqueId
-  -String apiUrl
-  -Int metodoId
-  -Double preco
-  -Int lugarId
-  -DateTime inicio
-  -DateTime fim
-}
-
-class ReservaAPIParqueDTO {
-  -Int id
-  -Int nifCliente
-  -Int lugarId
-  -DateTime inicio
-  -DateTime fim
-}
-
-class PayPalDTO {
-  -String email
-  -String password
-  -Double custo
-  -String emailDestinatario
-  -DateTime data
-}
-
-class CartaoDTO {
-  -String numero
-  -String nome
-  -String dataValidade
-  -String cvv
-  -Double custo
-  -Int nifDestinatario
-  -DateTime data
-}
-
-class DebitoDiretoDTO {
-  -String iban
-  -String nome
-  -String rua
-  -String codigoPostal
-  -String freguesia
-  -Double custo
-  -Int nifDestinatario
-  -DateTime data
-}
-
-class InfoUtilizadorDTO {
-  -String email
-  -String password
-}
-
-class RegistarUtilizadorDTO {
-  -String nif
-  -String nomeUtilizador
-  -String emailUtilizador
-  -String passwordUtilizador
-  -Int metodoId
-
-  -String numero
-  -String nomeCartao
-  -String dataValidade
-  -String cvv
-
-  -String iban
-  -String nomeDebitoDireto
-  -String rua
-  -String codigoPostal
-  -String freguesia
-  -DateTime DataSubscricao
-
-  -String emailPayPal
-  -String passwordPayPal
-}
-
-class TokenUtilizadorDTO {
-  -String token
-  -DateTime expiration
-}
-
-class ParqueDTO {
-  -Int id
-  -String rua
-  -Int freguesiaId
-}
-
-class QRCodeDTO {
-  -Int idReserva
-  -String email
-  -String nomeUtilizador
-  -String nomeFreguesia
-  -String nomeParque
-  -Int numeroLugar
-  -String fila
-  -Int andar
-  -DateTime inicio
-  -DateTime fim
-}
-
-}
-
 package Identity <<Folder>> {
 
 class "SignInManager<Utilizador>" {}
@@ -338,11 +210,15 @@ UtilizadoresController --> "IUtilizadorService"
 UtilizadoresController --> "ITokenService"
 ReservasController --> "IReservaService"
 TransacoesController --> "ITransacaoService"
+SubAlugueresController --> "ISubAluguerService"
 
 "IUtilizadorService" ..> "UtilizadorService:IUtilizadorService"
 "IReservaService" ..> "ReservaService:IReservaService"
 "ITransacaoService" ..> "TransacaoService:ITransacaoService"
 "ITokenService" ..> "TokenService:ITokenService"
+"ISubAluguerService" ..> "SubAluguerService:ISubAluguerService"
+"IEmailService" ..> "EmailService:IEmailService"
+"IPagamentoService" ..> "PagamentoService:IPagamentoService"
 
 "UtilizadorService:IUtilizadorService" --> ICartaoRepository
 "UtilizadorService:IUtilizadorService" --> IDebitoDiretoRepository
@@ -352,8 +228,12 @@ TransacoesController --> "ITransacaoService"
 "ReservaService:IReservaService" --> IReservaRepository
 "ReservaService:IReservaService" --> IParqueRepository
 "ReservaService:IReservaService" --> ITransacaoRepository
+"ReservaService:IReservaService" --> IEmailService
 "ReservaService:IReservaService" --> "UserManager<Utilizador>"
+"ReservaService:IReservaService" --> IPagamentoService
 "TransacaoService:ITransacaoService" --> ITransacaoRepository
+"PagamentoService:IPagamentoService" --> IMetodoPagamentoRepository
+"PagamentoService:IPagamentoService" --> "UserManager<Utilizador>"
 
 ICartaoRepository ..> "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository"
 IDebitoDiretoRepository ..> "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository"
@@ -362,6 +242,7 @@ IParqueRepository ..> "ParqueRepository:RepositoryBase<Parque>, IParqueRepositor
 IPayPalRepository ..> "PayPalRepository:RepositoryBase<PayPal>, IPayPalRepository"
 IReservaRepository ..> "ReservaRepository:RepositoryBase<Reserva>, IReservaRepository"
 ITransacaoRepository ..> "TransacaoRepository:RepositoryBase<Transacao>, ITransacaoRepository"
+IRepositoryBase ..> "RepositoryBase<T>:IRepositoryBase<T> where T : class"
 
 "CartaoRepository:RepositoryBase<Cartao>, ICartaoRepository" --> "SCContext : IdentityDbContext"
 "DebitoDiretoRepository:RepositoryBase<DebitoDireto>, IDebitoDiretoRepository" --> "SCContext : IdentityDbContext"

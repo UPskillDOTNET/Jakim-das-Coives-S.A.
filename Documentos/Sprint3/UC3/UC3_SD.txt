@@ -3,14 +3,13 @@ autonumber
 actor "Utilizador" as U
 participant ":api/ReservaController" as RC
 participant ":api/ReservaService" as RS
-participant ":api/ParqueRepository" as PR
-participant "API:Parque" as API
+participant ":api/EmailService" as ES
+participant ":api/TransacaoRepository" as TR
 participant ":api/PagamentoService" as PS
 participant ":api/UserManager" as UM
-participant ":api/TransacaoRepository" as TR
-participant ":api/EmailService" as ES
 participant ":api/ReservaRepository" as RR
-
+participant ":api/ParqueRepository" as PR
+participant "API:Parque" as API
 
 activate U
 
@@ -26,19 +25,25 @@ activate RR
 RR --> RS:return reserva
 deactivate RR
 
-RS --> PR: GetByIdAsync(reserva.ParqueId)
-activate PR
+RS --> TR: GetByIdAsync(reserva.TransacaoId)
+activate TR
 
-PR --> RS: return parque
-deactivate PR
+TR --> RS:return transacao
+deactivate TR
 
-RS --> API: DeleteAsync(reserva.reservaParqueId)
-activate API
+RS --> ES: EnviarEmailCancelamento(nome, reservaId)
+activate ES
 
-API --> RS:
-deactivate API
+ES --> RS:
+deactivate ES
 
-RS --> PS: Reembolso(reserva.Transacao)
+RS --> TR: PostAsync(transacaoReembolso)
+activate TR
+
+TR --> RS: return transacaoReembolso
+deactivate TR
+
+RS --> PS: Reembolso(transacao)
 activate PS
 
 PS --> UM: UpdateAsync(utilizador)
@@ -50,23 +55,23 @@ deactivate UM
 PS --> RS
 deactivate PS
 
-RS --> TR: PostAsync(transacao)
-activate TR
-
-TR --> RS: return transacao
-deactivate TR
-
-RS --> ES: EnviarEmailCancelamento(nome, reservaId)
-activate ES
-
-ES --> RS:
-deactivate ES
-
 RS --> RR: DeleteAsync(id)
 activate RR
 
 RR --> RS:
 deactivate RR
+
+RS --> PR: GetByIdAsync(reserva.ParqueId)
+activate PR
+
+PR --> RS: return parque
+deactivate PR
+
+RS --> API: DeleteAsync(reserva.reservaParqueId)
+activate API
+
+API --> RS:
+deactivate API
 
 RS --> RC:
 deactivate RS
