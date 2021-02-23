@@ -1,27 +1,34 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":api/subAlugueresController" as SC
-participant ":api/subAluguerService" as SS
-participant "API:SubAluguer" as API
+participant ":app/SubAluguerView" as SV
+participant ":app/SubAlugueresController" as SC
+participant ":app/SubAluguerService" as SS
+participant "API:SistemaCentral" as API
 
 activate U
-U --> SC : inicia pedido sub-aluguer (subAluguerDTO)
+U --> SV : inicia pedido sub-aluguer
+activate SV
+
+SV --> SC : PostSubAluguerAsync()
 activate SC
 
-SC --> SS : PostSubAluguerAsync(subAluguerDTO)
+SC --> SS : PostSubAluguerAsync()
 activate SS
 
-SS --> API : PostAsync(subAluguerDTO)
+SS --> API : PostAsync()
 activate API
 
 API --> SS : CreatedAtAction()
 deactivate API
 
-SS --> SC : return subAluguerDTO
+SS --> SC : return subAluguer
 deactivate SS
 
-SC --> U: CreatedAtAction()\noperação bem sucedida
+SC --> SV : return subAluguer
 deactivate SC
+
+SV --> U: CreatedAtAction()\noperação bem sucedida
+deactivate SV
 deactivate U
 @enduml

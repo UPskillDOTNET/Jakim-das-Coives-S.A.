@@ -1,15 +1,15 @@
 @startuml
 autonumber
 actor "Utilizador" as User
-participant ":API.Sistema Central" as API
+participant ":APP.FrontEnd" as FE
 
 activate User
-User -> API : inicia pedido de sub-aluguer (subAluguerDTO)
-activate API
+User -> FE : inicia pedido de sub-aluguer
+activate FE
 
-API --> User : operação bem sucedida
+FE --> User : operação bem sucedida
 
-deactivate API
+deactivate FE
 
 deactivate User
 @enduml
