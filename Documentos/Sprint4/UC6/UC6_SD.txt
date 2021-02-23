@@ -1,0 +1,35 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/SubAluguerView" as SAV
+participant ":app/SubAluguerController" as SAC
+participant ":app/SubAluguerService" as SAS
+participant "app.SistemaCentral" as API
+
+activate U
+
+U --> SAV: Inicia o cancelamento
+activate SAV
+
+SAV --> SAC: DeleteSubAluguer(id)
+activate SAC
+
+SAC --> SAS: DeleteAsync(id)
+activate SAS
+
+SAS --> API: DeleteSubAluguer(id)
+activate API
+
+API --> SAS:No Content
+deactivate API
+
+SAS --> SAC: No Content
+deactivate SAS
+
+SAC --> SAV: No Content
+deactivate SAC
+
+SAV --> U: No Content\noperacao bem sucedida
+deactivate SAV
+
+deactivate U

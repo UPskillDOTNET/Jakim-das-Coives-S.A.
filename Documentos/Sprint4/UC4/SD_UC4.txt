@@ -1,0 +1,36 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/ReservaView" as RV
+participant ":app/ReservaController" as RC
+participant ":app/ReservaService" as RS
+participant "app.SistemaCentral" as API
+
+activate U
+
+U --> RV: Pesquisa Disponibilidade
+activate RV
+
+RV --> RC: findAvailableAsync(freguesiaNome, inicio, fim)
+activate RC
+
+RC --> RS: findAvailableAsync(freguesiaNome, inicio, fim)
+activate RS
+
+RS --> API: findAvailableAsync(freguesiaNome, inicio, fim)
+activate API
+
+API --> RS:Return listaLugares
+deactivate API
+
+RS --> RC: Return listaLugares
+deactivate RS
+
+RC --> RV: Return listaLugares
+deactivate RC
+
+RV --> U: Return listaLugares\noperacao bem sucedida
+deactivate RV
+
+deactivate U
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/ReservaView" as RV
+participant ":app/ReservaController" as RC
+participant ":app/ReservaService" as RS
+participant "app.SistemaCentral" as API
+
+activate U
+
+U --> RV: Inicia o cancelamento
+activate RV
+
+RV --> RC: DeleteReserva(id)
+activate RC
+
+RC --> RS: DeleteAsync(id)
+activate RS
+
+RS --> API: DeleteReserva(id)
+activate API
+
+API --> RS:No Content
+deactivate API
+
+RS --> RC: No Content
+deactivate RS
+
+RC --> RV: No Content
+deactivate RC
+
+RV --> U: No Content\noperacao bem sucedida
+deactivate RV
+
+deactivate U
+@enduml

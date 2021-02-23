@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Cliente" as UserNR
+participant ":app.FrontEnd" as APP
+
+activate UserNR
+UserNR -> "APP" : inicia pesquisa de disponibilidade
+activate "APP"
+"APP" --> UserNR : solicita dados cliente \n(localidade, inicio, fim)
+deactivate "APP"
+
+UserNR -> "APP" : introduz os dados solicitados
+activate "APP"
+
+"APP" --> UserNR : operação bem sucedida
+deactivate "APP"
+
+deactivate UserNR
+@enduml

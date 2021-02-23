@@ -11,12 +11,11 @@ Partes interessadas e seus interesses:
 - Sistema Central: pretende que o utilizador possa sub-alugar um dos seus lugares reservados
 
 Cenário de sucesso principal (ou fluxo básico)
-- O utilizador inicia o pedido de sub-aluguer escolhendo uma reserva pré-efectuada e o preço pretendido.
+- O utilizador, através da APP.FrontEnd, inicia o pedido de sub-aluguer escolhendo uma reserva pré-efectuada e o preço pretendido.
 - O Sistema Central recebe os dados e encaminha o pedido para a API.SubAluguer.
 - A API.SubAluguer regista os dados e informa o Sistema Central do sucesso da operação.
-- O Sistema Central informa o Utilizador do sucesso da operação.
-
+- A APP.FrontEnd informa o Utilizador do sucesso da operação.
 
 Extensões (ou fluxos alternativos)
 - O utilizador solicita o cancelamento do pedido de sub-aluger. O caso de uso termina.
-- Dados mínimos obrigatórios em falta. A APP.Web informa o utilizador quais os dados em falta e permite a sua introdução.
+- Dados mínimos obrigatórios em falta. A APP.FrontEnd informa o utilizador quais os dados em falta e permite a sua introdução.
