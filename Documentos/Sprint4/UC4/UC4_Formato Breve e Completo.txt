@@ -1,0 +1,43 @@
+Caso de Uso Simples
+
+    - Pesquisar disponibilidade
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à APP.FrontEnd um pedido de disponibilidade de lugares para aluguer numa dada localidade e um determinado período de tempo.
+    A APP.FrontEnd devolve uma lista de todos os lugares disponiveis conforme os requisitos pedidos.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende obter uma lista de todos os lugares disponiveis para aluguer numa dada localidade e um determinado período de tempo.
+    - APP.FrontEnd: pretende alugar os lugares disponiveis.
+
+Pré-condições
+    - ...
+
+Pós-condições
+    - Permite efectuar uma reserva.
+
+
+Fluxo Básico
+
+    1. O Utilizador envia à APP.FrontEnd o pedido de disponibilidade.
+    2. A APP.FrontEnd pede a localidade, a data/hora de inicio e a data/hora de fim pretendidos.
+    3. O Cliente insere os dados.
+    4. A APP.FrontEnd devolve uma lista de todos os lugares disponiveis conforme os requisitos pedidos.
+
+Fluxos Alternativos
+
+    2a - Não existem lugares disponiveis para os requisitos pedidos.
+        A APP informa o cliente que não existem lugares disponiveis.
+        O caso de uso acaba.
+
+--------------------------------------------------------------------------------------------------
