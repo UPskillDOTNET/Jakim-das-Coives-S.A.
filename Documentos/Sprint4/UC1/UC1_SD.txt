@@ -1,43 +1,21 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UNR
-participant ":app/utilizadoresController" as UC
-participant "utilizadorService" as S
+participant ":app/Register(RazorPage)" as R
 participant "userManager" as UM
-participant ":app/utilizador" as U
-participant "tokenService" as TS
-
 
 activate UNR
-UNR --> UC : solicita registo
-activate UC
 
-UC --> S : RegistarUtilizador
-activate S
+UNR --> R : solicita registo(nome, email, password,\nnif, método pagamento preferencial)
+activate R
 
-S --> UM : CreateAsync(utilizador, password)
+R --> UM : CreateAsync()
 activate UM
 
-UM --> U : Regista um Utilizador
-activate U
-
-U --> UM : Utilizador Registado
-deactivate U
-
-UM --> S : IdentityResult
+UM --> R : operação bem sucedida
 deactivate UM
 
-S --> UC : IdentityResult
-deactivate S
-
-UC --> TS : BuildToken
-activate TS
-
-TS --> UC : Return Token
-deactivate TS
-
-UC --> UNR : Return Token\noperação bem sucedida
-
-deactivate UC
+R --> UNR : operação bem sucedida
+deactivate R
 deactivate UNR
 @enduml
