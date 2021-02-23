@@ -1,0 +1,41 @@
+Caso de Uso Simples
+
+    - Consultar histórico de transacções pertencentes a um utilizador
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à App.FrontEnd um pedido de consulta das suas transações.
+    A App.FrontEnd mostra uma lista de todas as transações que pertencem ao Utilizador que está autenticado.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende consultar o histórico das suas transações.
+    - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
+
+Pré-condições
+    - O Utilizador já tinha efetuado uma transação anteriormente.
+
+Pós-condições
+    ...
+
+
+Fluxo Básico
+
+    1. O Utilizador inicia o pedido de consulta.
+    2. A App.FrontEnd devolve a lista de transações.
+
+Fluxos Alternativos
+
+    2a - O Utilizador não tem qualquer transação efectuada.
+       - A App.FrontEnd informa o Utilizador desse facto.
+
+--------------------------------------------------------------------------------------------------
+
