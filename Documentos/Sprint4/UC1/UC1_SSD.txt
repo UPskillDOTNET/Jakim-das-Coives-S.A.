@@ -1,0 +1,18 @@
+@startuml
+autonumber
+actor "Utilizador Não Registado" as UserNR
+participant ":APP.FrontEnd" as FE
+
+activate UserNR
+UserNR -> FE : regista utilizador
+activate FE
+FE --> UserNR : solicita dados utilizador \n(nome, NIF, email, método pagamento preferencial)
+deactivate FE
+
+UserNR -> FE : introduz os dados solicitados
+activate FE
+
+FE --> UserNR : operação bem sucedida
+deactivate FE
+deactivate UserNR
+@enduml
