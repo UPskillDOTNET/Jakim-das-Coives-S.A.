@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+
+actor "Utilizador Não Registado" as UNR
+actor "Utilizador" as U
+
+usecase "UC1\nRegistar Utilizador no Front End" as UC1
+usecase "UC2\nEfetuar reserva" as UC2
+usecase "UC3\nCancelar reserva" as UC3
+usecase "UC4\nPesquisar disponibilidade" as UC4
+usecase "UC5\nSub-alugar reserva" as UC5
+usecase "UC6\nCancelar sub-aluguer" as UC6
+usecase "UC7\nConsultar reservas" as UC7
+usecase "UC8\nConsultar sub-alugueres" as UC8
+usecase "UC9\nConsultar transações" as UC9
+usecase "UC10\nAdicionar saldo à carteira" as UC10
+usecase "UC11\nGerir informações de utilizador" as UC11
+
+UNR --> UC1
+U --> UC2
+U --> UC3
+U --> UC4
+U --> UC5
+U --> UC6
+U --> UC7
+U --> UC8
+U --> UC9
+U --> UC10
+U --> UC11
+@enduml

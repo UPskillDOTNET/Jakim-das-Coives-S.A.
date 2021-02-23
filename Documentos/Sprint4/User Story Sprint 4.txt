@@ -47,3 +47,18 @@ User Story 10 “Carregar carteira”
 As a … Utilizador registado
 I want … usar o meu método de pagamento pré-definido para carregar saldo na minha carteira
 So that … para usar o saldo mais tarde
+
+User Story 11 “Cancelar sub-aluguer”
+As a … Utilizador registado com sub-aluguer disponibilizado mas não sub-reservado por terceiro
+I want … cancelar o meu sub-aluguer
+So that … poder usufruir ou cancelar a minha reserva original
+
+User Story 12 “Consultar os meus sub-alugueres”
+As a … Utilizador registado
+I want … consultar as minhas reservas que disponibilizei para sub-aluguer
+So that … gerir os meus sub-alugueres
+
+User Story 13 “Consultar o histórico de transações”
+As a … Utilizador registado
+I want … consultar as minhas transações
+So that … ter conhecimento das entradas e saídas de dinheiro da minha conta
