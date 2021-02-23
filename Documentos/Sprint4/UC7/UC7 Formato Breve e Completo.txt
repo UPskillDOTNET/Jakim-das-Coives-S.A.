@@ -1,0 +1,41 @@
+Caso de Uso Simples
+
+    - Consultar reservas pertencentes a um utilizador
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à App.FrontEnd um pedido de consulta das suas reservas.
+    A App.FrontEnd mostra uma lista de todas as reservas que pertencem ao Utilizador que está autenticado.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende consultar as suas reservas.
+    - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
+
+Pré-condições
+    - O Utilizador já tinha efetuado uma reserva anteriormente.
+
+Pós-condições
+    ...
+
+
+Fluxo Básico
+
+    1. O Utilizador inicia o pedido de consulta.
+    2. A App.FrontEnd devolve a lista de reservas.
+
+Fluxos Alternativos
+
+    2a - O Utilizador não tem qualquer reserva efectuada.
+       - A App.FrontEnd informa o Utilizador desse facto.
+
+--------------------------------------------------------------------------------------------------
+

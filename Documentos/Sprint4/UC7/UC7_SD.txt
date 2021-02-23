@@ -1,0 +1,36 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":api/ReservaView" as RV
+participant ":api/ReservaController" as RC
+participant ":api/ReservaService" as RS
+participant "API.SistemaCentral" as API
+
+activate U
+
+U --> RV: Inicia a consulta
+activate RV
+
+RV --> RC: GetAllReservasByNif(nif)
+activate RC
+
+RC --> RS: GetAllReservasByNifAsync(nif)
+activate RS
+
+RS --> API: GetReservaByNif(nif)
+activate API
+
+API --> RS:return listaReservas
+deactivate API
+
+RS --> RC: return listaReservas
+deactivate RS
+
+RC --> RV: return listaReservas
+deactivate RC
+
+RV --> U: return listaReservas\noperacao bem sucedida
+deactivate RV
+
+deactivate U
+@enduml
