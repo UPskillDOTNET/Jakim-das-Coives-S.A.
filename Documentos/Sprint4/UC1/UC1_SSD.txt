@@ -1,19 +1,18 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UserNR
-participant ":Sistema Central" as SC
+participant ":APP.FrontEnd" as FE
 
 activate UserNR
-UserNR -> SC : regista utilizador
-activate SC
-SC --> UserNR : solicita dados cliente \n(nome, NIF, email, método pagamento preferencial)
-deactivate SC
+UserNR -> FE : regista utilizador
+activate FE
+FE --> UserNR : solicita dados utilizador \n(nome, NIF, email, método pagamento preferencial)
+deactivate FE
 
-UserNR -> SC : introduz os dados solicitados
-activate SC
+UserNR -> FE : introduz os dados solicitados
+activate FE
 
-SC --> UserNR : operação bem sucedida
-deactivate SC
-
+FE --> UserNR : operação bem sucedida
+deactivate FE
 deactivate UserNR
 @enduml

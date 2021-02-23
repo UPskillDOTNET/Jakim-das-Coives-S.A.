@@ -1,18 +1,18 @@
 @startuml
 autonumber
 actor "Utilizador Não Registado" as UNR
-participant ":api/utilizadoresController" as UC
+participant ":app/utilizadoresController" as UC
 participant "utilizadorService" as S
-participant ":userManager" as UM
-participant ":api/utilizador" as U
+participant "userManager" as UM
+participant ":app/utilizador" as U
 participant "tokenService" as TS
 
 
 activate UNR
-UNR --> UC : solicita registo\n(RegistarUtilizadorDTO)
+UNR --> UC : solicita registo
 activate UC
 
-UC --> S : RegistarUtilizador(RegistarUtilizadorDTO)
+UC --> S : RegistarUtilizador
 activate S
 
 S --> UM : CreateAsync(utilizador, password)
@@ -30,7 +30,7 @@ deactivate UM
 S --> UC : IdentityResult
 deactivate S
 
-UC --> TS : BuildToken(infoUtilizadorDTO)
+UC --> TS : BuildToken
 activate TS
 
 TS --> UC : Return Token
