@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Utilizador Não Registado" as UserNR
+participant ":Sistema Central" as SC
+
+activate UserNR
+UserNR -> SC : regista utilizador
+activate SC
+SC --> UserNR : solicita dados cliente \n(nome, NIF, email, método pagamento preferencial)
+deactivate SC
+
+UserNR -> SC : introduz os dados solicitados
+activate SC
+
+SC --> UserNR : operação bem sucedida
+deactivate SC
+
+deactivate UserNR
+@enduml

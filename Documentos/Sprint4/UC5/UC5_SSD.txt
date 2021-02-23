@@ -1,0 +1,15 @@
+@startuml
+autonumber
+actor "Utilizador" as User
+participant ":API.Sistema Central" as API
+
+activate User
+User -> API : inicia pedido de sub-aluguer (subAluguerDTO)
+activate API
+
+API --> User : operação bem sucedida
+
+deactivate API
+
+deactivate User
+@enduml
