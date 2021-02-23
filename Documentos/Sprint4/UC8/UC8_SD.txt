@@ -1,0 +1,67 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/SubAluguerView" as SV
+participant ":app/SubAluguerController" as SC
+participant ":app/SubAluguerService" as SS
+participant ":app/ReservaView" as RV
+participant ":app/ReservaController" as RC
+participant ":app/ReservaService" as RS
+participant "API.SistemaCentral" as API
+
+activate U
+
+U --> SV: Inicia a consulta
+activate SV
+
+SV --> SC: GetAllSubAlugueresByNif(nif)
+activate SC
+
+SC --> SS: GetAllSubAlugueresByNifAsync(nif)
+activate SS
+
+SS --> API: GetSubAluguerByNif(nif)
+activate API
+
+API --> SS:return listaSubAlugueres
+deactivate API
+
+SS --> SC: return listaSubAlugueres
+deactivate SS
+
+SC --> SV: return listaSubAlugueres
+deactivate SC
+
+SV --> U: return listaSubAlugueres\noperacao bem sucedida
+deactivate SV
+
+alt Ver detalhes
+
+U --> RV: Selecciona um sub-aluguer
+activate RV
+
+RV --> RC: GetReservasByReservaOriginalId(id)
+activate RC
+
+RC --> RS: GetAllReservasByReservaOriginalIdAsync(id)
+activate RS
+
+RS --> API: GetByReservaOriginalId(id)
+activate API
+
+API --> RS:return listaReservas
+deactivate API
+
+RS --> RC: return listaReservas
+deactivate RS
+
+RC --> RV: return listaReservas
+deactivate RC
+
+RV --> U: return listaReservas\noperacao bem sucedida
+deactivate RV
+
+end
+
+deactivate U
+@enduml

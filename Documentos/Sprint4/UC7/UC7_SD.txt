@@ -1,9 +1,9 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":api/ReservaView" as RV
-participant ":api/ReservaController" as RC
-participant ":api/ReservaService" as RS
+participant ":app/ReservaView" as RV
+participant ":app/ReservaController" as RC
+participant ":app/ReservaService" as RS
 participant "API.SistemaCentral" as API
 
 activate U
