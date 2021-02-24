@@ -1,0 +1,96 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package Services <<Folder>> {
+
+class ReservaService:IReservaService {
+  - GetDisponibilidade(nomeFreguesia, inicio, fim)
+  - PostReserva(reserva)
+  - GetAllReservasByNif(nif)
+  - DeleteReserva(id)
+  - GetReservaById(id)
+}
+interface IReservaService {}
+
+class SubAluguerService:ISubAluguerService {
+  - GetAllSubAlugueresByNif(nif)
+  - PostSubAluguer(subAluguer)
+  - DeleteSubAluguer(id)
+  - GetSubAluguerById(id)
+}
+interface ISubAluguerService {}
+
+class TransacaoService:ITransacaoService {
+  - GetAllTransacoesByNif(nif)
+}
+interface ITransacaoService {}
+
+class CarteiraService:ICarteiraService {
+  - GetSaldoByNif(nif)
+  - UpdateSaldoByNif(nif, valor)
+}
+interface ICarteiraService {}
+
+}
+
+package Controllers <<Folder>> {
+
+class ReservasController {
+  +Get Disponibilidade
+  +Get Reservar
+  +Post Reservar
+  +Get Index
+  +Get SubAlugar
+  +Post SubAlugar
+  +Get Cancelar
+  +Delete Cancelar
+  +Get Detalhes
+}
+
+class SubAlugueresController {
+  +Get Index
+  +Get Cancelar
+  +Delete Cancelar
+  +Get Detalhes
+}
+
+class TransacoesController {
+  +Get Index
+}
+
+class CarteiraController {
+  +Get Depositar
+  +Post Depositar
+}
+
+}
+
+package Models <<Folder>> {
+
+class Utilizador:IdentityUser{
+  -String nome
+  -Double carteira
+  -Int credencialId FK
+}
+
+}
+
+package Identity <<Folder>> {
+
+class "SignInManager<Utilizador>" {}
+
+class "UserManager<Utilizador>" {}
+
+}
+
+ReservasController --> "IReservaService"
+ReservasController --> "ISubAluguerService"
+SubAlugueresController --> "ISubAluguerService"
+TransacoesController --> "ITransacaoService"
+CarteiraController --> "ICarteiraService"
+
+"IReservaService" ..> "ReservaService:IReservaService"
+"ISubAluguerService" ..> "SubAluguerService:ISubAluguerService"
+"ITransacaoService" ..> "TransacaoService:ITransacaoService"
+"ICarteiraService" ..> "CarteiraService:ICarteiraService"
+@enduml
