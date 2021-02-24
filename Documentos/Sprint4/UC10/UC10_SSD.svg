@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="309px" preserveAspectRatio="none" style="width:461px;height:309px;" version="1.1" viewBox="0 0 461 309" width="461px" zoomAndPan="magnify"><defs><filter height="300%" id="f1n053e6cat294" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="108.5313" style="stroke:#A80036;stroke-width:1.0;" width="10" x="37" y="98.2969"/><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="29.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="385" y="119.4297"/><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="29.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="385" y="177.6953"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="42" x2="42" y1="88.2969" y2="224.8281"/><line style="stroke:#A80036;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="390" x2="390" y1="88.2969" y2="224.8281"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="5" y="84.9951">Utilizador</text><ellipse cx="42" cy="15" fill="#FEFECE" filter="url(#f1n053e6cat294)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M42,23 L42,50 M29,31 L55,31 M42,50 L29,65 M42,50 L55,65 " fill="none" filter="url(#f1n053e6cat294)" style="stroke:#A80036;stroke-width:2.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="5" y="236.8232">Utilizador</text><ellipse cx="42" cy="250.125" fill="#FEFECE" filter="url(#f1n053e6cat294)" rx="8" ry="8" style="stroke:#A80036;stroke-width:2.0;"/><path d="M42,258.125 L42,285.125 M29,266.125 L55,266.125 M42,285.125 L29,300.125 M42,285.125 L55,300.125 " fill="none" filter="url(#f1n053e6cat294)" style="stroke:#A80036;stroke-width:2.0;"/><rect fill="#FEFECE" filter="url(#f1n053e6cat294)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="118" x="329" y="53"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="336" y="72.9951">:APP.FrontEnd</text><rect fill="#FEFECE" filter="url(#f1n053e6cat294)" height="30.2969" style="stroke:#A80036;stroke-width:1.5;" width="118" x="329" y="223.8281"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="336" y="243.8232">:APP.FrontEnd</text><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="108.5313" style="stroke:#A80036;stroke-width:1.0;" width="10" x="37" y="98.2969"/><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="29.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="385" y="119.4297"/><rect fill="#FFFFFF" filter="url(#f1n053e6cat294)" height="29.1328" style="stroke:#A80036;stroke-width:1.0;" width="10" x="385" y="177.6953"/><polygon fill="#A80036" points="373,115.4297,383,119.4297,373,123.4297,377,119.4297" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="47" x2="379" y1="119.4297" y2="119.4297"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="54" y="114.3638">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="306" x="67" y="114.3638">inicia pedido de depósito de dinheiro na carteira</text><polygon fill="#A80036" points="58,144.5625,48,148.5625,58,152.5625,54,148.5625" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="52" x2="389" y1="148.5625" y2="148.5625"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="64" y="143.4966">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="232" x="77" y="143.4966">pede dados necessários (montante)</text><polygon fill="#A80036" points="373,173.6953,383,177.6953,373,181.6953,377,177.6953" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="47" x2="379" y1="177.6953" y2="177.6953"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="8" x="54" y="172.6294">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="101" x="66" y="172.6294">Insere os dados</text><polygon fill="#A80036" points="53,202.8281,43,206.8281,53,210.8281,49,206.8281" style="stroke:#A80036;stroke-width:1.0;"/><line style="stroke:#A80036;stroke-width:1.0;" x1="47" x2="389" y1="206.8281" y2="206.8281"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="59" y="201.7622">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="154" x="72" y="201.7622">operação bem sucedida</text><!--MD5=[8aab039768da61fc1950b245070324a8]
+@startuml
+autonumber
+actor "Utilizador" as User
+participant ":APP.FrontEnd" as APP
+
+activate User
+User -> "APP" : inicia pedido de depósito de dinheiro na carteira
+activate "APP"
+
+"APP" -> User : pede dados necessários (montante)
+deactivate "APP"
+
+User -> "APP" : Insere os dados
+activate "APP"
+
+"APP" -> User : operação bem sucedida
+deactivate "APP"
+
+deactivate User
+@enduml
+
+PlantUML version 1.2021.2beta9(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

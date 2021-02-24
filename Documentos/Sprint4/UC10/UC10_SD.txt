@@ -1,0 +1,40 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/CarteiraView" as CV
+participant ":app/CarteiraController" as CC
+participant ":app/CarteiraService" as CS
+participant "api/SistemaCentral" as API
+
+activate U
+
+U --> CV: Inicia o depósito
+activate CV
+
+CV --> U: Pede os dados ao Utilizador
+
+U --> CV: Insere os dados
+
+CV --> CC: DepositarCarteira(montante)
+activate CC
+
+CC --> CS: DepositarCarteira(montante)
+activate CS
+
+CS --> API: CarregarCarteira(PagamentoDTO)
+activate API
+
+API --> CS:No Content
+deactivate API
+
+CS --> CC: No Content
+deactivate CS
+
+CC --> CV: No Content
+deactivate CC
+
+CV --> U: No Content\nOperação bem Sucedida
+deactivate CV
+
+deactivate U
+@enduml
