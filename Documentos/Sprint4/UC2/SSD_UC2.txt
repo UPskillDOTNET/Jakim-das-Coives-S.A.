@@ -1,0 +1,13 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+participant ":app/ReservaView" as API
+
+activate UserNR
+UserNR -> "API" : Solicita a Reserva
+activate "API"
+"API" --> UserNR : return Operaçao bem sucedida
+deactivate "API"
+
+deactivate UserNR
+@enduml

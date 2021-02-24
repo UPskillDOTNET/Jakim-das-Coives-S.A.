@@ -1,0 +1,35 @@
+Caso de Uso Simples
+
+    - Efetuar uma nova reserva 
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à App.FrontEnd um pedido de nova reserva reserva.
+    A App.FrontEnd confirma a reserva efetuada em nome do utilizador.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende efetuar uma reserva.
+    - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
+
+Pré-condições
+    - O Lugar a ser reservado tem de estar disponivel.
+
+Pós-condições
+    ...
+
+
+Fluxo Básico
+
+    1. O Utilizador inicia o pedido de reserva
+    2. A App.FrontEnd devolve no content.
+
+--------------------------------------------------------------------------------------------------

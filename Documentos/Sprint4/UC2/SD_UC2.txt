@@ -1,0 +1,36 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/ReservaView" as RV
+participant ":app/ReservaController" as RC
+participant ":app/ReservaService" as RS
+participant "API:Parque" as API
+
+activate U
+
+U --> RV: Solicita Reserva
+activate RV
+
+RV --> RC: solicita reserva (reservaDTO)
+activate RC
+
+RC --> RS: PostReserva(reservaDTO)
+activate RS
+
+RS --> API: PostAsync(reservaApiParqueDTO)
+activate API
+
+API --> RS: return reservaParque
+deactivate API
+
+RS --> RC: return reserva
+deactivate RS
+
+RC --> RV: return reserva
+deactivate RC
+
+RV --> U: return Operação bem sucedida
+deactivate RV
+
+deactivate U
+@enduml
