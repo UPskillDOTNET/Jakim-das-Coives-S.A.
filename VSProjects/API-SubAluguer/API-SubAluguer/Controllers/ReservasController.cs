@@ -44,9 +44,15 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {
-            await _service.PostAsync(reserva);
-
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            try
+            {
+                await _service.PostAsync(reserva);
+                return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            }
+            catch (Exception e)
+            {
+                return Conflict(new { message = e.Message });
+            }
         }
 
         [HttpDelete("{id}")]

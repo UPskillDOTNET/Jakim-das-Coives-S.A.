@@ -5,8 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
-using API_Sistema_Central.Models;
-using API_Sistema_Central.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

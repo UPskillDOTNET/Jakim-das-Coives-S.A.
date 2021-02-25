@@ -17,34 +17,46 @@ namespace SCUnitTests
         {
             var mock = new Mock<IReservaService>();
             mock.Setup(p => p.GetByNifAsync("999999999"))
-                .ReturnsAsync(new List<Reserva> {
-                    new Reserva {
-                        Id = 1,
-                        NifUtilizador = "999999999",
-                        ParqueId = 1,
-                        Custo = 100,
-                        TransacaoId = 1,
+                .ReturnsAsync(new List<DetalheReservaDTO> {
+                    new DetalheReservaDTO {
+                        ReservaId = 1,
                         ReservaParqueId = 1,
+                        NumeroLugar = 1,
+                        Fila = "A",
+                        Andar = 0,
+                        Custo = 5,
+                        IsSubAlugado = false,
+                        NifProprietario = "999999999",
+                        NomeFreguesia = "Freguesia",
+                        NomeParque = "Parque",
+                        Inicio = DateTime.Parse("2020-01-01T10:00"),
+                        Fim = DateTime.Parse("2020-01-01T11:00")
                     },
-                    new Reserva {
-                        Id = 2,
-                        NifUtilizador = "999999999",
-                        ParqueId = 2,
-                        Custo = 100,
-                        TransacaoId = 1,
-                        ReservaParqueId = 1,
+                    new DetalheReservaDTO {
+                        ReservaId = 2,
+                        ReservaParqueId = 2,
+                        NumeroLugar = 2,
+                        Fila = "A",
+                        Andar = 0,
+                        Custo = 5,
+                        IsSubAlugado = false,
+                        NifProprietario = "999999999",
+                        NomeFreguesia = "Freguesia",
+                        NomeParque = "Parque",
+                        Inicio = DateTime.Parse("2020-01-01T10:00"),
+                        Fim = DateTime.Parse("2020-01-01T11:00")
                     }
                 });
 
             ReservasController testController = new ReservasController(mock.Object);
             var result = await testController.GetReservaByNif("999999999");
 
-            var items = Assert.IsType<List<Reserva>>(result.Value);
+            var items = Assert.IsType<List<DetalheReservaDTO>>(result.Value);
             Assert.Equal(2, items.Count);
-            Assert.Equal("999999999", items[0].NifUtilizador);
-            Assert.Equal("999999999", items[1].NifUtilizador);
-            Assert.Equal(1, items[0].ParqueId);
-            Assert.Equal(2, items[1].ParqueId);
+            Assert.Equal("999999999", items[0].NifProprietario);
+            Assert.Equal("999999999", items[1].NifProprietario);
+            Assert.Equal(1, items[0].ReservaParqueId);
+            Assert.Equal(2, items[1].ReservaParqueId);
         }
 
 
@@ -63,6 +75,7 @@ namespace SCUnitTests
                     Andar = 0,
                     Custo = 5,
                     IsSubAlugado = false,
+                    NifProprietario = "999999999",
                     NomeFreguesia = "Freguesia",
                     NomeParque = "Parque",
                     Inicio = DateTime.Parse("2020-01-01T10:00"),
@@ -73,9 +86,9 @@ namespace SCUnitTests
 
             var result = await testController.GetReservaById(1);
 
-            var item = Assert.IsType<Reserva>(result.Value);
-            Assert.Equal("999999999", item.NifUtilizador);
-            Assert.Equal(1, item.ParqueId);
+            var item = Assert.IsType<DetalheReservaDTO>(result.Value);
+            Assert.Equal("999999999", item.NifProprietario);
+            Assert.Equal(1, item.ReservaParqueId);
         }
 
         [Fact]
@@ -123,13 +136,11 @@ namespace SCUnitTests
 
             var theNewReserva = new ReservaDTO
             {
-                NifUtilizador = "999999999",
+                NifComprador = "999999999",
                 NifVendedor = "111111111",
-                ParqueId = 1,
-                ApiUrl = "randomLink",
+                ParqueIdSC = 1,
                 MetodoId = 1,
                 ReservaSistemaCentralId = 1,
-                Preco = 100,
                 LugarId = 1,
                 Inicio = DateTime.Parse("2021-01-30 11:00:00"),
                 Fim = DateTime.Parse("2021-01-30 11:00:00")
@@ -144,7 +155,6 @@ namespace SCUnitTests
             Assert.NotNull(response);
             Assert.IsNotType<BadRequestObjectResult>(result);
             Assert.IsType<Reserva>(result);
-            Assert.Equal("randomLink", theNewReserva.ApiUrl);
         }
 
         [Fact]

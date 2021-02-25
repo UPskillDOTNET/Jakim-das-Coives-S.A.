@@ -34,12 +34,30 @@ namespace API_SubAluguer.Services
 
         public async Task<Reserva> PostAsync(Reserva reserva)
         {
-            return await _repository.PostAsync(reserva);
+            if (!IsNotAvailable(reserva.LugarId, reserva.Inicio, reserva.Fim))
+            {
+                return await _repository.PostAsync(reserva);
+            }
+            else
+            {
+                throw new Exception("Este lugar não se encontra disponível");
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);
+        }
+
+        private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
+        {
+            var reservas = _repository.GetAllAsync().Result.Value;
+            return reservas.Any(r =>
+                r.LugarId == lugarId &&
+                (r.Fim > inicio && r.Fim <= fim ||
+                r.Inicio >= inicio && r.Inicio < fim ||
+                r.Inicio >= inicio && r.Fim <= fim ||
+                r.Inicio <= inicio && r.Fim >= fim));
         }
     }
 }
