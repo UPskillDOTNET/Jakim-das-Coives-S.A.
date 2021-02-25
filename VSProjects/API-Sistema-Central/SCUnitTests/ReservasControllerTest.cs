@@ -54,14 +54,19 @@ namespace SCUnitTests
             //Arrange
             var mock = new Mock<IReservaService>();
             mock.Setup(p => p.GetByIdAsync(1))
-                .ReturnsAsync(new Reserva
+                .ReturnsAsync(new DetalheReservaDTO
                 {
-                    Id = 1,
-                    NifUtilizador = "999999999",
-                    ParqueId = 1,
-                    Custo = 100,
-                    TransacaoId = 1,
+                    ReservaId = 1,
                     ReservaParqueId = 1,
+                    NumeroLugar = 1,
+                    Fila = "A",
+                    Andar = 0,
+                    Custo = 5,
+                    IsSubAlugado = false,
+                    NomeFreguesia = "Freguesia",
+                    NomeParque = "Parque",
+                    Inicio = DateTime.Parse("2020-01-01T10:00"),
+                    Fim = DateTime.Parse("2020-01-01T11:00")
                 });
 
             ReservasController testController = new ReservasController(mock.Object);
@@ -79,14 +84,19 @@ namespace SCUnitTests
             //Arrange
             var mock = new Mock<IReservaService>();
             mock.Setup(p => p.GetByIdAsync(1))
-                .ReturnsAsync(new Reserva
+                .ReturnsAsync(new DetalheReservaDTO
                 {
-                    Id = 1,
-                    NifUtilizador = "999999999",
-                    ParqueId = 1,
-                    Custo = 100,
-                    TransacaoId = 1,
+                    ReservaId = 1,
                     ReservaParqueId = 1,
+                    NumeroLugar = 1,
+                    Fila = "A",
+                    Andar = 0,
+                    Custo = 5,
+                    IsSubAlugado = false,
+                    NomeFreguesia = "Freguesia",
+                    NomeParque = "Parque",
+                    Inicio = DateTime.Parse("2020-01-01T10:00"),
+                    Fim = DateTime.Parse("2020-01-01T11:00")
                 });
 
             ReservasController testController = new ReservasController(mock.Object);
@@ -118,7 +128,7 @@ namespace SCUnitTests
                 ParqueId = 1,
                 ApiUrl = "randomLink",
                 MetodoId = 1,
-                ReservaOriginalId = 1,
+                ReservaSistemaCentralId = 1,
                 Preco = 100,
                 LugarId = 1,
                 Inicio = DateTime.Parse("2021-01-30 11:00:00"),
@@ -153,19 +163,19 @@ namespace SCUnitTests
                         Andar = 1,
                         Preco = 10,
                         NifProprietario = "999999999",
-                        ReservaOriginalId = 1,
+                        ReservaSistemaCentralId = 1,
                         ParqueIdSC = 1,
                         ApiUrl = "randomlink"
                     }
                 });
 
-                ReservasController testController = new ReservasController(mock.Object);
+            ReservasController testController = new ReservasController(mock.Object);
 
-                var result = await testController.FindAvailableAsync("Porto", DateTime.Parse("2021-01-30 11:00:00"), DateTime.Parse("2021-01-30 13:00:00"));
+            var result = await testController.FindAvailableAsync("Porto", DateTime.Parse("2021-01-30 11:00:00"), DateTime.Parse("2021-01-30 13:00:00"));
 
-                var item = Assert.IsType<List<LugarDTO>>(result.Value);
-                Assert.Equal(1, item[0].Id);
-                Assert.Equal("A", item[0].Fila);
+            var item = Assert.IsType<List<LugarDTO>>(result.Value);
+            Assert.Equal(1, item[0].Id);
+            Assert.Equal("A", item[0].Fila);
         }
 
         private static T GetObjectResultContent<T>(ActionResult<T> result)

@@ -52,7 +52,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserva>> GetReservaById(int id)
+        public async Task<ActionResult<DetalheReservaDTO>> GetReservaById(int id)
         {
             try
             {

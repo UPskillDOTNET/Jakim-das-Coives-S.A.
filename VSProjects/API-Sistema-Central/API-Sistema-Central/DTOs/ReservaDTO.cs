@@ -18,7 +18,7 @@ namespace API_Sistema_Central.DTOs
         public int MetodoId { get; set; }
 
         //Apenas para Sub-Alugueres
-        public int ReservaOriginalId { get; set; }
+        public int ReservaSistemaCentralId { get; set; }
 
         //Para calcular o custo na reserva da API-Sistema-Central
         public double Preco { get; set; }

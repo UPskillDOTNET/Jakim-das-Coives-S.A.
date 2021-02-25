@@ -64,7 +64,7 @@ namespace API_Sistema_Central.Services
             {
                 throw new Exception("Não existem lugares disponíveis para o local e período de tempo escolhidos.");
             }
-            return listaLugares;   
+            return listaLugares;
         }
 
         public async Task<ActionResult<IEnumerable<Reserva>>> GetByNifAsync(string nif)
@@ -78,14 +78,21 @@ namespace API_Sistema_Central.Services
             return lista.ToList();
         }
 
-        public async Task<Reserva> GetByIdAsync(int id)
+        public async Task<DetalheReservaDTO> GetByIdAsync(int id)
         {
-            var reserva = await _repository.GetByIdAsync(id);
-            if (reserva == null)
+            var r = await _repository.GetByIdAsync(id);
+            if (r == null)
             {
                 throw new Exception("A reserva solicitada não existe.");
             }
-            return reserva;
+            Parque parque = await _parqueRepository.GetByIdAsync(r.ParqueId);
+            ReservaAPIParqueDTO rp = await GetReservaParqueByID(r.ReservaParqueId, parque.ApiUrl);
+            LugarDTO l = await GetLugarParqueByID(rp.LugarId, parque.ApiUrl);
+            string p = await GetParqueNomeByID(l.ParqueId, parque.ApiUrl);
+            string f = await GetFreguesiaNomeByParqueID(l.ParqueId, parque.ApiUrl);
+            bool b = await IsSubAlugado(r.Id);
+            DetalheReservaDTO detalhe = new DetalheReservaDTO { NifProprietario = r.NifUtilizador, ReservaId = r.Id, ReservaParqueId = r.ReservaParqueId, Custo = r.Custo, Inicio = rp.Inicio, Fim = rp.Fim, Andar = l.Andar, Fila = l.Fila, NumeroLugar = l.Numero, NomeParque = p, NomeFreguesia = f, IsSubAlugado = b };
+            return detalhe;
         }
 
         public async Task<Reserva> PostAsync(ReservaDTO reservaDTO)
@@ -114,7 +121,7 @@ namespace API_Sistema_Central.Services
             reserva.TransacaoId = t.Id;
             if (t == null)
             {
-                await _pagamentoService.Reembolso(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo});
+                await _pagamentoService.Reembolso(new Transacao { NifPagador = reservaDTO.NifUtilizador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo });
                 throw new Exception("A transação não foi registada com sucesso.");
             }
 
@@ -134,7 +141,8 @@ namespace API_Sistema_Central.Services
                 QRCodeDTO qr = QRCodeDTOAsync(reservaDTO, reserva.ReservaParqueId).Result;
                 if (reservaDTO.ApiUrl == "https://localhost:5005/")
                 {
-                    _emailService.EnviarEmailSubAluguer(qr, reservaDTO.ReservaOriginalId);
+                    var rs = _repository.GetByIdAsync(reservaDTO.ReservaSistemaCentralId).Result;
+                    _emailService.EnviarEmailSubAluguer(qr, rs.ReservaParqueId);
                 }
                 else
                 {
@@ -149,6 +157,7 @@ namespace API_Sistema_Central.Services
                 throw new Exception("O envio do email de confirmação falhou.");
             }
 
+            //Reservar no Sistema Central
             try
             {
                 return await _repository.PostAsync(reserva);
@@ -242,7 +251,7 @@ namespace API_Sistema_Central.Services
             var l = GetLugarParqueByID(reservaDTO.LugarId, reservaDTO.ApiUrl).Result;
             var f = GetFreguesiaNomeByParqueID(l.ParqueId, reservaDTO.ApiUrl).Result;
             var p = GetParqueNomeByID(l.ParqueId, reservaDTO.ApiUrl).Result;
-            QRCodeDTO qr = new QRCodeDTO { NomeUtilizador = utilizador.Nome, Email = utilizador.Email, IdReserva = reservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f, NomeParque = p, NumeroLugar = l.Numero, Fila = l.Fila, Andar = l.Andar };
+            QRCodeDTO qr = new QRCodeDTO { NomeUtilizador = utilizador.Nome, Email = utilizador.Email, ReservaParqueId = reservaParqueId, Inicio = reservaDTO.Inicio, Fim = reservaDTO.Fim, NomeFreguesia = f, NomeParque = p, NumeroLugar = l.Numero, Fila = l.Fila, Andar = l.Andar };
             return qr;
         }
         private static async Task<ReservaAPIParqueDTO> PostReservaInParqueAPIAsync(ReservaDTO reservaDTO)
@@ -310,6 +319,18 @@ namespace API_Sistema_Central.Services
             }
             return l;
         }
+        private static async Task<ReservaAPIParqueDTO> GetReservaParqueByID(int id, string url)
+        {
+            ReservaAPIParqueDTO r;
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint1 = url + "api/reservas/" + id;
+                var response1 = await client.GetAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+                r = await response1.Content.ReadAsAsync<ReservaAPIParqueDTO>();
+            }
+            return r;
+        }
         private static async Task<FreguesiaDTO> GetFreguesiaByNome(string nome, string url)
         {
             FreguesiaDTO f;
@@ -323,6 +344,23 @@ namespace API_Sistema_Central.Services
                 f = listaFreguesias.Find(z => z.Nome == nome);
             }
             return f;
+        }
+        private static async Task<bool> IsSubAlugado(int reservaId)
+        {
+            bool b;
+            SubAluguerDTO l;
+            using (HttpClient client = new HttpClient())
+            {
+                var listaSubAlugueres = new List<SubAluguerDTO>();
+                string endpoint1 = "https://localhost:5005/api/lugares";
+                var response1 = await client.GetAsync(endpoint1);
+                response1.EnsureSuccessStatusCode();
+                listaSubAlugueres = await response1.Content.ReadAsAsync<List<SubAluguerDTO>>();
+                l = listaSubAlugueres.Find(z => z.ReservaSistemaCentralId == reservaId);
+            }
+            if (l != null) { b = true; }
+            else { b = false; }
+            return b;
         }
     }
 }

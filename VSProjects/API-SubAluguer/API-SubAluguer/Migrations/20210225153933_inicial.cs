@@ -65,7 +65,7 @@ namespace API_SubAluguer.Migrations
                     Andar = table.Column<int>(type: "int", nullable: false),
                     Preco = table.Column<double>(type: "float", nullable: false),
                     NifProprietario = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReservaOriginalId = table.Column<int>(type: "int", nullable: false),
+                    ReservaSistemaCentralId = table.Column<int>(type: "int", nullable: false),
                     Inicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Fim = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

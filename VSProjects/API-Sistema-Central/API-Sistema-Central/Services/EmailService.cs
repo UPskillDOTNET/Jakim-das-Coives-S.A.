@@ -17,10 +17,10 @@ namespace API_Sistema_Central.Services
             try
             {
                 string subject = "Confirmação de reserva";
-                string conteudoqr = "Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
+                string conteudoqr = "Reserva nº " + qr.ReservaParqueId + ", Parque: " + qr.NomeParque;
                 string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
                 string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
-                    "<h2>A sua reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                    "<h2>A sua reserva número " + qr.ReservaParqueId + " está pronta!</h2>" +
                     "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>" +
                     "<p><b>Fila: " + qr.Fila + "</b></p>" +
                     "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
@@ -37,15 +37,15 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        public void EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
+        public void EnviarEmailSubAluguer(QRCodeDTO qr, int reservaId)
         {
             try
             {
                 string subject = "Confirmação de reserva";
-                string conteudoqr = "Reserva nº " + reservaOriginalId + ", Sub-Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
+                string conteudoqr = "Reserva nº " + reservaId + ", Sub-Reserva nº " + qr.ReservaParqueId + ", Parque: " + qr.NomeParque;
                 string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
                 string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
-                    "<h2>A sua reserva número " + reservaOriginalId + ", sub-reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                    "<h2>A sua reserva número " + reservaId + ", sub-reserva número " + qr.ReservaParqueId + " está pronta!</h2>" +
                     "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>" +
                     "<p><b>Fila: " + qr.Fila + "</b></p>" +
                     "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
@@ -62,13 +62,13 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        public void EnviarEmailCancelamento(string nome, int id, string email)
+        public void EnviarEmailCancelamento(string nome, int reservaParqueId, string email)
         {
             try
             {
                 string subject = "Cancelamento de reserva";
                 string body = "<h2>Exmo(a) Sr.(a) " + nome + "</h2>" +
-                "<h2>A sua reserva número " + id + " foi cancelada com sucesso!</h2>";
+                "<h2>A sua reserva número " + reservaParqueId + " foi cancelada com sucesso!</h2>";
 
                 EnviarEmail(subject, email, body);
             }

@@ -7,6 +7,7 @@ using API_Sistema_Central.Models;
 using API_Sistema_Central.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_Sistema_Central.Services
 {
@@ -92,7 +93,7 @@ namespace API_Sistema_Central.Services
 
         public async Task DepositarSaldoAsync(string nif, double valor)
         {
-            Utilizador utilizador = await _userManager.FindByIdAsync(nif);
+            Utilizador utilizador = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Id == nif);
             if (utilizador != null)
             {
                 PagamentoDTO deposito = new PagamentoDTO { MetodoId = utilizador.Credencial.MetodoId, NifPagador = nif, NifRecipiente = nif, Valor = valor };
