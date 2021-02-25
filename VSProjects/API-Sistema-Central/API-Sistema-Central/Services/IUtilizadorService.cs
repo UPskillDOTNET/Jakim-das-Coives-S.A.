@@ -12,5 +12,7 @@ namespace API_Sistema_Central.Services
     {
         public Task<IdentityResult> RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO);
         public Task<Microsoft.AspNetCore.Identity.SignInResult> Login(InfoUtilizadorDTO infoUtilizadorDTO);
+        public Task<double> GetSaldoAsync(string nif);
+        public Task DepositarSaldoAsync(string nif, double valor);
     }
 }

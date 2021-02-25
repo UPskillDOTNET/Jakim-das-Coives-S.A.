@@ -17,14 +17,16 @@ namespace API_Sistema_Central.Services
         private readonly ICartaoRepository _cartaoRepository;
         private readonly IDebitoDiretoRepository _debitoDiretoRepository;
         private readonly IPayPalRepository _payPalRepository;
+        private readonly IPagamentoService _pagamentoService;
 
-        public UtilizadorService (UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository)
+        public UtilizadorService (UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _cartaoRepository = cartaoRepository;
             _debitoDiretoRepository = debitoDiretoRepository;
             _payPalRepository = payPalRepository;
+            _pagamentoService = pagamentoService;
         }
 
         public async Task<IdentityResult> RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
@@ -72,6 +74,34 @@ namespace API_Sistema_Central.Services
         {
             var result = await _signInManager.PasswordSignInAsync(infoUtilizadorDTO.Email, infoUtilizadorDTO.Password, isPersistent: false, lockoutOnFailure: false);
             return result;
+        }
+
+        public async Task<double> GetSaldoAsync(string nif)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(nif);
+            if (utilizador != null)
+            {
+                double saldo = utilizador.Carteira;
+                return saldo;
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
+
+        public async Task DepositarSaldoAsync(string nif, double valor)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(nif);
+            if (utilizador != null)
+            {
+                PagamentoDTO deposito = new PagamentoDTO { MetodoId = utilizador.Credencial.MetodoId, NifPagador = nif, NifRecipiente = nif, Valor = valor };
+                await _pagamentoService.Pay(deposito);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
         }
     }
 }

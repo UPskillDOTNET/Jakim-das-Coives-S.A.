@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/utilizadores")]
     [ApiController]
     public class UtilizadoresController : ControllerBase
     {
@@ -19,7 +20,7 @@ namespace API_Sistema_Central.Controllers
             _utilizadorService = utilizadorService;
         }
 
-        [HttpPost("Registar")]
+        [HttpPost("registar")]
         public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
             var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.EmailUtilizador, Password = registarUtilizadorDTO.PasswordUtilizador };
@@ -35,7 +36,7 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<TokenUtilizadorDTO>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
         {
             var result = await _utilizadorService.Login(infoUtilizadorDTO);
@@ -47,6 +48,34 @@ namespace API_Sistema_Central.Controllers
             else
             {
                 return BadRequest("Login inválido");
+            }
+        }
+
+        [HttpGet("saldo/{nif}")]
+        public async Task<ActionResult<double>> GetSaldoByNif(string nif)
+        {
+            try
+            {
+                return await _utilizadorService.GetSaldoAsync(nif);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            
+        }
+
+        [HttpPost("depositar/{nif}/{valor}")]
+        public async Task<ActionResult> DepositarSaldoByNif(string nif, double valor)
+        {
+            try
+            {
+                await _utilizadorService.DepositarSaldoAsync(nif, valor);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
     }
