@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
+using API_Sistema_Central.Models;
+using API_Sistema_Central.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -12,6 +14,13 @@ namespace API_Sistema_Central.Services
 {
     public class SubAluguerService : ISubAluguerService
     {
+        private readonly IReservaService _reservaService;
+
+        public SubAluguerService(IReservaService reservaService)
+        {
+            _reservaService = reservaService;
+        }
+
         public async Task<ActionResult<IEnumerable<SubAluguerDTO>>> GetByNifAsync(string nif)
         {
             try
@@ -61,6 +70,7 @@ namespace API_Sistema_Central.Services
 
         public async Task<SubAluguerDTO> PostSubAluguerAsync(SubAluguerDTO subAluguerDTO)
         {
+            await ValidarSubAluguer(subAluguerDTO);
             try
             {
                 SubAluguerDTO lugar;
@@ -118,6 +128,26 @@ namespace API_Sistema_Central.Services
                 isReservado = true;
             }
             return isReservado;
+        }
+        private async Task ValidarSubAluguer(SubAluguerDTO subAluguerDTO)
+        {
+            DetalheReservaDTO r = await _reservaService.GetByIdAsync(subAluguerDTO.ReservaSistemaCentralId);
+            if (r == null)
+            {
+                throw new Exception("Não existe reserva para sub-alugar.");
+            }
+            if (r.IsSubAlugado == true)
+            {
+                throw new Exception("Proibido: Este lugar já está Sub-Alugado.");
+            }
+            if (r.NifProprietario != subAluguerDTO.NifProprietario)
+            {
+                throw new Exception("Não é o proprietário dessa reserva.");
+            }
+            if (r.Inicio != subAluguerDTO.Inicio || r.Fim != subAluguerDTO.Fim || r.Andar != subAluguerDTO.Andar || r.Fila != subAluguerDTO.Fila || r.NumeroLugar != subAluguerDTO.Numero)
+            {
+                throw new Exception("Alguns detalhes do sub-aluguer não estão coerentes.");
+            }
         }
     }
 }
