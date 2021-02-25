@@ -39,7 +39,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("all/{nif}")]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
+        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetReservaByNif(string nif)
         {
             try
             {

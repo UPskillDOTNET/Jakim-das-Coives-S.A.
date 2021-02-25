@@ -24,6 +24,11 @@ namespace API_Sistema_Central.Services
                     response.EnsureSuccessStatusCode();
                     result = await response.Content.ReadAsAsync<IEnumerable<SubAluguerDTO>>();
                 }
+                foreach (SubAluguerDTO s in result)
+                {
+                    bool isReservado = await IsReservado(s.Id);
+                    s.IsReservado = isReservado;
+                }
                 return result.ToList();
             }
             catch (Exception)
@@ -44,6 +49,8 @@ namespace API_Sistema_Central.Services
                     response.EnsureSuccessStatusCode();
                     result = await response.Content.ReadAsAsync<SubAluguerDTO>();
                 }
+                bool isReservado = await IsReservado(result.Id);
+                result.IsReservado = isReservado;
                 return result;
             }
             catch (Exception)
@@ -75,6 +82,10 @@ namespace API_Sistema_Central.Services
 
         public async Task DeleteSubAluguerAsync(int id)
         {
+            if (IsReservado(id).Result)
+            {
+                throw new Exception("Proibido: o lugar está reservado.");
+            }
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -88,6 +99,25 @@ namespace API_Sistema_Central.Services
             {
                 throw new Exception("O cancelamento do lugar para Sub-Aluguer falhou.");
             }
+        }
+
+        private async Task<bool> IsReservado(int lugarId)
+        {
+            bool isReservado = false;
+            var reservas = new List<ReservaAPIParqueDTO>();
+            using (HttpClient client = new HttpClient())
+            {
+                string endpoint = "https://localhost:5005/api/reservas";
+                var response = await client.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+                reservas = await response.Content.ReadAsAsync<List<ReservaAPIParqueDTO>>();
+            }
+            var r = reservas.Where(x => x.LugarId == lugarId);
+            if (r.Any())
+            {
+                isReservado = true;
+            }
+            return isReservado;
         }
     }
 }

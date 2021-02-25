@@ -67,15 +67,21 @@ namespace API_Sistema_Central.Services
             return listaLugares;
         }
 
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetByNifAsync(string nif)
+        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync(string nif)
         {
             var temp = await _repository.GetAllAsync();
-            var lista = temp.Value.Where(t => t.NifUtilizador == nif);
-            if (!lista.Any())
+            var l = temp.Value.Where(t => t.NifUtilizador == nif);
+            if (!l.Any())
             {
                 throw new Exception("Não existem reservas associadas a este NIF.");
             }
-            return lista.ToList();
+            var lista = new List<DetalheReservaDTO>();
+            foreach (Reserva r in l)
+            {
+                var d = await CreateDetalheReservaDTO(r);
+                lista.Add(d);
+            }
+            return lista;
         }
 
         public async Task<DetalheReservaDTO> GetByIdAsync(int id)
@@ -85,13 +91,7 @@ namespace API_Sistema_Central.Services
             {
                 throw new Exception("A reserva solicitada não existe.");
             }
-            Parque parque = await _parqueRepository.GetByIdAsync(r.ParqueId);
-            ReservaAPIParqueDTO rp = await GetReservaParqueByID(r.ReservaParqueId, parque.ApiUrl);
-            LugarDTO l = await GetLugarParqueByID(rp.LugarId, parque.ApiUrl);
-            string p = await GetParqueNomeByID(l.ParqueId, parque.ApiUrl);
-            string f = await GetFreguesiaNomeByParqueID(l.ParqueId, parque.ApiUrl);
-            bool b = await IsSubAlugado(r.Id);
-            DetalheReservaDTO detalhe = new DetalheReservaDTO { NifProprietario = r.NifUtilizador, ReservaId = r.Id, ReservaParqueId = r.ReservaParqueId, Custo = r.Custo, Inicio = rp.Inicio, Fim = rp.Fim, Andar = l.Andar, Fila = l.Fila, NumeroLugar = l.Numero, NomeParque = p, NomeFreguesia = f, IsSubAlugado = b };
+            var detalhe = CreateDetalheReservaDTO(r).Result;
             return detalhe;
         }
 
@@ -175,6 +175,10 @@ namespace API_Sistema_Central.Services
 
         public async Task DeleteAsync(int id)
         {
+            if (IsSubAlugado(id).Result)
+            {
+                throw new Exception("Proibido: a reserva está sub-alugada.");
+            }
             Reserva reserva = await _repository.GetByIdAsync(id);
             if (reserva == null)
             {
@@ -361,6 +365,17 @@ namespace API_Sistema_Central.Services
             if (l != null) { b = true; }
             else { b = false; }
             return b;
+        }
+        private async Task<DetalheReservaDTO> CreateDetalheReservaDTO(Reserva r)
+        {
+            Parque parque = await _parqueRepository.GetByIdAsync(r.ParqueId);
+            ReservaAPIParqueDTO rp = await GetReservaParqueByID(r.ReservaParqueId, parque.ApiUrl);
+            LugarDTO l = await GetLugarParqueByID(rp.LugarId, parque.ApiUrl);
+            string p = await GetParqueNomeByID(l.ParqueId, parque.ApiUrl);
+            string f = await GetFreguesiaNomeByParqueID(l.ParqueId, parque.ApiUrl);
+            bool b = await IsSubAlugado(r.Id);
+            DetalheReservaDTO detalhe = new DetalheReservaDTO { NifProprietario = r.NifUtilizador, ReservaId = r.Id, ReservaParqueId = r.ReservaParqueId, Custo = r.Custo, Inicio = rp.Inicio, Fim = rp.Fim, Andar = l.Andar, Fila = l.Fila, NumeroLugar = l.Numero, NomeParque = p, NomeFreguesia = f, IsSubAlugado = b };
+            return detalhe;
         }
     }
 }
