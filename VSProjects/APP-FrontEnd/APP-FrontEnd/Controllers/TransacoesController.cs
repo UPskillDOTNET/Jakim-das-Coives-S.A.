@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using APP_FrontEnd.Models;
 using APP_FrontEnd.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APP_FrontEnd.Controllers
@@ -19,9 +17,20 @@ namespace APP_FrontEnd.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var lista = await _transacaoService.GetAllTransacoesByNIF();
+            try
+            {
+                var lista = await _transacaoService.GetAllTransacoesByNIF();
+                return View(lista);
+            }
+            catch (Exception e)
+            {
+                return MensagemErro(e.Message);
+            }
+        }
 
-            return View(lista);
+        private IActionResult MensagemErro(string mensagem)
+        {
+            return View("MensagemErro", new MensagemErro { Mensagem = mensagem });
         }
     }
 }
