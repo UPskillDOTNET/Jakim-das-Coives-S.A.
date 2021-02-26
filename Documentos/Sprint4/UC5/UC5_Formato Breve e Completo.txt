@@ -4,18 +4,36 @@ Formato Breve
 O utilizador pretende sub-alugar um lugar previamente reservado por si.
 
 Formato Completo
+
 Ator principal: 
-- Utilizador
+	- Utilizador
 Partes interessadas e seus interesses:
-- Utilizador: pretende sub-alugar um dos seus lugares reservados
-- Sistema Central: pretende que o utilizador possa sub-alugar um dos seus lugares reservados
+	- Utilizador: pretende sub-alugar um dos seus lugares reservados
+	- Sistema Central: pretende que o utilizador possa sub-alugar um dos seus lugares previamente reservados
 
-Cenário de sucesso principal (ou fluxo básico)
-- O utilizador, através da APP.FrontEnd, inicia o pedido de sub-aluguer escolhendo uma reserva pré-efectuada e o preço pretendido.
-- O Sistema Central recebe os dados e encaminha o pedido para a API.SubAluguer.
-- A API.SubAluguer regista os dados e informa o Sistema Central do sucesso da operação.
-- A APP.FrontEnd informa o Utilizador do sucesso da operação.
+Pré-condições:
+	- É necessário o utilizador já ter uma reserva efetuada.
 
-Extensões (ou fluxos alternativos)
-- O utilizador solicita o cancelamento do pedido de sub-aluger. O caso de uso termina.
-- Dados mínimos obrigatórios em falta. A APP.FrontEnd informa o utilizador quais os dados em falta e permite a sua introdução.
+Pós-condições:
+	- O lugar fica disponível para ser reservado por outra pessoa.
+
+Fluxo Básico
+	1) O utilizador, através da APP.FrontEnd, inicia o pedido de sub-aluguer escolhendo uma reserva.
+	2) A APP.FrontEnd pede o preço pretendido.
+	3) O utilizador insere o dado.
+	4) A APP.FrontEnd recebe o dado e encaminha o pedido para o Sistema Central.
+	5) O Sistema Central informa a APP.FrontEnd do sucesso da operação.
+	6) A APP.FrontEnd informa o Utilizador do sucesso da operação.
+
+
+Fluxos Alternativos
+	3.a) O utilizador solicita o cancelamento do pedido de sub-aluger.
+	     O caso de uso termina.
+
+	3.b) Dados mínimos obrigatórios em falta.
+	     A APP.FrontEnd informa o utilizador quais os dados em falta e permite a sua introdução.
+
+	4.a) A APP.FrontEnd não consegue estabelecer ligação com o Sistema Central.
+	     A APP.FrontEnd informa o utilizador do insucesso da operação e o caso de uso termina.
+
+	5.a) O Sistema Central informa a APP.FrontEnd do insucesso da operação, a APP.FrontEnd informa o utilizador e o caso de uso termina.
