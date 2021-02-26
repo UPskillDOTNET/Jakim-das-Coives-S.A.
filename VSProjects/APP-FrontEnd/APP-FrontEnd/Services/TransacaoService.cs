@@ -5,23 +5,28 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace APP_FrontEnd.Services
 {
     public class TransacaoService : ITransacaoService
     {
-        private readonly UserManager<Utilizador> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TransacaoService (UserManager<Utilizador> userManager)
+        public TransacaoService (IHttpContextAccessor httpContextAccessor)
         {
-            _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IEnumerable<Transacao>> GetAllTransacoesByNIF(string nif)
+        public async Task<IEnumerable<Transacao>> GetAllTransacoesByNIF()
         {
+
+            var nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var listaTransacoes = new List<Transacao>();
             using (HttpClient client = new HttpClient())
             {

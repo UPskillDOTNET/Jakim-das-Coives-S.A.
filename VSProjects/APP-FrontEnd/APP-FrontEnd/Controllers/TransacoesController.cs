@@ -17,11 +17,11 @@ namespace APP_FrontEnd.Controllers
             _transacaoService = transacaoService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var lista = await _transacaoService.GetAllTransacoesByNIF();
+
+            return View(lista);
         }
-
-
     }
 }

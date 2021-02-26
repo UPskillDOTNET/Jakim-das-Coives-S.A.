@@ -40,6 +40,7 @@ namespace APP_FrontEnd
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddTransient<ITransacaoService, TransacaoService>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
