@@ -50,7 +50,6 @@ namespace API_Sistema_Central.Services
                         foreach (LugarDTO l in temp)
                         {
                             l.ParqueIdSC = parque.Id;
-                            l.ApiUrl = parque.ApiUrl;
                             if (l.NifProprietario == null)
                             {
                                 l.NifProprietario = "999999999";
@@ -97,16 +96,16 @@ namespace API_Sistema_Central.Services
 
         public async Task<Reserva> PostAsync(ReservaDTO reservaDTO)
         {
+            await ValidarReservaDTO(reservaDTO);
+
             Reserva reserva = new Reserva { NifUtilizador = reservaDTO.NifComprador, ParqueId = reservaDTO.ParqueIdSC };
             Parque p = await _parqueRepository.GetByIdAsync(reservaDTO.ParqueIdSC);
             LugarDTO l = GetLugarParqueByID(reservaDTO.LugarId, p.ApiUrl).Result;
 
-            await ValidarReservaDTO(reservaDTO, p.ApiUrl);
-
             //Calcular o custo da Reserva
             var h = (reservaDTO.Fim - reservaDTO.Inicio).TotalHours;
             reserva.Custo = Math.Round(h * l.Preco, 2);
-            if (reserva.Custo < 0)
+            if (reserva.Custo <= 0)
             {
                 throw new Exception("O custo da reserva é inválido");
             }
@@ -190,6 +189,11 @@ namespace API_Sistema_Central.Services
             if (t == null)
             {
                 throw new Exception("A transação não existe.");
+            }
+            DetalheReservaDTO dr = await GetByIdAsync(id);
+            if (dr.Inicio < DateTime.Now)
+            {
+                throw new Exception("A hora de início desta reserva já foi ultrapassada.");
             }
 
             //Enviar email de cancelamento
@@ -446,7 +450,7 @@ namespace API_Sistema_Central.Services
                 throw new Exception("O lugar não existe no parque de sub-aluguer.");
             }
         }
-        private async Task ValidarReservaDTO(ReservaDTO reservaDTO, string url)
+        private async Task ValidarReservaDTO(ReservaDTO reservaDTO)
         {
             if (reservaDTO.Fim < reservaDTO.Inicio)
             {

@@ -146,6 +146,10 @@ namespace API_Sistema_Central.Services
             {
                 throw new Exception("Alguns detalhes do sub-aluguer não estão coerentes.");
             }
+            if (subAluguerDTO.Preco <= 0)
+            {
+                throw new Exception("O preço não pode ser igual ou menor que zero.");
+            }
         }
     }
 }

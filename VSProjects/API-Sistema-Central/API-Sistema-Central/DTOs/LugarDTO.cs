@@ -19,6 +19,5 @@ namespace API_Sistema_Central.DTOs
         public string NifProprietario { get; set; }
         public int ReservaSistemaCentralId { get; set; }
         public int ParqueIdSC { get; set; }
-        public string ApiUrl { get; set; }
     }
 }
