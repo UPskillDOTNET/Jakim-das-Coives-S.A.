@@ -119,9 +119,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    TokenUtilizadorDTO token;
                     try
                     {
-                        await RegistarUtilizadorNoSCAsync(new RegistarUtilizadorDTO
+                        token = await RegistarUtilizadorNoSCAsync(new RegistarUtilizadorDTO
                         {
                             Nif = Input.Nif,
                             NomeUtilizador = Input.NomeUtilizador,
@@ -147,6 +148,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                         await _userManager.DeleteAsync(user);
                         throw new Exception("O registo no servidor falhou.");
                     }
+                    var registeredUser = await _userManager.FindByIdAsync(Input.Nif);
+                    registeredUser.Token = token.Token;
+                    registeredUser.Expiration = token.Expiration;
+                    await _userManager.UpdateAsync(registeredUser);
 
                     _logger.LogInformation("User created a new account with password.");
 

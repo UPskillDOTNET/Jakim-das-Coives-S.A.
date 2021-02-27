@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -85,6 +88,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = _userManager.FindByEmailAsync(Input.Email).Result;
+                    var info = new InfoUtilizadorDTO { Email = Input.Email, Password = Input.Password };
+                    var token = GetTokenAsync(info).Result;
+                    user.Token = token.Token;
+                    user.Expiration = token.Expiration;
+                    await _userManager.UpdateAsync(user);
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
@@ -106,6 +116,27 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
+        {
+            try
+            {
+                TokenUtilizadorDTO token;
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/login";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                }
+                return token;
+            }
+            catch
+            {
+                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }

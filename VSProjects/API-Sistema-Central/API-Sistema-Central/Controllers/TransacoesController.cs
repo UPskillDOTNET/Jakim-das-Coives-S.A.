@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API_Sistema_Central.Controllers
 {
-    //[Authorize]
-    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("api/transacoes")]
     [ApiController]
     public class TransacoesController : ControllerBase
     {
