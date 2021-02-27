@@ -1,0 +1,52 @@
+﻿@model IEnumerable<APP_FrontEnd.Models.Transacao>
+
+@{
+    ViewData["Title"] = "Transações";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Transações</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NifPagador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NifRecipiente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataHora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MetodoId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NifPagador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NifRecipiente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataHora)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MetodoId)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
