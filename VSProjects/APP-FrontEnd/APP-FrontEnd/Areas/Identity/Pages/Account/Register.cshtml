@@ -1,0 +1,179 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <table>
+                <tr style=" vertical-align: top;">
+                    <td style="width: 50%;">
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password"></label>
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.ConfirmPassword"></label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.NomeUtilizador"></label>
+                            <input asp-for="Input.NomeUtilizador" class="form-control" />
+                            <span asp-validation-for="Input.NomeUtilizador" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Nif"></label>
+                            <input asp-for="Input.Nif" class="form-control" />
+                            <span asp-validation-for="Input.Nif" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td style="width: 50px;"></td>
+                    <td style="width: 50%;">
+                        <div class="form-group">
+                            <label asp-for="Input.MetodoId"></label>
+                            <select asp-for="Input.MetodoId" onChange="metodo(this.value);" class="form-control">
+                                <option value="0"></option>
+                                <option value="1">Cartão de Crédito</option>
+                                <option value="2">Débito Direto</option>
+                                <option value="3">Paypal</option>
+                            </select>
+                            <span asp-validation-for="Input.MetodoId" class="text-danger"></span>
+                        </div>
+                        <div id="cartao" style="display: none">
+                            <div class="form-group">
+                                <label asp-for="Input.Numero"></label>
+                                <input asp-for="Input.Numero" class="form-control" />
+                                <span asp-validation-for="Input.Numero" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.NomeCartao"></label>
+                                <input asp-for="Input.NomeCartao" class="form-control" />
+                                <span asp-validation-for="Input.NomeCartao" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.DataValidade"></label>
+                                <input asp-for="Input.DataValidade" class="form-control" />
+                                <span asp-validation-for="Input.DataValidade" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.Cvv"></label>
+                                <input asp-for="Input.Cvv" class="form-control" />
+                                <span asp-validation-for="Input.Cvv" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="debito" style="display: none">
+                            <div class="form-group">
+                                <label asp-for="Input.Iban"></label>
+                                <input asp-for="Input.Iban" class="form-control" />
+                                <span asp-validation-for="Input.Iban" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.NomeDebitoDireto"></label>
+                                <input asp-for="Input.NomeDebitoDireto" class="form-control" />
+                                <span asp-validation-for="Input.NomeDebitoDireto" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.Rua"></label>
+                                <input asp-for="Input.Rua" class="form-control" />
+                                <span asp-validation-for="Input.Rua" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.CodigoPostal"></label>
+                                <input asp-for="Input.CodigoPostal" class="form-control" />
+                                <span asp-validation-for="Input.CodigoPostal" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.Freguesia"></label>
+                                <input asp-for="Input.Freguesia" class="form-control" />
+                                <span asp-validation-for="Input.Freguesia" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div id="paypal" style="display: none">
+                            <div class="form-group">
+                                <label asp-for="Input.EmailPayPal"></label>
+                                <input asp-for="Input.EmailPayPal" class="form-control" />
+                                <span asp-validation-for="Input.EmailPayPal" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Input.PasswordPayPal"></label>
+                                <input asp-for="Input.PasswordPayPal" class="form-control" />
+                                <span asp-validation-for="Input.PasswordPayPal" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+    <div class="col-md-5 col-md-offset-2">
+        <section>
+            <h4>Use another service to register.</h4>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                            for details on setting up this ASP.NET application to support logging in via external services.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+<script type='text/javascript'>
+    function metodo(val) {
+        if (val == "0") {
+            document.getElementById('cartao').style.display = 'none';
+            document.getElementById('debito').style.display = 'none';
+            document.getElementById('paypal').style.display = 'none';
+        } else if (val == "1") {
+            document.getElementById('cartao').style.display = 'block';
+            document.getElementById('debito').style.display = 'none';
+            document.getElementById('paypal').style.display = 'none';
+        } else if (val == "2") {
+            document.getElementById('cartao').style.display = 'none';
+            document.getElementById('debito').style.display = 'block';
+            document.getElementById('paypal').style.display = 'none';
+        } else if (val == "3") {
+            document.getElementById('cartao').style.display = 'none';
+            document.getElementById('debito').style.display = 'none';
+            document.getElementById('paypal').style.display = 'block';
+        }
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

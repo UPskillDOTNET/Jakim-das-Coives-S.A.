@@ -8,5 +8,7 @@ namespace APP_FrontEnd.Models
 {
     public class Utilizador : IdentityUser
     {
+        public int MetodoId { get; set; }
+        public string Nome { get; set; }
     }
 }

@@ -40,10 +40,6 @@ namespace API_SubAluguer.Services
         {
             var temp = await _repository.GetAllAsync();
             var lista = temp.Value.Where(t => t.NifProprietario == nif);
-            if (!lista.Any())
-            {
-                throw new Exception("Não existem lugares associados a este NIF.");
-            }
             return lista.ToList();
         }
 

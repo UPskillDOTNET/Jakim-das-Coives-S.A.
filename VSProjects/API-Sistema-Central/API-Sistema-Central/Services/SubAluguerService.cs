@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
+using API_Sistema_Central.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,14 +15,21 @@ namespace API_Sistema_Central.Services
     public class SubAluguerService : ISubAluguerService
     {
         private readonly IReservaService _reservaService;
+        private readonly UserManager<Utilizador> _userManager;
 
-        public SubAluguerService(IReservaService reservaService)
+        public SubAluguerService(IReservaService reservaService, UserManager<Utilizador> userManager)
         {
             _reservaService = reservaService;
+            _userManager = userManager;
         }
 
         public async Task<ActionResult<IEnumerable<SubAluguerDTO>>> GetByNifAsync(string nif)
         {
+            var u = await _userManager.FindByIdAsync(nif);
+            if (u == null)
+            {
+                throw new Exception("O utilizador não existe.");
+            }
             try
             {
                 IEnumerable<SubAluguerDTO> result;
@@ -31,6 +40,10 @@ namespace API_Sistema_Central.Services
                     response.EnsureSuccessStatusCode();
                     result = await response.Content.ReadAsAsync<IEnumerable<SubAluguerDTO>>();
                 }
+                if (!result.Any())
+                {
+                    return result.ToList();
+                }
                 foreach (SubAluguerDTO s in result)
                 {
                     bool isReservado = await IsReservado(s.Id);
@@ -40,7 +53,7 @@ namespace API_Sistema_Central.Services
             }
             catch (Exception)
             {
-                throw new Exception("Não existem lugares associados a este NIF.");
+                throw new Exception("Ligação aos Sub-Alugueres falhou.");
             }
         }
 
