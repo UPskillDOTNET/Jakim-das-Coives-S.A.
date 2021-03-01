@@ -19,8 +19,9 @@ namespace API_Sistema_Central.Services
         private readonly IDebitoDiretoRepository _debitoDiretoRepository;
         private readonly IPayPalRepository _payPalRepository;
         private readonly IPagamentoService _pagamentoService;
+        private readonly ITransacaoRepository _transacaoRepository;
 
-        public UtilizadorService (UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService)
+        public UtilizadorService (UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService, ITransacaoRepository transacaoRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,6 +29,7 @@ namespace API_Sistema_Central.Services
             _debitoDiretoRepository = debitoDiretoRepository;
             _payPalRepository = payPalRepository;
             _pagamentoService = pagamentoService;
+            _transacaoRepository = transacaoRepository;
         }
 
         public async Task<IdentityResult> RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO)
@@ -98,6 +100,7 @@ namespace API_Sistema_Central.Services
             {
                 PagamentoDTO deposito = new PagamentoDTO { MetodoId = utilizador.Credencial.MetodoId, NifPagador = nif, NifRecipiente = nif, Valor = valor };
                 await _pagamentoService.Pay(deposito);
+                await _transacaoRepository.PostAsync(new Transacao { NifPagador = nif, NifRecipiente = nif, Valor = valor, MetodoId = utilizador.Credencial.MetodoId, DataHora = DateTime.UtcNow });
             }
             else
             {

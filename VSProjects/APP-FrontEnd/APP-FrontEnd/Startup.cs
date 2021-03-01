@@ -40,7 +40,8 @@ namespace APP_FrontEnd
             services.AddRazorPages();
             
             services.AddTransient<ITransacaoService, TransacaoService>();
-            
+            services.AddTransient<IUtilizadorService, UtilizadorService>();
+
             services.AddHttpContextAccessor();
         }
 

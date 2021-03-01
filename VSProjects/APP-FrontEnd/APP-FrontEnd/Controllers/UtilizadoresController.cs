@@ -18,7 +18,7 @@ namespace APP_FrontEnd.Controllers
 
         public async Task<IActionResult> Saldo()
         {
-            var saldo = new Saldo();
+            var saldo = new SaldoDTO();
             try
             {
                 var valor = await _utilizadorService.GetSaldoAsync();
@@ -31,7 +31,6 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-
         public IActionResult Depositar()
         {
             return View();
@@ -39,14 +38,13 @@ namespace APP_FrontEnd.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Depositar([Bind("Valor")] Saldo saldo)
+        public async Task<IActionResult> Depositar([Bind("Valor")] DepositarDTO depositar)
         {
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _utilizadorService.DepositarSaldoAsync(saldo.Valor);
+                    await _utilizadorService.DepositarSaldoAsync(depositar);
                     return RedirectToAction(nameof(Saldo));
                 }
                 catch (Exception e)
@@ -54,7 +52,7 @@ namespace APP_FrontEnd.Controllers
                     return MensagemErro(e.Message);
                 }                
             }
-            return View(saldo);
+            return View(depositar);
         }
 
         private IActionResult MensagemErro(string mensagem)
