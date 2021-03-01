@@ -68,8 +68,8 @@ namespace API_Sistema_Central.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPost("depositar/{nif}/{valor}")]
-        public async Task<ActionResult> DepositarSaldoByNif(string nif, double valor)
+        [HttpPost("depositar/{nif}")]
+        public async Task<ActionResult> DepositarSaldoByNif(double valor, string nif)
         {
             try
             {

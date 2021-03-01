@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.Text;
-using System.Net.Http.Headers;
 
 namespace APP_FrontEnd.Services
 {
-    public class TransacaoService : ITransacaoService
+    public class UtilizadorService : IUtilizadorService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
 
-        public TransacaoService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
+        public UtilizadorService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
-        public async Task<IEnumerable<Transacao>> GetAllTransacoesByNIF()
+        public async Task<double> GetSaldoAsync()
         {
+
             string nif;
             try
             {
@@ -39,17 +40,18 @@ namespace APP_FrontEnd.Services
 
             var token = await GetTokenByNif(nif);
 
-            var listaTransacoes = new List<Transacao>();
+            double saldoUtilizador;
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/transacoes/all/" + nif;
+                string endpoint = "https://localhost:5050/api/utilizadores/saldo/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
-                listaTransacoes = await response.Content.ReadAsAsync<List<Transacao>>();
+                saldoUtilizador = await response.Content.ReadAsAsync<double>();
             }
-            return listaTransacoes;
+            return saldoUtilizador;
         }
+
 
         private async Task<string> GetTokenByNif(string nif)
         {
@@ -64,5 +66,32 @@ namespace APP_FrontEnd.Services
                 return user.Token;
             }
         }
+
+
+        public async Task DepositarSaldoAsync(double valor)
+        {
+            string nif;
+            try
+            {
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+            catch
+            {
+                throw new Exception("Utilizador não tem login feito.");
+            }
+
+            var token = await GetTokenByNif(nif);
+
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(valor), Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/utilizadores/depositar/" + nif;
+                var response = await client.PostAsync(endpoint, content);
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+
     }
 }
