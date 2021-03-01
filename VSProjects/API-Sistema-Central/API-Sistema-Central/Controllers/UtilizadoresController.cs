@@ -68,12 +68,12 @@ namespace API_Sistema_Central.Controllers
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
-        [HttpPost("depositar/{nif}/{valor}")]
-        public async Task<ActionResult> DepositarSaldoByNif(string nif, double valor)
+        [HttpPost("depositar")]
+        public async Task<ActionResult> DepositarSaldoByNif(DepositarDTO depositar)
         {
             try
             {
-                await _utilizadorService.DepositarSaldoAsync(nif, valor);
+                await _utilizadorService.DepositarSaldoAsync(depositar.Nif, depositar.Valor);
                 return Ok();
             }
             catch (Exception e)

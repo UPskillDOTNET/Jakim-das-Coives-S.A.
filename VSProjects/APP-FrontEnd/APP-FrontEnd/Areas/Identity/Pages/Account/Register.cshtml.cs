@@ -69,8 +69,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar Password")]
+            [Compare("Password", ErrorMessage = "As passwords não coincidem. Por favor insire novamente.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
@@ -79,27 +79,40 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             public int MetodoId { get; set; }
 
             // Dados Cartão de Crédito
-            [RegularExpression(@"^\d{16}$", ErrorMessage = "Numero do cartão de crédito inválido")]
+            [RegularExpression(@"^\d{16}$", ErrorMessage = "Número do cartão de crédito inválido")]
+            [Display(Name = "Número do Cartão")]
             public string Numero { get; set; }
+
+            [Display(Name = "Nome do Titular")]
             public string NomeCartao { get; set; }
+
             [RegularExpression(@"^(0[1-9]|1[0-2])[/]\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
+            [Display(Name = "Data de Validade")]
             public string DataValidade { get; set; }
+
             [RegularExpression(@"^\d{3}$", ErrorMessage = "CVV do cartão de crédito inválido")]
+            [Display(Name = "CVV")]
             public string Cvv { get; set; }
 
             // Dados Debito Direto
             [RegularExpression(@"^[P][T][5][0]\d{21}$", ErrorMessage = "IBAN inválido")]
+            [Display(Name = "IBAN")]
             public string Iban { get; set; }
+
+            [Display(Name = "Nome do Titular")]
             public string NomeDebitoDireto { get; set; }
             public string Rua { get; set; }
             [RegularExpression(@"^\d{4}-\d{3}$", ErrorMessage = "Código postal inválido")]
+            [Display(Name = "Código Postal")]
             public string CodigoPostal { get; set; }
             public string Freguesia { get; set; }
 
             // Dados PayPal
             [DataType(DataType.EmailAddress)]
+            [Display(Name = "Email")]
             public string EmailPayPal { get; set; }
             [DataType(DataType.Password)]
+            [Display(Name = "Password do Paypal")]
             public string PasswordPayPal { get; set; }
         }
 

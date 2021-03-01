@@ -120,7 +120,7 @@ namespace API_Sistema_Central.Services
             await _pagamentoService.Pay(payDTO);
 
             //Registar a transacao do pagamento da reserva
-            Transacao t = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifComprador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });
+            Transacao t = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifComprador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow, Tipo = Tipo.Reserva });
             reserva.TransacaoId = t.Id;
             if (t == null)
             {
@@ -137,7 +137,7 @@ namespace API_Sistema_Central.Services
             catch (Exception)
             {
                 await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
+                await _transacaoRepository.PostAsync(new Transacao { MetodoId = 4, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow, Tipo = Tipo.Reembolso });
                 throw new Exception("A reserva no parque de destino falhou.");
             }
 
@@ -158,7 +158,7 @@ namespace API_Sistema_Central.Services
             catch (Exception)
             {
                 await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
+                await _transacaoRepository.PostAsync(new Transacao { MetodoId = 4, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow, Tipo = Tipo.Reembolso });
                 await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
                 throw new Exception("O envio do email de confirmação falhou.");
             }
@@ -171,7 +171,7 @@ namespace API_Sistema_Central.Services
             catch
             {
                 await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
+                await _transacaoRepository.PostAsync(new Transacao { MetodoId = 4, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow, Tipo = Tipo.Reembolso });
                 await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
                 Utilizador utilizador = await _userManager.FindByIdAsync(reserva.NifUtilizador);
                 _emailService.EnviarEmailCancelamento(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
@@ -216,7 +216,7 @@ namespace API_Sistema_Central.Services
             Transacao tReembolso;
             try
             {
-                tReembolso = await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
+                tReembolso = await _transacaoRepository.PostAsync(new Transacao { MetodoId = 4, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow, Tipo = Tipo.Reembolso });
             }
             catch
             {
