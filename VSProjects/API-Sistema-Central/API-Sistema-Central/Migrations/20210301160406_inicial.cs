@@ -231,7 +231,8 @@ namespace API_Sistema_Central.Migrations
                     NifRecipiente = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Valor = table.Column<double>(type: "float", nullable: false),
                     DataHora = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MetodoId = table.Column<int>(type: "int", nullable: false)
+                    MetodoId = table.Column<int>(type: "int", nullable: false),
+                    Tipo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

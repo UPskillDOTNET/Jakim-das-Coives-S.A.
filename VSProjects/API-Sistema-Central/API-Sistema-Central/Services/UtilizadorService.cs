@@ -100,7 +100,7 @@ namespace API_Sistema_Central.Services
             {
                 PagamentoDTO deposito = new PagamentoDTO { MetodoId = utilizador.Credencial.MetodoId, NifPagador = nif, NifRecipiente = nif, Valor = valor };
                 await _pagamentoService.Pay(deposito);
-                await _transacaoRepository.PostAsync(new Transacao { NifPagador = nif, NifRecipiente = nif, Valor = valor, MetodoId = utilizador.Credencial.MetodoId, DataHora = DateTime.UtcNow });
+                await _transacaoRepository.PostAsync(new Transacao { NifPagador = nif, NifRecipiente = nif, Valor = valor, MetodoId = utilizador.Credencial.MetodoId, DataHora = DateTime.UtcNow, Tipo = Tipo.Deposito });
             }
             else
             {

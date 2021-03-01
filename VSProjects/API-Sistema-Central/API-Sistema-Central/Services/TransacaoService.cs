@@ -46,24 +46,29 @@ namespace API_Sistema_Central.Services
             foreach (Transacao t in listatemp)
             {
                 var metodo = _metodoPagamentoRepository.GetByIdAsync(t.MetodoId).Result;
-                if (t.NifPagador == t.NifRecipiente)
+                if (t.Tipo == Tipo.Deposito)
                 {
                     var dto = new TransacaoDTO { NifDestinatario = t.NifRecipiente, DataHora = t.DataHora, Valor = t.Valor, Tipo = "Depósito", Metodo = metodo.Nome };
                     lista.Add(dto);
                 }
-                if (t.NifPagador == nif && t.NifRecipiente != nif)
+                if (t.NifPagador == nif && t.Tipo == Tipo.Reserva)
                 {
                     var dto = new TransacaoDTO { NifDestinatario = t.NifRecipiente, DataHora = t.DataHora, Valor = -t.Valor, Tipo = "Reserva", Metodo = metodo.Nome };
                     lista.Add(dto);
                 }
-                if (t.NifPagador != nif && t.NifPagador != "999999999" && t.NifRecipiente == nif)
+                if (t.NifRecipiente == nif && t.Tipo == Tipo.Reserva)
                 {
                     var dto = new TransacaoDTO { NifDestinatario = t.NifPagador, DataHora = t.DataHora, Valor = t.Valor, Tipo = "Sub-Aluguer", Metodo = metodo.Nome };
                     lista.Add(dto);
                 }
-                if (t.NifPagador != nif && t.NifPagador == "999999999" && t.NifRecipiente == nif)
+                if (t.NifRecipiente == nif && t.Tipo == Tipo.Reembolso)
                 {
                     var dto = new TransacaoDTO { NifDestinatario = t.NifPagador, DataHora = t.DataHora, Valor = t.Valor, Tipo = "Reembolso", Metodo = metodo.Nome };
+                    lista.Add(dto);
+                }
+                if (t.NifPagador == nif && t.Tipo == Tipo.Reembolso)
+                {
+                    var dto = new TransacaoDTO { NifDestinatario = t.NifRecipiente, DataHora = t.DataHora, Valor = -t.Valor, Tipo = "Devolução", Metodo = metodo.Nome };
                     lista.Add(dto);
                 }
             }
