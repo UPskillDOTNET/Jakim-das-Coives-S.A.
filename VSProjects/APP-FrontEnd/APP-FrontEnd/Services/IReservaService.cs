@@ -10,9 +10,9 @@ namespace APP_FrontEnd.Services
     public interface IReservaService
     {
         public Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim);
-        public Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync(string nif);
+        public Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync();
         public Task<DetalheReservaDTO> GetByIdAsync(int id);
-        public Task<Reserva> PostAsync(ReservaDTO reservaDTO);
+        public Task PostAsync(ReservaDTO reservaDTO);
         public Task DeleteAsync(int id);
     }
 }

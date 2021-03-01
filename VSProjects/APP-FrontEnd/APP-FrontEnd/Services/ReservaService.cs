@@ -118,6 +118,8 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem login feito.");
             }
 
+            reservaDTO.NifComprador = nif;
+
             var token = await GetTokenByNif(nif);
             using (HttpClient client = new HttpClient())
             {
