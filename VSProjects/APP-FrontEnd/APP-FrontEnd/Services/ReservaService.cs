@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace APP_FrontEnd.Services
 {
@@ -59,26 +60,30 @@ namespace APP_FrontEnd.Services
             return listaLugares;
         }
 
-        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync(string nif)
+        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync()
         {
-            var u = await _userManager.FindByIdAsync(nif);
-            if (u == null)
+            string nif;
+            try
             {
-                throw new Exception("O utilizador não existe.");
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
-            var temp = await _repository.GetAllAsync();
-            var l = temp.Value.Where(t => t.NifUtilizador == nif);
-            var lista = new List<DetalheReservaDTO>();
-            if (!l.Any())
+            catch
             {
-                return lista;
+                throw new Exception("Utilizador não tem login feito.");
             }
-            foreach (Reserva r in l)
+
+            var token = await GetTokenByNif(nif);
+
+            var listaReservas = new List<DetalheReservaDTO>();
+            using (HttpClient client = new HttpClient())
             {
-                var d = await CreateDetalheReservaDTO(r);
-                lista.Add(d);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/reserva/all/" + nif;
+                var response = await client.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+                listaReservas = await response.Content.ReadAsAsync<List<DetalheReservaDTO>>();
             }
-            return lista;
+            return listaReservas;
         }
 
         public async Task<DetalheReservaDTO> GetByIdAsync(int id)
