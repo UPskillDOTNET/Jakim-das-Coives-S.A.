@@ -50,20 +50,35 @@ namespace APP_FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reservar(ReservaDTO reservaDTO)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    await _reservaService.PostAsync(reservaDTO);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception e)
-                {
-                    return MensagemErro(e.Message);
-                }
+                await _reservaService.PostAsync(reservaDTO);
+                return RedirectToAction(nameof(Index));
             }
-            return View(reservaDTO);
+            catch (Exception e)
+            {
+                return MensagemErro(e.Message);
+            }
+        }
+
+        public IActionResult Cancelar()
+        {
+            return View();
+        }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancelar(int id)
+        {
+            try
+            {
+                await _reservaService.DeleteAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                return MensagemErro(e.Message);
+            }
         }
 
         private IActionResult MensagemErro(string mensagem)
