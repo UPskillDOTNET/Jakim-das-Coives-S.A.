@@ -34,7 +34,7 @@ namespace APP_FrontEnd.Services
             }
             catch
             {
-                throw new Exception("Utilizador não tem login feito.");
+                throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
             var token = await GetTokenByNif(nif);
