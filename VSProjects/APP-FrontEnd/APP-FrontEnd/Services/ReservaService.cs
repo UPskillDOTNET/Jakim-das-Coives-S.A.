@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Json;
 
 namespace APP_FrontEnd.Services
 {
@@ -105,83 +106,25 @@ namespace APP_FrontEnd.Services
             return result;
         }
 
-        public async Task<Reserva> PostAsync(ReservaDTO reservaDTO)
+        public async Task PostAsync(ReservaDTO reservaDTO)
         {
-            await ValidarReservaDTO(reservaDTO);
-
-            Reserva reserva = new Reserva { NifUtilizador = reservaDTO.NifComprador, ParqueId = reservaDTO.ParqueIdSC };
-            Parque p = await _parqueRepository.GetByIdAsync(reservaDTO.ParqueIdSC);
-            LugarDTO l = GetLugarParqueByID(reservaDTO.LugarId, p.ApiUrl).Result;
-
-            //Calcular o custo da Reserva
-            var h = (reservaDTO.Fim - reservaDTO.Inicio).TotalHours;
-            reserva.Custo = Math.Round(h * l.Preco, 2);
-            if (reserva.Custo <= 0)
-            {
-                throw new Exception("O custo da reserva é inválido");
-            }
-
-            //Fazer pagamento da reserva
-            PagamentoDTO payDTO = new PagamentoDTO { NifPagador = reservaDTO.NifComprador, NifRecipiente = reservaDTO.NifVendedor, MetodoId = reservaDTO.MetodoId, Valor = reserva.Custo };
-            await _pagamentoService.Pay(payDTO);
-
-            //Registar a transacao do pagamento da reserva
-            Transacao t = await _transacaoRepository.PostAsync(new Transacao { NifPagador = reservaDTO.NifComprador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo, MetodoId = reservaDTO.MetodoId, DataHora = DateTime.UtcNow });
-            reserva.TransacaoId = t.Id;
-            if (t == null)
-            {
-                await _pagamentoService.Reembolso(new Transacao { NifPagador = reservaDTO.NifComprador, NifRecipiente = reservaDTO.NifVendedor, Valor = reserva.Custo });
-                throw new Exception("A transação não foi registada com sucesso.");
-            }
-
-            //Reservar o lugar na API-Parque
+            string nif;
             try
             {
-                var reservaParque = await PostReservaInParqueAPIAsync(reservaDTO, p.ApiUrl);
-                reserva.ReservaParqueId = reservaParque.Id;
-            }
-            catch (Exception)
-            {
-                await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
-                throw new Exception("A reserva no parque de destino falhou.");
-            }
-
-            //Enviar email de confirmacao
-            try
-            {
-                QRCodeDTO qr = QRCodeDTOAsync(reservaDTO, reserva.ReservaParqueId, l, p.ApiUrl).Result;
-                if (p.ApiUrl == "https://localhost:5005/")
-                {
-                    var rs = _repository.GetByIdAsync(reservaDTO.ReservaSistemaCentralId).Result;
-                    _emailService.EnviarEmailSubAluguer(qr, rs.ReservaParqueId);
-                }
-                else
-                {
-                    _emailService.EnviarEmailReserva(qr);
-                }
-            }
-            catch (Exception)
-            {
-                await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
-                await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
-                throw new Exception("O envio do email de confirmação falhou.");
-            }
-
-            //Reservar no Sistema Central
-            try
-            {
-                return await _repository.PostAsync(reserva);
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
             catch
             {
-                await _pagamentoService.Reembolso(t);
-                await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
-                await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
-                Utilizador utilizador = await _userManager.FindByIdAsync(reserva.NifUtilizador);
-                _emailService.EnviarEmailCancelamento(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
-                throw new Exception("A reserva no Sistema Central falhou.");
+                throw new Exception("Utilizador não tem login feito.");
+            }
+
+            var token = await GetTokenByNif(nif);
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/reservas/";
+                var response = await client.PostAsJsonAsync(endpoint, reservaDTO);
+                response.EnsureSuccessStatusCode();
             }
         }
 
