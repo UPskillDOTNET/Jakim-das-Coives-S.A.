@@ -15,7 +15,7 @@ namespace APP_FrontEnd
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
             using (var scope = host.Services.CreateScope())
@@ -27,6 +27,7 @@ namespace APP_FrontEnd
                     var context = services.GetRequiredService<FrontEndContext>();
                     var userManager = services.GetRequiredService<UserManager<Utilizador>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    await SeedData.SeedUtilizadoresAsync(userManager, roleManager);
                 }
                 catch (Exception ex)
                 {
