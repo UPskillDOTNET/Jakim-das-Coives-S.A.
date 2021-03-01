@@ -78,7 +78,7 @@ namespace APP_FrontEnd.Services
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reserva/all/" + nif;
+                string endpoint = "https://localhost:5050/api/reservas/all/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 listaReservas = await response.Content.ReadAsAsync<List<DetalheReservaDTO>>();
@@ -88,13 +88,28 @@ namespace APP_FrontEnd.Services
 
         public async Task<DetalheReservaDTO> GetByIdAsync(int id)
         {
-            var r = await _repository.GetByIdAsync(id);
-            if (r == null)
+            string nif;
+            try
             {
-                throw new Exception("A reserva solicitada não existe.");
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
-            var detalhe = CreateDetalheReservaDTO(r).Result;
-            return detalhe;
+            catch
+            {
+                throw new Exception("Utilizador não tem login feito.");
+            }
+
+            var token = await GetTokenByNif(nif);
+
+            var result = new DetalheReservaDTO();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/reservas/" + id;
+                var response = await client.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+                result = await response.Content.ReadAsAsync<DetalheReservaDTO>();
+            }
+            return result;
         }
 
         public async Task<Reserva> PostAsync(ReservaDTO reservaDTO)
