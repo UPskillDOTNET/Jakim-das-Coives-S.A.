@@ -174,8 +174,7 @@ namespace SCUnitTests
                         Preco = 10,
                         NifProprietario = "999999999",
                         ReservaSistemaCentralId = 1,
-                        ParqueIdSC = 1,
-                        ApiUrl = "randomlink"
+                        ParqueIdSC = 1
                     }
                 });
 
