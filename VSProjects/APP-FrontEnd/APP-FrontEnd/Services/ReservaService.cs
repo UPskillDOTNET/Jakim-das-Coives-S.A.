@@ -28,36 +28,29 @@ namespace APP_FrontEnd.Services
 
         public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
-            var listaLugares = new List<LugarDTO>();
-            var listaParques = _parqueRepository.GetAllAsync().Result;
-            foreach (Parque parque in listaParques.Value)
+            string nif;
+            try
             {
-                var f = GetFreguesiaByNome(freguesiaNome, parque.ApiUrl).Result;
-                if (f != null)
-                {
-                    using (HttpClient client = new HttpClient())
-                    {
-                        string endpoint1 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + " / " + fim.ToString("yyyy-MM-ddTHH:mm:ss");
-                        var response1 = await client.GetAsync(endpoint1);
-                        response1.EnsureSuccessStatusCode();
-                        List<LugarDTO> temp = await response1.Content.ReadAsAsync<List<LugarDTO>>();
-                        foreach (LugarDTO l in temp)
-                        {
-                            l.ParqueIdSC = parque.Id;
-                            if (l.NifProprietario == null)
-                            {
-                                l.NifProprietario = "999999999";
-                            }
-                            listaLugares.Add(l);
-                        }
-                    }
-                };
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
-            if (!listaLugares.Any())
+            catch
             {
-                throw new Exception("Não existem lugares disponíveis para o local e período de tempo escolhidos.");
+                throw new Exception("Utilizador não tem login feito.");
+            }
+
+            var token = await GetTokenByNif(nif);
+
+            var listaLugares = new List<LugarDTO>();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/reservas/disponibilidade/" + freguesiaNome + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + "/" + fim.ToString("yyyy-MM-ddTHH:mm:ss");
+                var response = await client.GetAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+                listaLugares = await response.Content.ReadAsAsync<List<LugarDTO>>();
             }
             return listaLugares;
+
         }
 
         public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync()
