@@ -265,5 +265,18 @@ namespace APP_FrontEnd.Services
                 throw new Exception("O cancelamento no parque de destino falhou.");
             }
         }
+        private async Task<string> GetTokenByNif(string nif)
+        {
+            var user = await _userManager.FindByIdAsync(nif);
+            if (user.Expiration < DateTime.UtcNow)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
+            }
+            else
+            {
+                return user.Token;
+            }
+        }
     }
 }
