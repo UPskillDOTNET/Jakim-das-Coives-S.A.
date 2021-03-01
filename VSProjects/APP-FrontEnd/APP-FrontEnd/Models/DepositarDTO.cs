@@ -10,7 +10,7 @@ namespace APP_FrontEnd.Models
     {
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string Nif { get; set; }
-        [Range(1, double.MaxValue, ErrorMessage = "Depósito mínimo de 1€")]
+        [Range(1, 10000, ErrorMessage = "Depósito mínimo de 1€ e máximo de 10.000€")]
         public double Valor { get; set; }
     }
 }
