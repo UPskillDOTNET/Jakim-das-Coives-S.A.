@@ -187,82 +187,26 @@ namespace APP_FrontEnd.Services
 
         public async Task DeleteAsync(int id)
         {
-            if (IsSubAlugado(id).Result)
-            {
-                throw new Exception("Proibido: a reserva está sub-alugada.");
-            }
-            Reserva reserva = await _repository.GetByIdAsync(id);
-            if (reserva == null)
-            {
-                throw new Exception("A reserva não existe.");
-            }
-            Transacao t = await _transacaoRepository.GetByIdAsync(reserva.TransacaoId);
-            if (t == null)
-            {
-                throw new Exception("A transação não existe.");
-            }
-            DetalheReservaDTO dr = await GetByIdAsync(id);
-            if (dr.Inicio < DateTime.Now)
-            {
-                throw new Exception("A hora de início desta reserva já foi ultrapassada.");
-            }
-
-            //Enviar email de cancelamento
+            string nif;
             try
             {
-                Utilizador utilizador = await _userManager.FindByIdAsync(reserva.NifUtilizador);
-                _emailService.EnviarEmailCancelamento(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
-            }
-            catch (Exception)
-            {
-                throw new Exception("O envio do email de cancelamento falhou.");
-            }
-
-            //Registar a transacao do reembolso
-            Transacao tReembolso;
-            try
-            {
-                tReembolso = await _transacaoRepository.PostAsync(new Transacao { MetodoId = t.MetodoId, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow });
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             }
             catch
             {
-                throw new Exception("O registo da transação referente ao reembolso falhou.");
+                throw new Exception("Utilizador não tem login feito.");
             }
 
-            //Reembolsar a carteira do utilizador
-            try
-            {
-                await _pagamentoService.Reembolso(t);
-            }
-            catch (Exception)
-            {
-                await _transacaoRepository.DeleteAsync(tReembolso.Id);
-                throw new Exception("O reembolso falhou.");
-            }
+            var token = await GetTokenByNif(nif);
 
-            //Apagar a reserva no sistema central
-            try
+            var result = new DetalheReservaDTO();
+            using (HttpClient client = new HttpClient())
             {
-                await _repository.DeleteAsync(id);
-            }
-            catch (Exception)
-            {
-                await _pagamentoService.Reembolso(tReembolso);
-                await _transacaoRepository.DeleteAsync(tReembolso.Id);
-                throw new Exception("O cancelamento da reserva falhou.");
-            }
-
-            //Apagar a reserva no parque
-            try
-            {
-                await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
-            }
-            catch (Exception)
-            {
-                await _pagamentoService.Reembolso(tReembolso);
-                await _transacaoRepository.DeleteAsync(tReembolso.Id);
-                await _repository.PostAsync(reserva);
-                throw new Exception("O cancelamento no parque de destino falhou.");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/reservas/" + id;
+                var response = await client.DeleteAsync(endpoint);
+                response.EnsureSuccessStatusCode();
+                result = await response.Content.ReadAsAsync<DetalheReservaDTO>();
             }
         }
         private async Task<string> GetTokenByNif(string nif)
