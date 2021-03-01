@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/subalugueres")]
     [ApiController]
     public class SubAlugueresController : ControllerBase

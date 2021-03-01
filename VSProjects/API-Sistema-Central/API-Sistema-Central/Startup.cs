@@ -37,10 +37,10 @@ namespace API_Sistema_Central
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Sistema_Central", Version = "v1" });
-            });
+            });*/
 
             services.AddDbContext<SCContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
@@ -83,8 +83,8 @@ namespace API_Sistema_Central
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Sistema_Central v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Sistema_Central v1"));*/
             }
 
             app.UseHttpsRedirection();

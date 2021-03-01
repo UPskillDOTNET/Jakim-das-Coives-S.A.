@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API_Sistema_Central.Controllers
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/reservas")]
     [ApiController]
     public class ReservasController : ControllerBase

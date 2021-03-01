@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,6 +52,7 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet("saldo/{nif}")]
         public async Task<ActionResult<double>> GetSaldoByNif(string nif)
         {
@@ -65,6 +67,7 @@ namespace API_Sistema_Central.Controllers
             
         }
 
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("depositar/{nif}/{valor}")]
         public async Task<ActionResult> DepositarSaldoByNif(string nif, double valor)
         {

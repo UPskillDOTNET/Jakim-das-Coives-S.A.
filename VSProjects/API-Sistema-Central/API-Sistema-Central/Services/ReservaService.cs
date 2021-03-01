@@ -68,13 +68,18 @@ namespace API_Sistema_Central.Services
 
         public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync(string nif)
         {
+            var u = await _userManager.FindByIdAsync(nif);
+            if (u == null)
+            {
+                throw new Exception("O utilizador não existe.");
+            }
             var temp = await _repository.GetAllAsync();
             var l = temp.Value.Where(t => t.NifUtilizador == nif);
+            var lista = new List<DetalheReservaDTO>();
             if (!l.Any())
             {
-                throw new Exception("Não existem reservas associadas a este NIF.");
+                return lista;
             }
-            var lista = new List<DetalheReservaDTO>();
             foreach (Reserva r in l)
             {
                 var d = await CreateDetalheReservaDTO(r);
