@@ -95,7 +95,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     user.Expiration = token.Expiration;
                     await _userManager.UpdateAsync(user);
 
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("O utilizador iniciou sessão.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -104,12 +104,12 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    _logger.LogWarning("A sua conta de utilizador foi bloqueada.");
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Inicio de sessão inválido.");
                     return Page();
                 }
             }
