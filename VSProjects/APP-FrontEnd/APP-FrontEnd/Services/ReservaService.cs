@@ -27,7 +27,7 @@ namespace APP_FrontEnd.Services
             _signInManager = signInManager;
         }
 
-        public async Task<ActionResult<IEnumerable<LugarDTO>>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
+        public async Task<IEnumerable<LugarDTO>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
         {
             string nif;
             try
@@ -54,7 +54,7 @@ namespace APP_FrontEnd.Services
 
         }
 
-        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetByNifAsync()
+        public async Task<IEnumerable<DetalheReservaDTO>> GetByNifAsync()
         {
             string nif;
             try

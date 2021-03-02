@@ -41,6 +41,19 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
+        public async Task<IActionResult> Detalhes(int id)
+        {
+            try
+            {
+                var res = await _reservaService.GetByIdAsync(id);
+                return View(res);
+            }
+            catch (Exception e)
+            {
+                return MensagemErro(e.Message);
+            }
+        }
+
         public IActionResult Reservar()
         {
             return View();
