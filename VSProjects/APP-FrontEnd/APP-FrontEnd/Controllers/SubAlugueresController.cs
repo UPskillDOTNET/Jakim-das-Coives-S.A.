@@ -16,7 +16,7 @@ namespace APP_FrontEnd.Controllers
         {
             _subAluguerService = subAluguerService;
         }
-        // GET: SubAlugueresController
+        
         public async Task<IActionResult> Index()
         {
             try
@@ -30,7 +30,6 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        // GET: SubAlugueresController/Details/5
         public async Task<IActionResult> Detalhes(int id)
         {
             try
@@ -44,13 +43,11 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        // GET: SubAlugueresController/Create
         public ActionResult Registar()
         {
             return View();
         }
 
-        // POST: SubAlugueresController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Registar([Bind("Id, ParqueId, Numero, Fila, Andar, Preco, NifProprietario, ReservaSistemaCentralId, Inicio, Fim")] SubAluguerDTO subAluguerDTO)
@@ -71,8 +68,6 @@ namespace APP_FrontEnd.Controllers
             return View(subAluguerDTO);
         }
 
-
-        // GET: SubAlugueresController/Delete/5
         public async Task<IActionResult> Cancelar(int id)
         {
             try
@@ -86,7 +81,6 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        // POST: SubAlugueresController/Delete/5
         [HttpPost, ActionName("Cancelar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelarConfirmado(int id)
@@ -101,6 +95,7 @@ namespace APP_FrontEnd.Controllers
                 return MensagemErro(e.Message);
             }
         }
+
         private IActionResult MensagemErro(string mensagem)
         {
             return View("MensagemErro", new MensagemErro { Mensagem = mensagem });

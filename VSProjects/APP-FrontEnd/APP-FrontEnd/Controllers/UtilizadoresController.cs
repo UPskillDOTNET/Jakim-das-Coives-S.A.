@@ -50,7 +50,7 @@ namespace APP_FrontEnd.Controllers
                 catch (Exception e)
                 {
                     return MensagemErro(e.Message);
-                }                
+                }
             }
             return View(depositar);
         }
