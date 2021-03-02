@@ -5,40 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h1>As Suas Reservas</h1>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ReservaId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Custo)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ReservaParqueId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NomeFreguesia)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.NomeParque)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumeroLugar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fila)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Andar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSubAlugado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NifProprietario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Inicio)
@@ -50,49 +27,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservaId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Custo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservaParqueId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeFreguesia)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomeParque)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroLugar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fila)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Andar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSubAlugado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NifProprietario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fim)
-            </td>
-            <td>
-                @Html.ActionLink("Detalhes", "Details", new { id=item.ReservaId }) |
-                @Html.ActionLink("Cancelar", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservaParqueId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeParque)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fim)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId })
+                    @Html.ActionLink("Cancelar", "Cancelar", new { id = item.ReservaId })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
