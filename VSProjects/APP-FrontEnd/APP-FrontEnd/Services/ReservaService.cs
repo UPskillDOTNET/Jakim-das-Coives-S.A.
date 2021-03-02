@@ -119,6 +119,11 @@ namespace APP_FrontEnd.Services
             }
 
             reservaDTO.NifComprador = nif;
+            if (reservaDTO.MetodoId == 0)
+            {
+                var user = await _userManager.FindByIdAsync(nif);
+                reservaDTO.MetodoId = user.MetodoId;
+            }
 
             var token = await GetTokenByNif(nif);
             using (HttpClient client = new HttpClient())
@@ -154,6 +159,7 @@ namespace APP_FrontEnd.Services
                 result = await response.Content.ReadAsAsync<DetalheReservaDTO>();
             }
         }
+
         private async Task<string> GetTokenByNif(string nif)
         {
             var user = await _userManager.FindByIdAsync(nif);

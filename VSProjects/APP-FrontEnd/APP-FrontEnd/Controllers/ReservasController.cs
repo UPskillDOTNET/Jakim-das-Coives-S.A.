@@ -32,7 +32,7 @@ namespace APP_FrontEnd.Controllers
         {
             try
             {
-                var lista = await _reservaService.FindAvailableAsync( pesquisaDTO.FreguesiaNome, pesquisaDTO.Inicio, pesquisaDTO.Fim);
+                var lista = await _reservaService.FindAvailableAsync(pesquisaDTO.FreguesiaNome, pesquisaDTO.Inicio, pesquisaDTO.Fim);
                 return View(lista);
             }
             catch (Exception e)
@@ -54,14 +54,15 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        public IActionResult Reservar()
+        public IActionResult Reservar(LugarDTO lugarDTO)
         {
-            return View();
+            ReservaDTO reserva = new ReservaDTO { NifVendedor = lugarDTO.NifProprietario, ReservaSistemaCentralId = lugarDTO.ReservaSistemaCentralId, ParqueIdSC = lugarDTO.ParqueIdSC, Inicio = lugarDTO.Inicio, Fim = lugarDTO.Fim, LugarId = lugarDTO.Id };
+            return View(reserva);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Reservar(ReservaDTO reservaDTO)
+        public async Task<IActionResult> Reservar([Bind("NifComprador, NifVendedor, ParqueIdSC, MetodoId, ReservaSistemaCentralId, LugarId, Inicio, Fim")] ReservaDTO reservaDTO)
         {
             try
             {

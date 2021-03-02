@@ -50,6 +50,9 @@ namespace API_Sistema_Central.Services
                         foreach (LugarDTO l in temp)
                         {
                             l.ParqueIdSC = parque.Id;
+                            l.ParqueNome = await GetParqueNomeByID(l.ParqueId, parque.ApiUrl);
+                            l.Inicio = inicio;
+                            l.Fim = fim;
                             if (l.NifProprietario == null)
                             {
                                 l.NifProprietario = "999999999";

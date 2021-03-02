@@ -10,6 +10,7 @@ namespace APP_FrontEnd.Models
     {
         public int Id { get; set; }
         public int ParqueId { get; set; }
+        public string ParqueNome { get; set; }
         public int Numero { get; set; }
         public string Fila { get; set; }
         public int Andar { get; set; }
@@ -19,5 +20,11 @@ namespace APP_FrontEnd.Models
         public string NifProprietario { get; set; }
         public int ReservaSistemaCentralId { get; set; }
         public int ParqueIdSC { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Inicio { get; set; }
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime Fim { get; set; }
     }
 }
