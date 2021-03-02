@@ -42,6 +42,7 @@ namespace APP_FrontEnd
             services.AddTransient<ITransacaoService, TransacaoService>();
             services.AddTransient<IUtilizadorService, UtilizadorService>();
             services.AddTransient<IReservaService, ReservaService>();
+            services.AddTransient<ISubAluguerService, SubAluguerService>();
 
             services.AddHttpContextAccessor();
         }
