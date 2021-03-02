@@ -102,14 +102,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
                     protocol: Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Confirme o seu email",
+                    $"Por favor confirme o seu email carregando no seguinte link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
 
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                StatusMessage = "O link de confirmação foi enviado para o seu email. Por favor, veja o seu email.";
                 return RedirectToPage();
             }
 
-            StatusMessage = "Your email is unchanged.";
+            StatusMessage = "O seu email não foi alterado.";
             return RedirectToPage();
         }
 
@@ -138,10 +138,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
                 protocol: Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                "Confirme o seu email",
+                $"Por favor confirme o seu email carregando no seguinte link: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = "O link de confirmação foi enviado para o seu email. Por favor, veja o seu email.";
             return RedirectToPage();
         }
     }
