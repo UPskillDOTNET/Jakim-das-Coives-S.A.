@@ -59,8 +59,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    "Redifinir Password",
+                    $"Por favor redifine a sua password carregando aqui: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

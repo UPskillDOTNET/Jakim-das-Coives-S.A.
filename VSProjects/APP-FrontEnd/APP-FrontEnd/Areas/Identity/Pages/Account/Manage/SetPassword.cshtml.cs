@@ -32,14 +32,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "A password deve conter pelo menos um caracter especial.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nova password")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Confirmar nova password")]
+            [Compare("Nova password", ErrorMessage = "A nova password e a sua confirmação não coincidem. Por favor tente novamente.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -85,7 +85,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
+            StatusMessage = "A sua password foi registada.";
 
             return RedirectToPage();
         }
