@@ -5,6 +5,7 @@ using Moq;
 using System.Collections.Generic;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Controllers;
+using API_Sistema_Central.DTOs;
 
 namespace SCUnitTests
 {
@@ -15,30 +16,28 @@ namespace SCUnitTests
         {
             var mock = new Mock<ITransacaoService>();
             mock.Setup(p => p.GetByNifAsync("999999999"))
-                .ReturnsAsync(new List<Transacao> {
-                    new Transacao {
-                        Id = 1,
+                .ReturnsAsync(new List<TransacaoDTO> {
+                    new TransacaoDTO {
+                        Tipo = "Reembolso",
                         DataHora = DateTime.Now,
-                        MetodoId = 1,
-                        NifPagador = "999999999",
-                        NifRecipiente = "111111111",
+                        Metodo = "test",
+                        NifDestinatario = "111111111",
                         Valor = 123
                     },
-                    new Transacao {
-                        Id = 2,
+                    new TransacaoDTO {
+                        Tipo = "Reserva",
                         DataHora = DateTime.Now,
-                        MetodoId = 2,
-                        NifPagador = "222222222",
-                        NifRecipiente = "999999999",
-                        Valor = 321
+                        Metodo = "test",
+                        NifDestinatario = "111111111",
+                        Valor = 123
                     }
                 });
             TransacoesController testController = new TransacoesController(mock.Object);
             var result = await testController.GetTransacaoByNif("999999999");
-            var items = Assert.IsType<List<Transacao>>(result.Value);
+            var items = Assert.IsType<List<TransacaoDTO>>(result.Value);
             Assert.Equal(2, items.Count);
-            Assert.Equal("999999999", items[0].NifPagador);
-            Assert.Equal("999999999", items[1].NifRecipiente);
+            Assert.Equal("Reembolso", items[0].Tipo);
+            Assert.Equal("111111111", items[1].NifDestinatario);
         }
 
 

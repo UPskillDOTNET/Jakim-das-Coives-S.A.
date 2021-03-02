@@ -21,6 +21,7 @@ namespace API_Sistema_Central.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime DataHora { get; set; }
         public int MetodoId { get; set; }
+        public Tipo Tipo { get; set; }
 
         [ForeignKey("NifPagador")]
         public Utilizador Pagador { get; set; }

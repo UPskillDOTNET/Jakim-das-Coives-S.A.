@@ -1,0 +1,23 @@
+﻿@model APP_FrontEnd.Models.SaldoDTO
+
+@{
+    ViewData["Title"] = "Saldo na Sua Carteira";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Saldo na Sua Carteira</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Depositar">Depositar</a>
+</div>

@@ -25,6 +25,7 @@ namespace APP_FrontEnd.Services
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         public async Task<double> GetSaldoAsync()
         {
 
@@ -35,7 +36,7 @@ namespace APP_FrontEnd.Services
             }
             catch
             {
-                throw new Exception("Utilizador não tem login feito.");
+                throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
             var token = await GetTokenByNif(nif);
@@ -51,7 +52,30 @@ namespace APP_FrontEnd.Services
             }
             return saldoUtilizador;
         }
+        public async Task DepositarSaldoAsync(DepositarDTO depositar)
+        {
+            string nif;
+            try
+            {
+                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+            catch
+            {
+                throw new Exception("Utilizador não tem sessão iniciada.");
+            }
 
+            var token = await GetTokenByNif(nif);
+            depositar.Nif = nif;
+
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(depositar), Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                string endpoint = "https://localhost:5050/api/utilizadores/depositar";
+                var response = await client.PostAsync(endpoint, content);
+                response.EnsureSuccessStatusCode();
+            }
+        }
 
         private async Task<string> GetTokenByNif(string nif)
         {
@@ -66,32 +90,5 @@ namespace APP_FrontEnd.Services
                 return user.Token;
             }
         }
-
-
-        public async Task DepositarSaldoAsync(double valor)
-        {
-            string nif;
-            try
-            {
-                nif = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            }
-            catch
-            {
-                throw new Exception("Utilizador não tem login feito.");
-            }
-
-            var token = await GetTokenByNif(nif);
-
-            using (HttpClient client = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(valor), Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/utilizadores/depositar/" + nif;
-                var response = await client.PostAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-
     }
 }

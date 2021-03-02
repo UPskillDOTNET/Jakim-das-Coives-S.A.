@@ -9,6 +9,6 @@ namespace APP_FrontEnd.Services
 {
     public interface ITransacaoService
     {
-        public Task<IEnumerable<Transacao>> GetAllTransacoesByNIF();
+        public Task<IEnumerable<TransacaoDTO>> GetAllTransacoesByNIF();
     }
 }

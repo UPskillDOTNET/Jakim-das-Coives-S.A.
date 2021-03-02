@@ -1,4 +1,4 @@
-﻿@model IEnumerable<APP_FrontEnd.Models.Transacao>
+﻿@model IEnumerable<APP_FrontEnd.Models.TransacaoDTO>
 
 @{
     ViewData["Title"] = "Transações";
@@ -11,10 +11,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NifPagador)
+                @Html.DisplayNameFor(model => model.Tipo)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NifRecipiente)
+                @Html.DisplayNameFor(model => model.NifDestinatario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Valor)
@@ -23,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.DataHora)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MetodoId)
+                @Html.DisplayNameFor(model => model.Metodo)
             </th>
             <th></th>
         </tr>
@@ -32,10 +32,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NifPagador)
+                @Html.DisplayFor(modelItem => item.Tipo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NifRecipiente)
+                @Html.DisplayFor(modelItem => item.NifDestinatario)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Valor)
@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.DataHora)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MetodoId)
+                @Html.DisplayFor(modelItem => item.Metodo)
             </td>
         </tr>
 }

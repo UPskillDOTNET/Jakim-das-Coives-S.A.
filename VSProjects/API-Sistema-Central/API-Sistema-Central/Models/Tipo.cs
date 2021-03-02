@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace APP_FrontEnd.Services
+namespace API_Sistema_Central.Models
 {
-    public interface IPagamentoService
+    public enum Tipo
     {
+        Reserva,
+        Reembolso,
+        Deposito
     }
 }

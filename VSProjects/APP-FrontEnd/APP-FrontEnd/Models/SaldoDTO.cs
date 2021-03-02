@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace APP_FrontEnd.Models
 {
-    public class Saldo
+    public class SaldoDTO
     {
         [Range(0, double.MaxValue)]
-        public double Valor { get; set; } 
+        public double Valor { get; set; }
     }
 }

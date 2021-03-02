@@ -25,7 +25,7 @@ namespace APP_FrontEnd.Services
             _signInManager = signInManager;
         }
 
-        public async Task<IEnumerable<Transacao>> GetAllTransacoesByNIF()
+        public async Task<IEnumerable<TransacaoDTO>> GetAllTransacoesByNIF()
         {
             string nif;
             try
@@ -34,19 +34,19 @@ namespace APP_FrontEnd.Services
             }
             catch
             {
-                throw new Exception("Utilizador não tem login feito.");
+                throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
             var token = await GetTokenByNif(nif);
 
-            var listaTransacoes = new List<Transacao>();
+            var listaTransacoes = new List<TransacaoDTO>();
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string endpoint = "https://localhost:5050/api/transacoes/all/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
-                listaTransacoes = await response.Content.ReadAsAsync<List<Transacao>>();
+                listaTransacoes = await response.Content.ReadAsAsync<List<TransacaoDTO>>();
             }
             return listaTransacoes;
         }
