@@ -28,11 +28,11 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        public async Task<IActionResult> Disponibilidade(string freguesiaNome, DateTime inicio, DateTime fim)
+        public async Task<IActionResult> Disponibilidade(PesquisaDTO pesquisaDTO)
         {
             try
             {
-                var lista = await _reservaService.FindAvailableAsync(freguesiaNome, inicio, fim);
+                var lista = await _reservaService.FindAvailableAsync( pesquisaDTO.FreguesiaNome, pesquisaDTO.Inicio, pesquisaDTO.Fim);
                 return View(lista);
             }
             catch (Exception e)
