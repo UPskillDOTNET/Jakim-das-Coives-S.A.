@@ -43,7 +43,8 @@
                     @Html.DisplayFor(modelItem => item.Fim)
                 </td>
                 <td>
-                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId })
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId }) |
+                    @Html.ActionLink("Sub-Alugar", "Subalugar", new { id = item.ReservaId }) |
                     @Html.ActionLink("Cancelar", "Cancelar", new { id = item.ReservaId })
                 </td>
             </tr>

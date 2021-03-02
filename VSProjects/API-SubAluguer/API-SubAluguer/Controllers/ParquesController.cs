@@ -19,13 +19,13 @@ namespace API_SubAluguer.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Parque>>> GetAllLugar()
+        public async Task<ActionResult<IEnumerable<Parque>>> GetAllParques()
         {
             return await _service.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Parque>> GetLugarById(int id)
+        public async Task<ActionResult<Parque>> GetParqueById(int id)
         {
             try
             {

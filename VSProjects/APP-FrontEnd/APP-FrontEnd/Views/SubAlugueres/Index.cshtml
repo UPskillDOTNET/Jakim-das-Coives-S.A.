@@ -18,6 +18,9 @@
                 @Html.DisplayNameFor(model => model.ParqueId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.NomeParque)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Numero)
             </th>
             <th>
@@ -57,6 +60,9 @@
                 @Html.DisplayFor(modelItem => item.ParqueId)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.NomeParque)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Numero)
             </td>
             <td>
@@ -84,8 +90,8 @@
                 @Html.DisplayFor(modelItem => item.Fim)
             </td>
             <td>
-                @Html.ActionLink("Detalhes", "Detalhes", new {  id=item.Id  }) |
-                @Html.ActionLink("Cancelar", "Cancelar", new {  id=item.Id  })
+                @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                @Html.ActionLink("Cancelar", "Cancelar", new { id = item.Id })
             </td>
         </tr>
 }

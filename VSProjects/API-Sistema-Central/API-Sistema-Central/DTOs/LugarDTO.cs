@@ -10,7 +10,7 @@ namespace API_Sistema_Central.DTOs
     {
         public int Id { get; set; }
         public int ParqueId { get; set; }
-        public string ParqueNome { get; set; }
+        public string NomeParque { get; set; }
         public int Numero { get; set; }
         public string Fila { get; set; }
         public int Andar { get; set; }

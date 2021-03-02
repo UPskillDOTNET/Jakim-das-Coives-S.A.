@@ -54,6 +54,20 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
+        public async Task<IActionResult> Subalugar(int id)
+        {
+            try
+            {
+                var res = await _reservaService.GetByIdAsync(id);
+                return RedirectToAction("Registar", "SubAlugueres", res);
+            }
+            catch (Exception e)
+            {
+                return MensagemErro(e.Message);
+            }
+            
+        }
+
         public IActionResult Reservar(LugarDTO lugarDTO)
         {
             ReservaDTO reserva = new ReservaDTO { NifVendedor = lugarDTO.NifProprietario, ReservaSistemaCentralId = lugarDTO.ReservaSistemaCentralId, ParqueIdSC = lugarDTO.ParqueIdSC, Inicio = lugarDTO.Inicio, Fim = lugarDTO.Fim, LugarId = lugarDTO.Id };
