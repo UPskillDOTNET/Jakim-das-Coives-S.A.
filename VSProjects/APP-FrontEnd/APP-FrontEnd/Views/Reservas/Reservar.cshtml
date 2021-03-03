@@ -24,8 +24,8 @@
             </div>
             <input type="hidden" asp-for="ReservaSistemaCentralId" />
             <input type="hidden" asp-for="LugarId" />
-            <input type="hidden" asp-for="Inicio" />
-            <input type="hidden" asp-for="Fim" />
+            <input type="hidden" asp-for="Inicio" value="@Model.Inicio.ToString("dd-MM-yyyy HH:mm")" />
+            <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
             <div class="form-group">
                 <input type="submit" value="Reservar" class="btn btn-primary" />
             </div>
