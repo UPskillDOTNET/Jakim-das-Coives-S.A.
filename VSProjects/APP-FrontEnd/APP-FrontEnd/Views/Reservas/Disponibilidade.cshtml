@@ -1,0 +1,54 @@
+﻿@model IEnumerable<APP_FrontEnd.Models.LugarDTO>
+
+@{
+    ViewData["Title"] = "Disponibilidade";
+}
+
+<h1>Disponibilidade</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeParque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fila)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Andar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeParque)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fila)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Andar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            <td>
+                @Html.ActionLink("Reservar", "Reservar", item)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

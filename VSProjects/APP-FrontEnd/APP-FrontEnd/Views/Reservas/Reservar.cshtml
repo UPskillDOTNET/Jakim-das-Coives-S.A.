@@ -1,0 +1,42 @@
+﻿@model APP_FrontEnd.Models.ReservaDTO
+
+@{
+    ViewData["Title"] = "Reservar";
+}
+
+<h1>Reservar</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Reservar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NifComprador" />
+            <input type="hidden" asp-for="NifVendedor" />
+            <input type="hidden" asp-for="ParqueIdSC" />
+            <div class="form-group">
+                <label asp-for="MetodoId" class="control-label"></label>
+                <select asp-for="MetodoId" class="form-control">
+                    <option value="0">Método de Pagamento Preferencial</option>
+                    <option value="4">Carteira</option>
+                </select>
+                <span asp-validation-for="MetodoId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ReservaSistemaCentralId" />
+            <input type="hidden" asp-for="LugarId" />
+            <input type="hidden" asp-for="Inicio" value="@Model.Inicio.ToString("dd-MM-yyyy HH:mm")" />
+            <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
+            <div class="form-group">
+                <input type="submit" value="Reservar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Desistir</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
