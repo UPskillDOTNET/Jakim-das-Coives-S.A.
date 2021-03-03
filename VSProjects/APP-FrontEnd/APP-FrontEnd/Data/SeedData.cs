@@ -9,8 +9,10 @@ namespace APP_FrontEnd.Data
 {
     public class SeedData
     {
+
         public static async Task SeedUtilizadoresAsync(UserManager<Utilizador> userManager, RoleManager<IdentityRole> roleManager)
         {
+            await roleManager.CreateAsync(new IdentityRole("Utilizador"));
             var administrador = new Utilizador { Id = "999999999", Nome = "Administrador", UserName = "sistemacentraljakim@gmail.com", Email = "sistemacentraljakim@gmail.com", MetodoId = 1 };
             if (userManager.Users.All(u => u.Id != administrador.Id))
             {
@@ -18,6 +20,7 @@ namespace APP_FrontEnd.Data
                 if (user == null)
                 {
                     await userManager.CreateAsync(administrador, "123Pa$$word");
+                    await userManager.AddToRoleAsync(administrador, "Utilizador");
                 }
             }
 
@@ -28,6 +31,7 @@ namespace APP_FrontEnd.Data
                 if (user == null)
                 {
                     await userManager.CreateAsync(teste1, "123Pa$$word");
+                    await userManager.AddToRoleAsync(teste1, "Utilizador");
                 }
             }
 
@@ -38,6 +42,7 @@ namespace APP_FrontEnd.Data
                 if (user == null)
                 {
                     await userManager.CreateAsync(teste2, "123Pa$$word");
+                    await userManager.AddToRoleAsync(teste2, "Utilizador");
                 }
             }
 
@@ -48,6 +53,7 @@ namespace APP_FrontEnd.Data
                 if (user == null)
                 {
                     await userManager.CreateAsync(teste3, "123Pa$$word");
+                    await userManager.AddToRoleAsync(teste3, "Utilizador");
                 }
             }
         }
