@@ -1,0 +1,52 @@
+﻿@model IEnumerable<APP_FrontEnd.Models.DetalheReservaDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>As Suas Reservas</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ReservaParqueId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeParque)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fim)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReservaParqueId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomeParque)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fim)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId }) |
+                    @Html.ActionLink("Sub-Alugar", "Subalugar", new { id = item.ReservaId }) |
+                    @Html.ActionLink("Cancelar", "Cancelar", new { id = item.ReservaId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

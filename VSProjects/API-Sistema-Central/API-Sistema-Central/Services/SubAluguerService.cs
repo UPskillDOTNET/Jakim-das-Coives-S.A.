@@ -48,6 +48,7 @@ namespace API_Sistema_Central.Services
                 {
                     bool isReservado = await IsReservado(s.Id);
                     s.IsReservado = isReservado;
+                    s.NomeParque = await GetParqueNomeByID(s.ParqueId);
                 }
                 return result.ToList();
             }
@@ -71,6 +72,7 @@ namespace API_Sistema_Central.Services
                 }
                 bool isReservado = await IsReservado(result.Id);
                 result.IsReservado = isReservado;
+                result.NomeParque = await GetParqueNomeByID(result.ParqueId);
                 return result;
             }
             catch (Exception)
@@ -82,6 +84,7 @@ namespace API_Sistema_Central.Services
         public async Task<SubAluguerDTO> PostSubAluguerAsync(SubAluguerDTO subAluguerDTO)
         {
             await ValidarSubAluguer(subAluguerDTO);
+            subAluguerDTO.ParqueId = await GetParqueIdByNome(subAluguerDTO.NomeParque);
             try
             {
                 SubAluguerDTO lugar;
@@ -162,6 +165,49 @@ namespace API_Sistema_Central.Services
             if (subAluguerDTO.Preco <= 0)
             {
                 throw new Exception("O preço não pode ser igual ou menor que zero.");
+            }
+        }
+        private static async Task<int> GetParqueIdByNome(string nome)
+        {
+            try
+            {
+                ParqueDTO p;
+                using (HttpClient client = new HttpClient())
+                {
+                    string endpoint1 = "https://localhost:5005/api/parques/";
+                    var response1 = await client.GetAsync(endpoint1);
+                    response1.EnsureSuccessStatusCode();
+                    var lista = await response1.Content.ReadAsAsync<List<ParqueDTO>>();
+                    p = lista.First(t => t.Rua == nome);
+                }
+                if (p == null)
+                {
+                    throw new Exception("Este parque não existe.");
+                }
+                return p.Id;
+            }
+            catch (Exception)
+            {
+                throw new Exception("GetParqueIdByNome() falhou.");
+            }
+        }
+        private static async Task<string> GetParqueNomeByID(int id)
+        {
+            try
+            {
+                ParqueDTO p;
+                using (HttpClient client = new HttpClient())
+                {
+                    string endpoint1 = "https://localhost:5005/api/parques/" + id;
+                    var response1 = await client.GetAsync(endpoint1);
+                    response1.EnsureSuccessStatusCode();
+                    p = await response1.Content.ReadAsAsync<ParqueDTO>();
+                }
+                return p.Rua;
+            }
+            catch (Exception)
+            {
+                throw new Exception("GetParqueNomeByID() falhou.");
             }
         }
     }

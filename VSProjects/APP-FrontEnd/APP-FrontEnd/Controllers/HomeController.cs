@@ -26,6 +26,13 @@ namespace APP_FrontEnd.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Pesquisa(PesquisaDTO pesquisaDTO)
+        {
+            return RedirectToAction("Disponibilidade", "Reservas", pesquisaDTO);
+        }
+
         public IActionResult Privacy()
         {
             return View();

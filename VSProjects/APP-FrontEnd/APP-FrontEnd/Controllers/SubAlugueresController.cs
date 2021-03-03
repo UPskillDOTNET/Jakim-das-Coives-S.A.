@@ -43,14 +43,15 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
-        public ActionResult Registar()
+        public ActionResult Registar(DetalheReservaDTO d)
         {
-            return View();
+            SubAluguerDTO subAluguerDTO = new SubAluguerDTO { NomeParque = d.NomeParque, Numero = d.NumeroLugar, Fila = d.Fila, Andar = d.Andar, NifProprietario = d.NifProprietario, ReservaSistemaCentralId = d.ReservaId, Inicio = d.Inicio, Fim = d.Fim };
+            return View(subAluguerDTO);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registar([Bind("Id, ParqueId, Numero, Fila, Andar, Preco, NifProprietario, ReservaSistemaCentralId, Inicio, Fim")] SubAluguerDTO subAluguerDTO)
+        public async Task<IActionResult> Registar([Bind("Id, ParqueId, NomeParque, Numero, Fila, Andar, Preco, NifProprietario, ReservaSistemaCentralId, Inicio, Fim")] SubAluguerDTO subAluguerDTO)
         {
             if (ModelState.IsValid)
             {
