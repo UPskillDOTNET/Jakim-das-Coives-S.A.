@@ -34,7 +34,14 @@ namespace APP_FrontEnd
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<Utilizador, IdentityRole>().AddEntityFrameworkStores<FrontEndContext>().AddDefaultUI().AddDefaultTokenProviders();
-            
+
+            services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                options.ClientId = "100586914365-lev9iklgg4cc7au8kl85159mms4i0vlq.apps.googleusercontent.com";
+                options.ClientSecret = "Y3FUI6I4rYRVmvwMXm260Pzi";
+            });
+
             services.AddControllersWithViews();
             
             services.AddRazorPages();
