@@ -6,7 +6,7 @@ participant ":app/Views/Reservas/Disponibilidade" as DV
 participant ":app/HomeController" as HC
 participant ":app/ReservaController" as RC
 participant ":app/ReservaService" as RS
-participant "app.SistemaCentral" as API
+participant "API:SistemaCentral" as API
 
 activate U
 
