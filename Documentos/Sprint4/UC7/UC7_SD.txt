@@ -1,35 +1,33 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/ReservaView" as RV
-participant ":app/ReservaController" as RC
+participant ":app/Views/Reservas/Index" as RV
+participant ":app/ReservasController" as RC
 participant ":app/ReservaService" as RS
-participant "API.SistemaCentral" as API
+participant "API:SistemaCentral" as API
 
 activate U
 
-U --> RV: Inicia a consulta
-activate RV
-
-RV --> RC: GetAllReservasByNif(nif)
+U --> RC: inicia a consulta
 activate RC
 
-RC --> RS: GetAllReservasByNifAsync(nif)
+RC --> RS: GetByNifAsync()
 activate RS
 
-RS --> API: GetReservaByNif(nif)
+RS --> API: GetAsync(nif)
 activate API
 
-API --> RS:return listaReservas
+API --> RS: return(lista DetalheReservaDTO)
 deactivate API
 
-RS --> RC: return listaReservas
+RS --> RC: return(lista DetalheReservaDTO)
 deactivate RS
 
-RC --> RV: return listaReservas
+RC --> RV: return View(lista)
 deactivate RC
+activate RV
 
-RV --> U: return listaReservas\noperacao bem sucedida
+RV --> U: operacao bem sucedida
 deactivate RV
 
 deactivate U
