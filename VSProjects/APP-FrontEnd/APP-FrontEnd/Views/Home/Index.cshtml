@@ -3,47 +3,51 @@
 @{
     ViewData["Title"] = "HomePage";
 }
-    <table style="width:100%">
-        <tr>
-            <td style="width:70%; padding-right:150px">
-                <div class="text-center">
-                    <img src="~/Images/couve.png" width="250" height="250" />
-                    <h1 class="display-4"><b>Bem-vindo ao Jakim Smartparking!</b></h1>
-                    <br /><br />
-                    <h3>
-                        A solução inovadora criada pela equipa "Jakim das Coives"
-                        para a gestão eficiente do estacionamento na rua num único sistema integrado.
-                    </h3>
-                    <br /><br />
-                    <h3>Um sistema <b>completo</b>, <b>fácil</b> de gerir e <b>agradável</b> de usar.</h3>
+
+<table style="width:100%">
+    <tr>
+        <td style="width:70%; padding-right:150px">
+            <div class="text-center">
+                <img src="~/Images/couve.png" width="250" height="250" />
+                <h1 class="display-4"><b>Bem-vindo ao Jakim Smartparking!</b></h1>
+                <br /><br />
+                <h3>
+                    A solução inovadora criada pela equipa "Jakim das Coives"
+                    para a gestão eficiente do estacionamento na rua num único sistema integrado.
+                </h3>
+                <br /><br />
+                <h3>Um sistema <b>completo</b>, <b>fácil</b> de gerir e <b>agradável</b> de usar.</h3>
+            </div>
+        </td>
+        <td style="width:30%">
+            <div class="row">
+                <div class="col-md-8">
+                    <form asp-action="Pesquisa">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="FreguesiaNome" class="control-label"></label>
+                            <input asp-for="FreguesiaNome" class="form-controlIndex" style="width: 220px" />
+                            <span asp-validation-for="FreguesiaNome" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Inicio" class="control-label"></label>
+                            <input asp-for="Inicio" step="3600" class="form-controlIndex" />
+                            <span asp-validation-for="Inicio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Fim" class="control-label"></label>
+                            <input asp-for="Fim" step="3600" class="form-controlIndex" />
+                            <span asp-validation-for="Fim" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <input type="submit" value="Pesquisar" class="btnPesquisarHome"
+                                   style="background: #268596; border-radius: 30px; border: none; width:220px; height: 40px; font-size:18px; color:white;
+                                         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);" />
+                        </div>
+                    </form>
                 </div>
-            </td>
-            <td style="width:30%">
-                <div class="row">
-                    <div class="col-md-8">
-                        <form asp-action="Pesquisa">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="FreguesiaNome" class="control-label"></label>
-                                <input asp-for="FreguesiaNome" class="form-controlIndex" />
-                                <span asp-validation-for="FreguesiaNome" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Inicio" class="control-label"></label>
-                                <input asp-for="Inicio" step="3600" class="form-controlIndex" />
-                                <span asp-validation-for="Inicio" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Fim" class="control-label"></label>
-                                <input asp-for="Fim" step="3600" class="form-controlIndex" />
-                                <span asp-validation-for="Fim" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Pesquisar" class="btnPesquisarHome" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </td>
+    </tr>
+</table>

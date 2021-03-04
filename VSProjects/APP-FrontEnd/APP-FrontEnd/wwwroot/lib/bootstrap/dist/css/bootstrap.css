@@ -2410,12 +2410,6 @@ textarea.form-control {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.btnPesquisarHome {
-    color: hotpink;
-    background-color: blue;
-    border-color: #6c757d;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .btn {
     transition: none;
