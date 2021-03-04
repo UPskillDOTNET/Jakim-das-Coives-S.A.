@@ -1,36 +1,44 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/ReservaView" as RV
+participant ":app/Views/Home/Index" as HV
+participant ":app/Views/Reservas/Disponibilidade" as DV
+participant ":app/HomeController" as HC
 participant ":app/ReservaController" as RC
 participant ":app/ReservaService" as RS
 participant "app.SistemaCentral" as API
 
 activate U
 
-U --> RV: Pesquisa Disponibilidade
-activate RV
+U --> HV: inicia pesquisa disponibilidade \n(freguesiaNome, inicio, fim)
+activate HV
 
-RV --> RC: findAvailableAsync(freguesiaNome, inicio, fim)
+HV --> HC: Pesquisa(PesquisaDTO)
+deactivate HV
+activate HC
+
+HC --> RC: RedirectToAction("Disponibilidade",\n "Reservas", pesquisaDTO)
+deactivate HC
 activate RC
 
-RC --> RS: findAvailableAsync(freguesiaNome, inicio, fim)
+RC --> RS: FindAvailableAsync(freguesiaNome, inicio, fim)
 activate RS
 
-RS --> API: findAvailableAsync(freguesiaNome, inicio, fim)
+RS --> API: GetAsync(disponibilidade/freguesiaNome/inicio/fim)
 activate API
 
-API --> RS:Return listaLugares
+API --> RS: return lista LugarDTO
 deactivate API
 
-RS --> RC: Return listaLugares
+RS --> RC: return lista LugarDTO
 deactivate RS
 
-RC --> RV: Return listaLugares
+RC --> DV: return View(lista)
 deactivate RC
+activate DV
 
-RV --> U: Return listaLugares\noperacao bem sucedida
-deactivate RV
+DV --> U: operacao bem sucedida
+deactivate DV
 
 deactivate U
 @enduml

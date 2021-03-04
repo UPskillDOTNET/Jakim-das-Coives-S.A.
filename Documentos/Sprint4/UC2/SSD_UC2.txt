@@ -1,16 +1,16 @@
 @startuml
 autonumber
 actor "Utilizador" as UserNR
-participant ":app/ReservaView" as API
+participant ":APP.FrontEnd" as API
 
 activate UserNR
 UserNR -> "API" : inicia a Reserva
 activate "API"
 "API" --> UserNR : solicita o método de pagamento
 deactivate "API"
-UserNR -> "API" : insere o método de pagamento
+UserNR -> "API" : escolhe o método de pagamento
 activate "API"
-"API" --> UserNR : return Operaçao bem sucedida
+"API" --> UserNR : operaçao bem sucedida
 deactivate "API"
 
 deactivate UserNR

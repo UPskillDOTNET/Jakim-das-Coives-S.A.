@@ -1,19 +1,13 @@
 @startuml
 autonumber
-actor "Cliente" as UserNR
-participant ":app.FrontEnd" as APP
+actor "Utilizador" as UserNR
+participant ":APP.FrontEnd" as API
 
 activate UserNR
-UserNR -> "APP" : inicia pesquisa de disponibilidade
-activate "APP"
-"APP" --> UserNR : solicita dados cliente \n(localidade, inicio, fim)
-deactivate "APP"
-
-UserNR -> "APP" : introduz os dados solicitados
-activate "APP"
-
-"APP" --> UserNR : operação bem sucedida
-deactivate "APP"
+UserNR -> "API" : inicia pesquisa de disponibilidade \n(localidade, inicio, fim)
+activate "API"
+"API" --> UserNR : return lista \noperaçao bem sucedida
+deactivate "API"
 
 deactivate UserNR
 @enduml

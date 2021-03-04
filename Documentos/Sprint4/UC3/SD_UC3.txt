@@ -1,35 +1,58 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/ReservaView" as RV
+participant ":app/Views/Reservas/Index" as RV
+participant ":app/Views/Reservas/Cancelar" as RCV
 participant ":app/ReservaController" as RC
 participant ":app/ReservaService" as RS
-participant "app.SistemaCentral" as API
+participant "API:SistemaCentral" as API
 
 activate U
 
 U --> RV: Inicia o cancelamento
 activate RV
 
-RV --> RC: DeleteReserva(id)
+RV --> RC: Cancelar(id)
 activate RC
+
+RC --> RS: GetByIdAsync(id)
+activate RS
+
+RS --> API: GetAsync(id)
+activate API
+
+API --> RS: return(DetalheReservaDTO)
+deactivate API
+
+RS --> RC: return(DetalheReservaDTO)
+deactivate RS
+
+RC --> RCV: return View(DetalheReservaDTO)
+activate RCV
+
+RCV --> U: pede para confirmar
+
+U --> RCV: confirma
+
+RCV --> RC: CancelarConfirmado(id)
+deactivate RCV
 
 RC --> RS: DeleteAsync(id)
 activate RS
 
-RS --> API: DeleteReserva(id)
+RS --> API: DeleteAsync(id)
 activate API
 
 API --> RS:No Content
 deactivate API
 
-RS --> RC: No Content
+RS --> RC: Task ok
 deactivate RS
 
-RC --> RV: No Content
+RC --> RV: RedirectToAction(nameof(Index))
 deactivate RC
 
-RV --> U: No Content\noperacao bem sucedida
+RV --> U: operacao bem sucedida
 deactivate RV
 
 deactivate U
