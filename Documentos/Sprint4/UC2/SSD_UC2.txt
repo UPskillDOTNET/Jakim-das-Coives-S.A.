@@ -4,7 +4,11 @@ actor "Utilizador" as UserNR
 participant ":app/ReservaView" as API
 
 activate UserNR
-UserNR -> "API" : Solicita a Reserva
+UserNR -> "API" : inicia a Reserva
+activate "API"
+"API" --> UserNR : solicita o método de pagamento
+deactivate "API"
+UserNR -> "API" : insere o método de pagamento
 activate "API"
 "API" --> UserNR : return Operaçao bem sucedida
 deactivate "API"

@@ -1,36 +1,50 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/ReservaView" as RV
-participant ":app/ReservaController" as RC
+participant ":app/Views/Reservas/Disponibilidade" as RDV
+participant ":app/Views/Reservas/Index" as RIV
+participant ":app/Views/Reservas/Reservar" as RRV
+participant ":app/ReservasController" as RC
 participant ":app/ReservaService" as RS
-participant "API:Parque" as API
+participant "API:SistemaCentral" as API
 
 activate U
+U --> RDV : inicia pedido reserva
+activate RDV
 
-U --> RV: Solicita Reserva
-activate RV
-
-RV --> RC: solicita reserva (reservaDTO)
+RDV --> RC : Reservar(LugarDTO)
+deactivate RDV
 activate RC
 
-RC --> RS: PostReserva(reservaDTO)
+RC --> RRV: return View(ReservaDTO)
+activate RRV
+
+RRV --> U: pede método de pagamento ao utilizador
+
+U --> RRV: escolhe método de pagamento
+
+RRV --> RC: Reservar(ReservaDTO)
+deactivate RRV
+
+RC --> RS: PostAsync(ReservaDTO)
 activate RS
 
-RS --> API: PostAsync(reservaApiParqueDTO)
+RS --> API : PostAsync(ReservaDTO)
 activate API
 
-API --> RS: return reservaParque
+API --> RS : CreatedAtAction()
 deactivate API
 
-RS --> RC: return reserva
+RS --> RC : Task ok
 deactivate RS
 
-RC --> RV: return reserva
+RC --> RC : RedirectToAction(nameof(Index))
+
+RC --> RIV : Return View(lista DetalheReservaDTO)
 deactivate RC
+activate RIV
 
-RV --> U: return Operação bem sucedida
-deactivate RV
-
+RIV --> U: operação bem sucedida
+deactivate RIV
 deactivate U
 @enduml
