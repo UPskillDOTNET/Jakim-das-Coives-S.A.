@@ -13,6 +13,7 @@ U --> RV: Inicia o cancelamento
 activate RV
 
 RV --> RC: Cancelar(id)
+deactivate RV
 activate RC
 
 RC --> RS: GetByIdAsync(id)
@@ -51,6 +52,7 @@ deactivate RS
 
 RC --> RV: RedirectToAction(nameof(Index))
 deactivate RC
+activate RV
 
 RV --> U: operacao bem sucedida
 deactivate RV
