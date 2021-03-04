@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -24,17 +27,20 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         private readonly UserManager<Utilizador> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ExternalLoginModel(
             SignInManager<Utilizador> signInManager,
             UserManager<Utilizador> userManager,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IHttpContextAccessor httpContextAccessor)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [BindProperty]
@@ -52,6 +58,56 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            [Required]
+            [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
+            [Display(Name = "NIF")]
+            public string Nif { get; set; }
+
+            [Required]
+            [Display(Name = "Nome Completo")]
+            public string NomeUtilizador { get; set; }
+            [Required]
+            [Range(typeof(int), "1", "3")]
+            [Display(Name = "Método de Pagamento Preferencial")]
+            public int MetodoId { get; set; }
+
+            // Dados Cartão de Crédito
+            [RegularExpression(@"^\d{16}$", ErrorMessage = "Número do cartão de crédito inválido")]
+            [Display(Name = "Número do Cartão")]
+            public string Numero { get; set; }
+
+            [Display(Name = "Nome do Titular")]
+            public string NomeCartao { get; set; }
+
+            [RegularExpression(@"^(0[1-9]|1[0-2])[/]\d{2}$", ErrorMessage = "Data de Validade do cartão de crédito inválido")]
+            [Display(Name = "Data de Validade")]
+            public string DataValidade { get; set; }
+
+            [RegularExpression(@"^\d{3}$", ErrorMessage = "CVV do cartão de crédito inválido")]
+            [Display(Name = "CVV")]
+            public string Cvv { get; set; }
+
+            // Dados Debito Direto
+            [RegularExpression(@"^[P][T][5][0]\d{21}$", ErrorMessage = "IBAN inválido")]
+            [Display(Name = "IBAN")]
+            public string Iban { get; set; }
+
+            [Display(Name = "Nome do Titular")]
+            public string NomeDebitoDireto { get; set; }
+            public string Rua { get; set; }
+            [RegularExpression(@"^\d{4}-\d{3}$", ErrorMessage = "Código postal inválido")]
+            [Display(Name = "Código Postal")]
+            public string CodigoPostal { get; set; }
+            public string Freguesia { get; set; }
+
+            // Dados PayPal
+            [DataType(DataType.EmailAddress)]
+            [Display(Name = "Email")]
+            public string EmailPayPal { get; set; }
+            [DataType(DataType.Password)]
+            [Display(Name = "Password do Paypal")]
+            public string PasswordPayPal { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -86,6 +142,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
             if (result.Succeeded)
             {
+                var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+                var infoDTO = new InfoUtilizadorDTO { Email = user.Email, Password = user.Id + user.MetodoId + user.Nome + "$PP$" };
+                var token = GetTokenAsync(infoDTO).Result;
+                user.Token = token.Token;
+                user.Expiration = token.Expiration;
+                await _userManager.UpdateAsync(user);
+
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -122,7 +186,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new Utilizador { UserName = Input.Email, Email = Input.Email };
+                var user = new Utilizador { Id = Input.Nif, UserName = Input.Email, Email = Input.Email, MetodoId = Input.MetodoId, Nome = Input.NomeUtilizador };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -130,6 +194,41 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        TokenUtilizadorDTO token;
+                        try
+                        {
+                            token = await RegistarUtilizadorNoSCAsync(new RegistarUtilizadorDTO
+                            {
+                                Nif = Input.Nif,
+                                NomeUtilizador = Input.NomeUtilizador,
+                                EmailUtilizador = Input.Email,
+                                PasswordUtilizador = Input.Nif + Input.MetodoId + Input.NomeUtilizador + "$PP$",
+                                MetodoId = Input.MetodoId,
+                                Numero = Input.Numero,
+                                NomeCartao = Input.NomeCartao,
+                                DataValidade = Input.DataValidade,
+                                Cvv = Input.Cvv,
+                                Iban = Input.Iban,
+                                NomeDebitoDireto = Input.NomeDebitoDireto,
+                                Rua = Input.Rua,
+                                CodigoPostal = Input.CodigoPostal,
+                                Freguesia = Input.Freguesia,
+                                DataSubscricao = DateTime.UtcNow,
+                                EmailPayPal = Input.EmailPayPal,
+                                PasswordPayPal = Input.PasswordPayPal
+                            });
+                        }
+                        catch (Exception)
+                        {
+                            await _userManager.DeleteAsync(user);
+                            throw new Exception("O registo no servidor falhou.");
+                        }
+                        var registeredUser = await _userManager.FindByIdAsync(Input.Nif);
+                        registeredUser.Token = token.Token;
+                        registeredUser.Expiration = token.Expiration;
+                        await _userManager.UpdateAsync(registeredUser);
+
+
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
                         var userId = await _userManager.GetUserIdAsync(user);
@@ -164,6 +263,39 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             ProviderDisplayName = info.ProviderDisplayName;
             ReturnUrl = returnUrl;
             return Page();
+        }
+        private async Task<TokenUtilizadorDTO> RegistarUtilizadorNoSCAsync(RegistarUtilizadorDTO registarUtilizadorDTO)
+        {
+            TokenUtilizadorDTO token;
+            using (HttpClient client = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(registarUtilizadorDTO), Encoding.UTF8, "application/json");
+                string endpoint = "https://localhost:5050/api/utilizadores/registar";
+                var response = await client.PostAsync(endpoint, content);
+                response.EnsureSuccessStatusCode();
+                token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+            }
+            return token;
+        }
+        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
+        {
+            try
+            {
+                TokenUtilizadorDTO token;
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/login";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                }
+                return token;
+            }
+            catch
+            {
+                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }

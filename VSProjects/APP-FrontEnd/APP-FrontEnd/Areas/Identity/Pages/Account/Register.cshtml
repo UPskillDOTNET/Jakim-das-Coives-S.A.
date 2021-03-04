@@ -156,20 +156,38 @@
     function metodo(val) {
         if (val == "0") {
             document.getElementById('cartao').style.display = 'none';
+            setRequired(false, 'cartao');
             document.getElementById('debito').style.display = 'none';
+            setRequired(false, 'debito');
             document.getElementById('paypal').style.display = 'none';
+            setRequired(false, 'paypal');
         } else if (val == "1") {
             document.getElementById('cartao').style.display = 'block';
+            setRequired(true, 'cartao');
             document.getElementById('debito').style.display = 'none';
+            setRequired(false, 'debito');
             document.getElementById('paypal').style.display = 'none';
+            setRequired(false, 'paypal');
         } else if (val == "2") {
             document.getElementById('cartao').style.display = 'none';
+            setRequired(false, 'cartao');
             document.getElementById('debito').style.display = 'block';
+            setRequired(true, 'debito');
             document.getElementById('paypal').style.display = 'none';
+            setRequired(false, 'paypal');
         } else if (val == "3") {
             document.getElementById('cartao').style.display = 'none';
+            setRequired(false, 'cartao');
             document.getElementById('debito').style.display = 'none';
+            setRequired(false, 'debito');
             document.getElementById('paypal').style.display = 'block';
+            setRequired(true, 'paypal');
+        }
+    }
+    function setRequired(val, id) {
+        input = document.getElementById(id).getElementsByTagName('input');
+        for (i = 0; i < input.length; i++) {
+            input[i].required = val;
         }
     }
 </script>
