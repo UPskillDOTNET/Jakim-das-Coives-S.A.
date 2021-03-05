@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: #268596; padding-top:5px">
             <div class="container">
-                <ul class="navbar-nav flex-grow-1">
+                <ul class="navbar-nav">
                     @if (User.IsInRole("Utilizador"))
                     {
 
@@ -36,9 +36,10 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
-                    <partial name="_LoginPartial" />
+                <div class="navbar-collapse collapse">
+                    <div style="margin-left:auto; margin-right: 0">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
