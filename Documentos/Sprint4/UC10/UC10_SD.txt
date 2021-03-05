@@ -1,40 +1,63 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/CarteiraView" as CV
-participant ":app/CarteiraController" as CC
-participant ":app/CarteiraService" as CS
-participant "api/SistemaCentral" as API
+participant ":app/Views/Utilizadores/Saldo" as USV
+participant ":app/Views/Utilizadores/Depositar" as UDV
+participant ":app/UtilizadoresController" as UC
+participant ":app/UtilizadorService" as US
+participant "API:SistemaCentral" as API
 
 activate U
 
-U --> CV: Inicia o depósito
-activate CV
+U --> USV: inicia o depósito
+activate USV
 
-CV --> U: Pede os dados ao Utilizador
+USV --> UC: Depositar()
+deactivate USV
+activate UC
 
-U --> CV: Insere os dados
+UC --> UDV: return View()
+activate UDV
 
-CV --> CC: DepositarCarteira(montante)
-activate CC
+UDV --> U: pede valor
 
-CC --> CS: DepositarCarteira(montante)
-activate CS
+U --> UDV: insere valor
 
-CS --> API: CarregarCarteira(PagamentoDTO)
+UDV --> UC: Depositar(DepositarDTO)
+deactivate UDV
+
+UC --> US: DepositarSaldoAsync(DepositarDTO)
+activate US
+
+US --> API: PostAsync(DepositarDTO)
 activate API
 
-API --> CS:No Content
+API --> US: NoContent()
 deactivate API
 
-CS --> CC: No Content
-deactivate CS
+US --> UC: Task ok
+deactivate US
 
-CC --> CV: No Content
-deactivate CC
+UC --> UC: RedirectToAction(nameof(Saldo))
 
-CV --> U: No Content\nOperação bem Sucedida
-deactivate CV
+UC --> US: GetSaldoAsync()
+activate US
+
+US --> API: GetAsync(nif)
+activate API
+
+API --> US: return(valor)
+deactivate API
+
+US --> UC: return(SaldoDTO)
+deactivate US
+
+UC --> USV: return View(SaldoDTO)
+deactivate UC
+activate USV
+
+USV --> U: operação bem sucedida
+deactivate USV
 
 deactivate U
 @enduml
