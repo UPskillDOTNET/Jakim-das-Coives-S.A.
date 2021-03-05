@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background: #268596; padding-top:5px">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: #268596; padding-top:5px">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white; font-size: 20px">Jakim Smartparking</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -23,19 +23,16 @@
                         @if (User.IsInRole("Utilizador"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Saldo">Saldo</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="Utilizadores" asp-action="Saldo">Saldo</a>
                             </li>
                         }
                     </ul>
@@ -51,9 +48,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted" style="background: #268596">
-        <div class="container" style="color: white">
-            &copy; 2021 - Jakim Smartparking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
+    <footer class="footer text-light" style="background: #268596">
+        <div class="container">
+            &copy; 2021 - Jakim Smartparking - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
 
