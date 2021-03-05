@@ -27,10 +27,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        public string Username { get; set; }
-
         [Display(Name = "NIF")]
         public string Nif { get; set; }
+
+        public string Email { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -49,10 +49,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(Utilizador user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
 
-            Username = userName;
+            Email = email;
 
             Nif = user.Id;
 
