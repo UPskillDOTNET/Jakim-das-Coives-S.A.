@@ -8,7 +8,7 @@ namespace APP_FrontEnd.Services
 {
     public interface IUtilizadorService
     {
-        public Task<double> GetSaldoAsync();
+        public Task<SaldoDTO> GetSaldoAsync();
         public Task DepositarSaldoAsync(DepositarDTO depositar);
     }
 }
