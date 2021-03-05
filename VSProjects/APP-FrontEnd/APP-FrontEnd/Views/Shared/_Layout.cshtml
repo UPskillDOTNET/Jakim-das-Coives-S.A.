@@ -13,29 +13,31 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: #268596; padding-top:5px">
             <div class="container">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (User.IsInRole("Utilizador"))
+                    {
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="navbar-toggler-icon"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background:#98AFC7">
+                                <a class="dropdown-item text-light" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-light" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Saldo</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-light" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-light" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white; font-size: 20px; margin-top:8px">Jakim Smartparking</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.IsInRole("Utilizador"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="" asp-controller="Utilizadores" asp-action="Saldo">Saldo</a>
-                            </li>
-                        }
-                    </ul>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
