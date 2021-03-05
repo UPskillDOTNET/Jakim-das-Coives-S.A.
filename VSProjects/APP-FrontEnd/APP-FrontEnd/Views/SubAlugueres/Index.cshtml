@@ -9,86 +9,85 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table__heading">
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.ParqueId)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.NomeParque)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Numero)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Fila)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Andar)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Preco)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.NifProprietario)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.ReservaSistemaCentralId)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.IsReservado)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Inicio)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Fim)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table__row">
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Id)">
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.ParqueId)">
                 @Html.DisplayFor(modelItem => item.ParqueId)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NomeParque)">
                 @Html.DisplayFor(modelItem => item.NomeParque)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Numero)">
                 @Html.DisplayFor(modelItem => item.Numero)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Fila)">
                 @Html.DisplayFor(modelItem => item.Fila)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Andar)">
                 @Html.DisplayFor(modelItem => item.Andar)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Preco)">
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NifProprietario)">
                 @Html.DisplayFor(modelItem => item.NifProprietario)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.ReservaSistemaCentralId)">
                 @Html.DisplayFor(modelItem => item.ReservaSistemaCentralId)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.IsReservado)">
                 @Html.DisplayFor(modelItem => item.IsReservado)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Inicio)">
                 @Html.DisplayFor(modelItem => item.Inicio)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Fim)">
                 @Html.DisplayFor(modelItem => item.Fim)
             </td>
-            <td>
+            <td class="table__content">
                 @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
                 @Html.ActionLink("Cancelar", "Cancelar", new { id = item.Id })
             </td>
