@@ -121,5 +121,18 @@ namespace API_Sistema_Central.Services
                 throw new Exception("Este utilizador não existe.");
             }
         }
+
+        public async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(alterarPasswordDTO.Nif);
+            if (utilizador != null)
+            {
+                await _userManager.ChangePasswordAsync(utilizador, alterarPasswordDTO.PasswordActual, alterarPasswordDTO.PasswordNova);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
     }
 }

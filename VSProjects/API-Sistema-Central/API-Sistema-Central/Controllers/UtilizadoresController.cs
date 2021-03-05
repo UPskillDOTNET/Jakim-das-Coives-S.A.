@@ -98,5 +98,21 @@ namespace API_Sistema_Central.Controllers
                 }
             }
         }
+
+        [HttpPost("alterar")]
+        public async Task<ActionResult> AlterarPassword(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            {
+                try
+                {
+                    await _utilizadorService.AlterarPasswordAsync(alterarPasswordDTO);
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e.Message);
+                }
+            }
+        }
     }
 }

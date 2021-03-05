@@ -15,5 +15,6 @@ namespace API_Sistema_Central.Services
         public Task<double> GetSaldoAsync(string nif);
         public Task DepositarSaldoAsync(string nif, double valor);
         public Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO);
+        public Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO);
     }
 }

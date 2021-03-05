@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
 namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
@@ -82,7 +86,22 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            if (changePasswordResult.Succeeded)
+            {
+                try
+                {
+                    await AlterarPasswordAsync(new AlterarPasswordDTO { Nif = user.Id, PasswordActual = Input.OldPassword, PasswordNova = Input.NewPassword });
+                }
+                catch (Exception e)
+                {
+                    await _userManager.ChangePasswordAsync(user, Input.NewPassword, Input.OldPassword);
+                    await _signInManager.RefreshSignInAsync(user);
+                    StatusMessage = e.Message;
+
+                    return RedirectToPage();
+                }
+            }
+            else
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
@@ -93,9 +112,27 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            StatusMessage = "A tua palavra-passe foi alterada.";
 
             return RedirectToPage();
+        }
+
+        private async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(alterarPasswordDTO), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/alterar";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Alteração de palavra-passe falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }
