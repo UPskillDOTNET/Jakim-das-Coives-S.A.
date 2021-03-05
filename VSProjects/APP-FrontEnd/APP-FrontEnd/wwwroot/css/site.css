@@ -73,7 +73,7 @@ body {
 }
 
 /*Menu Pesquisa Index*/
-.row {
+#menuBorder {
     margin-right: 2rem;
     padding-top: 1.3rem;
     padding-bottom: 1rem;
