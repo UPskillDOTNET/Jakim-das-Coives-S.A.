@@ -64,7 +64,7 @@ namespace API_Sistema_Central.Controllers
             {
                 return NotFound(e.Message);
             }
-            
+
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -79,6 +79,23 @@ namespace API_Sistema_Central.Controllers
             catch (Exception e)
             {
                 return NotFound(e.Message);
+            }
+        }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("reset")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        {
+            {
+                try
+                {
+                    await _utilizadorService.ResetPasswordAsync(resetPasswordDTO);
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e.Message);
+                }
             }
         }
     }

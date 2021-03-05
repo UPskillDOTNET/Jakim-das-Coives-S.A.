@@ -14,5 +14,6 @@ namespace API_Sistema_Central.Services
         public Task<Microsoft.AspNetCore.Identity.SignInResult> Login(InfoUtilizadorDTO infoUtilizadorDTO);
         public Task<double> GetSaldoAsync(string nif);
         public Task DepositarSaldoAsync(string nif, double valor);
+        public Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO);
     }
 }

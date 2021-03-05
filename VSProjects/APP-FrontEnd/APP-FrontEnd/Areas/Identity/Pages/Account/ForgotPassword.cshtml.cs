@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Net.Mail;
+using System.Net;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -41,14 +43,12 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -57,10 +57,17 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Redifinir Password",
-                    $"Por favor redifine a sua password carregando aqui: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>.");
+                MailMessage msg = new MailMessage();
+                msg.From = new MailAddress("sistemacentraljakim@gmail.com");
+                msg.To.Add(Input.Email);
+                msg.Subject = "Redifinir palavra-passe";
+                msg.Body = $"Para redefinir a sua palavra-passe clique aqui: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Link</a>.";
+                msg.IsBodyHtml = true;
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("sistemacentraljakim@gmail.com", "123Pa$$word");
+                smtp.EnableSsl = true;
+                smtp.Send(msg);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

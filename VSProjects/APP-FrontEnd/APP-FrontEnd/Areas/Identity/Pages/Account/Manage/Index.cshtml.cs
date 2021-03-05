@@ -25,6 +25,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
+        [Display(Name = "NIF")]
+        public string Nif { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -34,7 +37,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Número de telefone")]
             public string PhoneNumber { get; set; }
         }
 
@@ -44,6 +47,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+
+            Nif = user.Id;
 
             Input = new InputModel
             {

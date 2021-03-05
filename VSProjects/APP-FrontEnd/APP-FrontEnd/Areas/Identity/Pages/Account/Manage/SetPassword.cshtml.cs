@@ -32,14 +32,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "A password deve conter pelo menos um caracter especial.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "A palavra-passe deve ter no mínimo 6 caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Nova password")]
+            [Display(Name = "Nova palavra-passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar nova password")]
-            [Compare("Nova password", ErrorMessage = "A nova password e a sua confirmação não coincidem. Por favor tente novamente.")]
+            [Display(Name = "Confirmar nova palavra-passe")]
+            [Compare("NewPassword", ErrorMessage = "A nova palavra-passe e a sua confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
         }
 

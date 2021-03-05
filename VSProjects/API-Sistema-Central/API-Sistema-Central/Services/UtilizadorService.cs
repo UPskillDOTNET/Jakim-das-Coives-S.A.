@@ -107,5 +107,19 @@ namespace API_Sistema_Central.Services
                 throw new Exception("Este utilizador não existe.");
             }
         }
+
+        public async Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(resetPasswordDTO.Nif);
+            if (utilizador != null)
+            {
+                await _userManager.RemovePasswordAsync(utilizador);
+                await _userManager.AddPasswordAsync(utilizador, resetPasswordDTO.Password);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
     }
 }

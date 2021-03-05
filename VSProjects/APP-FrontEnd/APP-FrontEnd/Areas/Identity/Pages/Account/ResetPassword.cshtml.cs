@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -33,13 +36,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "A password deve conter pelo menos um caracter especial.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "A palavra-passe deve ter no mínimo 6 caracteres.", MinimumLength = 6)]
+            [Display(Name = "Palavra-passe")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar password")]
-            [Compare("Password", ErrorMessage = "A nova password e a sua confirmação não coincidem. Por favor tente novamente.")]
+            [Display(Name = "Confirmar palavra-passe")]
+            [Compare("Password", ErrorMessage = "A nova palavra-passe e a sua confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
 
             public string Code { get; set; }
@@ -78,6 +82,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
+                var token = GetTokenAsync(new InfoUtilizadorDTO { Email = "sistemacentraljakim@gmail.com", Password = "123Pa$$word" }).Result;
+                await ResetPasswordAsync(new ResetPasswordDTO { Nif = user.Id, Password = Input.Password }, token.Token);
+
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
@@ -86,6 +93,45 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return Page();
+        }
+
+        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
+        {
+            try
+            {
+                TokenUtilizadorDTO token;
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/login";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                }
+                return token;
+            }
+            catch
+            {
+                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
+            }
+        }
+        private async Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO, string token)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(resetPasswordDTO), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/reset";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Repor palavra-passe falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }
