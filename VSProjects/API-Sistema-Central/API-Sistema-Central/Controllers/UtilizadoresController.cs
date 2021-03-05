@@ -114,5 +114,22 @@ namespace API_Sistema_Central.Controllers
                 }
             }
         }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("nome")]
+        public async Task<ActionResult> AlterarNome(AlterarNomeDTO alterarNomeDTO)
+        {
+            {
+                try
+                {
+                    await _utilizadorService.AlterarNomeAsync(alterarNomeDTO);
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e.Message);
+                }
+            }
+        }
     }
 }

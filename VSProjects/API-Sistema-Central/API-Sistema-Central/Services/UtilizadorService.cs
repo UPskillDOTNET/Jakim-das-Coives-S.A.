@@ -134,5 +134,19 @@ namespace API_Sistema_Central.Services
                 throw new Exception("Este utilizador não existe.");
             }
         }
+
+        public async Task AlterarNomeAsync(AlterarNomeDTO alterarNomeDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(alterarNomeDTO.Nif);
+            if (utilizador != null && utilizador.Nome == alterarNomeDTO.NomeActual)
+            {
+                utilizador.Nome = alterarNomeDTO.NomeNovo;
+                await _userManager.UpdateAsync(utilizador);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
     }
 }
