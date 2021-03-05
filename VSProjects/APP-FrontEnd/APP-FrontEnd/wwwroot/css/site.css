@@ -73,7 +73,7 @@ body {
 }
 
 /*Menu Pesquisa Index*/
-.row {
+#menuBorder {
     margin-right: 2rem;
     padding-top: 1.3rem;
     padding-bottom: 1rem;
@@ -94,6 +94,25 @@ body {
     color: white;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     outline: none;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: white;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: cornflowerblue;
+    text-decoration: none;
+    background-color: #f8f9fa;
 }
 
 

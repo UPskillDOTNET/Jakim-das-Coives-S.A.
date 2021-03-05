@@ -18,11 +18,9 @@ namespace APP_FrontEnd.Controllers
 
         public async Task<IActionResult> Saldo()
         {
-            var saldo = new SaldoDTO();
             try
             {
-                var valor = await _utilizadorService.GetSaldoAsync();
-                saldo.Valor = valor;
+                var saldo = await _utilizadorService.GetSaldoAsync();
                 return View(saldo);
             }
             catch (Exception e)

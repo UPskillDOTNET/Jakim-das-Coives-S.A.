@@ -26,7 +26,7 @@ namespace APP_FrontEnd.Services
             _signInManager = signInManager;
         }
 
-        public async Task<double> GetSaldoAsync()
+        public async Task<SaldoDTO> GetSaldoAsync()
         {
 
             string nif;
@@ -41,16 +41,17 @@ namespace APP_FrontEnd.Services
 
             var token = await GetTokenByNif(nif);
 
-            double saldoUtilizador;
+            var saldo = new SaldoDTO();
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string endpoint = "https://localhost:5050/api/utilizadores/saldo/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
-                saldoUtilizador = await response.Content.ReadAsAsync<double>();
+                var valor = await response.Content.ReadAsAsync<double>();
+                saldo.Valor = Math.Round(valor, 2);
             }
-            return saldoUtilizador;
+            return saldo;
         }
         public async Task DepositarSaldoAsync(DepositarDTO depositar)
         {
