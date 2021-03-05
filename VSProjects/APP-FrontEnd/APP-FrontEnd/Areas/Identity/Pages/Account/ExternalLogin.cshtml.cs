@@ -227,6 +227,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                         registeredUser.Token = token.Token;
                         registeredUser.Expiration = token.Expiration;
                         await _userManager.UpdateAsync(registeredUser);
+                        await _userManager.AddToRoleAsync(registeredUser, "Utilizador");
 
 
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
