@@ -122,3 +122,84 @@ body {
     text-decoration: none;
     background-color: #f8f9fa;
 }
+
+
+/*Tables
+
+  Aqui está tudo o que tem a ver com as tabelas responsivas utilizadas para listar elementos
+*/
+
+td, th {
+    padding: 8px;
+    padding: 2rem;
+}
+
+th {
+    text-align: left;
+    font-weight: 300;
+    font-size: 20px;
+    font-size: 1.25rem;
+}
+
+td {
+    font-family: 'Avenir Next', 'Segoe UI', 'Lucida Grande', sans-serif;
+}
+
+.table {
+    width: 100%;
+    padding: 16px;
+    padding: 1rem;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.table__heading {
+    border-bottom: 2px solid #FFC842;
+    background: #268596;
+    color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.table__row {
+    background: #80bbc4;
+}
+
+.table__row:nth-child(odd) {
+    background: #92d4de;
+}
+
+.table__row:last-of-type {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+}
+
+@media (max-width: 32rem) {
+    .table__heading {
+        display: none;
+    }
+
+    .table__content {
+        display: block;
+        padding: .5rem 0;
+    }
+
+    .table__row {
+        margin: 1rem 1rem;
+        padding: .5rem 0;
+        display: block;
+        border-bottom: 2px solid #FFC842;
+    }
+
+    .table__content:before {
+        content: attr(data-heading);
+        display: inline-block;
+        width: 5rem;
+        margin-right: 7rem;
+        color: #FFF;
+        font-size: .75rem;
+        font-weight: 700;
+        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+}

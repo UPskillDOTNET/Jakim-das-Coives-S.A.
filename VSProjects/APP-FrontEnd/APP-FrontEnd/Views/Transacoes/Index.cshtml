@@ -8,41 +8,40 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table__heading">
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Tipo)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.NifDestinatario)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.DataHora)
             </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Metodo)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+        <tr class="table__row">
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Tipo)">
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NifDestinatario)">
                 @Html.DisplayFor(modelItem => item.NifDestinatario)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Valor)">
                 @Html.DisplayFor(modelItem => item.Valor)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.DataHora)">
                 @Html.DisplayFor(modelItem => item.DataHora)
             </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Metodo)">
                 @Html.DisplayFor(modelItem => item.Metodo)
             </td>
         </tr>
