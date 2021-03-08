@@ -9,6 +9,7 @@ namespace APP_FrontEnd.Models
     public class DetalheReservaDTO
     {
         public int ReservaId { get; set; }
+        [DataType(DataType.Currency)]
         public double Custo { get; set; }
         public int ReservaParqueId { get; set; }
         public string NomeFreguesia { get; set; }

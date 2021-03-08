@@ -12,6 +12,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
         public static string Email => "Email";
 
+        public static string MetodoPagamento => "MetodoPagamento";
+
         public static string ChangePassword => "ChangePassword";
 
         public static string DownloadPersonalData => "DownloadPersonalData";
@@ -27,6 +29,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
+
+        public static string MetodoPagamentoNavClass(ViewContext viewContext) => PageNavClass(viewContext, MetodoPagamento);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
 

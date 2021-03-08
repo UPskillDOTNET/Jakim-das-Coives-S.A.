@@ -131,5 +131,22 @@ namespace API_Sistema_Central.Controllers
                 }
             }
         }
+
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPost("metodo")]
+        public async Task<ActionResult> AlterarMetodoPagamento(AlterarMetodoPagamentoDTO alterarMetodoPagamentoDTO)
+        {
+            {
+                try
+                {
+                    await _utilizadorService.AlterarMetodoPagamentoAsync(alterarMetodoPagamentoDTO);
+                    return Ok();
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e.Message);
+                }
+            }
+        }
     }
 }

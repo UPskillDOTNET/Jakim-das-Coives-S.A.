@@ -11,7 +11,9 @@ namespace APP_FrontEnd.Models
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string Nif { get; set; }
         public string NomeUtilizador { get; set; }
+        [DataType(DataType.EmailAddress)]
         public string EmailUtilizador { get; set; }
+        [DataType(DataType.Password)]
         public string PasswordUtilizador { get; set; }
         public int MetodoId { get; set; }
 
