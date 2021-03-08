@@ -14,6 +14,8 @@ namespace APP_FrontEnd.Models
 
         [Display(Name = "Parque")]
         public string NomeParque { get; set; }
+
+        [Display(Name = "Nº de Lugar")]
         public int Numero { get; set; }
         public string Fila { get; set; }
         public int Andar { get; set; }
@@ -27,10 +29,13 @@ namespace APP_FrontEnd.Models
 
         [Display(Name = "Encontra-se Reservado?")]
         public bool? IsReservado { get; set; }
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data de Início")]
         public DateTime Inicio { get; set; }
         [DataType(DataType.DateTime)]
+        [Display(Name = "Data de Fim")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Fim { get; set; }
     }
