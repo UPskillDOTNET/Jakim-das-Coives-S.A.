@@ -1,35 +1,61 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/SubAluguerView" as SAV
-participant ":app/SubAluguerController" as SAC
-participant ":app/SubAluguerService" as SAS
-participant "app.SistemaCentral" as API
+participant ":app/Views/SubAlugueres/Index" as SIV
+participant ":app/Views/SubAlugueres/Cancelar" as SCV
+participant ":app/SubAlugueresController" as SC
+participant ":app/SubAluguerService" as SS
+participant "API:SistemaCentral" as API
 
 activate U
 
-U --> SAV: Inicia o cancelamento
-activate SAV
+U --> SIV: Inicia o cancelamento
+activate SIV
 
-SAV --> SAC: DeleteSubAluguer(id)
-activate SAC
+SIV --> SC: Cancelar(id)
+deactivate SIV
+activate SC
 
-SAC --> SAS: DeleteAsync(id)
-activate SAS
+SC --> SS: GetSubAluguerById(id)
+activate SS
 
-SAS --> API: DeleteSubAluguer(id)
+SS --> API: GetAsync(id)
 activate API
 
-API --> SAS:No Content
+API --> SS: return(SubAluguerDTO)
 deactivate API
 
-SAS --> SAC: No Content
-deactivate SAS
+SS --> SC: return(SubAluguerDTO)
+deactivate SS
 
-SAC --> SAV: No Content
-deactivate SAC
+SC --> SCV: return View(SubAluguerDTO)
+activate SCV
 
-SAV --> U: No Content\noperacao bem sucedida
-deactivate SAV
+SCV --> U: pede para confirmar
+
+U --> SCV: confirma
+
+SCV --> SC: CancelarConfirmado(id)
+deactivate SCV
+
+SC --> SS: DeleteSubAluguerAsync(id)
+activate SS
+
+SS --> API: DeleteAsync(id)
+activate API
+
+API --> SS:No Content
+deactivate API
+
+SS --> SC: Task ok
+deactivate SS
+
+SC --> SIV: RedirectToAction(nameof(Index))
+deactivate SC
+activate SIV
+
+SIV --> U: operacao bem sucedida
+deactivate SIV
 
 deactivate U
+@enduml

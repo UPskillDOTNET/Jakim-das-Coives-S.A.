@@ -1,35 +1,32 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/TransacaoView" as TV
-participant ":app/TransacaoController" as TC
+participant ":app/Views/Transacoes/Index" as TV
+participant ":app/TransacoesController" as TC
 participant ":app/TransacaoService" as TS
-participant "API.SistemaCentral" as API
+participant "API:SistemaCentral" as API
 
 activate U
 
-U --> TV: Inicia a consulta
-activate TV
-
-TV --> TC: GetAllTransacoesByNif(nif)
+U --> TC: inicia a consulta
 activate TC
 
-TC --> TS: GetAllTransacoesByNifAsync(nif)
+TC --> TS: GetAllTransacoesByNifAsync()
 activate TS
 
-TS --> API: GetTransacaoByNif(nif)
+TS --> API: GetAsync(nif)
 activate API
 
-API --> TS:return listaTransacoes
+API --> TS: return(lista TransacaoDTO)
 deactivate API
 
-TS --> TC: return listaTransacoes
+TS --> TC: return(lista TransacaoDTO)
 deactivate TS
 
-TC --> TV: return listaTransacoes
+TC --> TV: return View(lista)
 deactivate TC
 
-TV --> U: return listaTransacoes\noperacao bem sucedida
+TV --> U: operacao bem sucedida
 deactivate TV
 
 deactivate U

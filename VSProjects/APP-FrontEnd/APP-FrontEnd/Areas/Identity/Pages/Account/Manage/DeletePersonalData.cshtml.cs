@@ -32,6 +32,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Palavra-passe")]
             public string Password { get; set; }
         }
 

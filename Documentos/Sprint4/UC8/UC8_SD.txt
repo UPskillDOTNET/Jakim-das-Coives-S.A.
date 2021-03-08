@@ -1,67 +1,33 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/SubAluguerView" as SV
-participant ":app/SubAluguerController" as SC
+participant ":app/Views/SubAlugueres/Index" as SV
+participant ":app/SubAlugueresController" as SC
 participant ":app/SubAluguerService" as SS
-participant ":app/ReservaView" as RV
-participant ":app/ReservaController" as RC
-participant ":app/ReservaService" as RS
-participant "API.SistemaCentral" as API
+participant "API:SistemaCentral" as API
 
 activate U
 
-U --> SV: Inicia a consulta
-activate SV
-
-SV --> SC: GetAllSubAlugueresByNif(nif)
+U --> SC: inicia a consulta
 activate SC
 
-SC --> SS: GetAllSubAlugueresByNifAsync(nif)
+SC --> SS: GetAllSubAluguerByNIF()
 activate SS
 
-SS --> API: GetSubAluguerByNif(nif)
+SS --> API: GetAsync(nif)
 activate API
 
-API --> SS:return listaSubAlugueres
+API --> SS: return(lista SubAluguerDTO)
 deactivate API
 
-SS --> SC: return listaSubAlugueres
+SS --> SC: return(lista SubAluguerDTO)
 deactivate SS
 
-SC --> SV: return listaSubAlugueres
+SC --> SV: return View(lista)
 deactivate SC
 
-SV --> U: return listaSubAlugueres\noperacao bem sucedida
+SV --> U: operacao bem sucedida
 deactivate SV
-
-alt Ver detalhes
-
-U --> RV: Selecciona um sub-aluguer
-activate RV
-
-RV --> RC: GetReservasByReservaOriginalId(id)
-activate RC
-
-RC --> RS: GetAllReservasByReservaOriginalIdAsync(id)
-activate RS
-
-RS --> API: GetByReservaOriginalId(id)
-activate API
-
-API --> RS:return listaReservas
-deactivate API
-
-RS --> RC: return listaReservas
-deactivate RS
-
-RC --> RV: return listaReservas
-deactivate RC
-
-RV --> U: return listaReservas\noperacao bem sucedida
-deactivate RV
-
-end
 
 deactivate U
 @enduml

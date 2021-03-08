@@ -9,14 +9,5 @@ activate "API"
 "API" --> UserNR : return listaSubAlugueres
 deactivate "API"
 
-alt Ver detalhes
-
-UserNR -> "API" : selecciona um sub-aluguer
-activate "API"
-"API" --> UserNR : return listaReservas
-deactivate "API"
-
-end
-
 deactivate UserNR
 @enduml

@@ -1,12 +1,12 @@
 @startuml
 autonumber
 actor "Utilizador" as UserNR
-participant ":app/ReservaView" as API
+participant ":App.FrontEnd" as API
 
 activate UserNR
-UserNR -> "API" : Solicita a Reserva
+UserNR -> "API" : inicia consulta de reservas
 activate "API"
-"API" --> UserNR : return Operaçao bem sucedida
+"API" --> UserNR : return listaReservas
 deactivate "API"
 
 deactivate UserNR

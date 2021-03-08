@@ -1,0 +1,13 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+participant ":APP.FrontEnd" as API
+
+activate UserNR
+UserNR -> "API" : inicia pesquisa de disponibilidade \n(localidade, inicio, fim)
+activate "API"
+"API" --> UserNR : return lista \noperaçao bem sucedida
+deactivate "API"
+
+deactivate UserNR
+@enduml

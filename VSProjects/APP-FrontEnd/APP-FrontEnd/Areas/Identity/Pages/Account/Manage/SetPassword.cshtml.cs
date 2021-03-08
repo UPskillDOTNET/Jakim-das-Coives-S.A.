@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 {
@@ -32,14 +35,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "A password deve conter pelo menos um caracter especial.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "A palavra-passe deve ter no mínimo 6 caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Nova password")]
+            [Display(Name = "Nova palavra-passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar nova password")]
-            [Compare("Nova password", ErrorMessage = "A nova password e a sua confirmação não coincidem. Por favor tente novamente.")]
+            [Display(Name = "Confirmar nova palavra-passe")]
+            [Compare("NewPassword", ErrorMessage = "A nova palavra-passe e a sua confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -75,7 +78,22 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
-            if (!addPasswordResult.Succeeded)
+            if (addPasswordResult.Succeeded)
+            {
+                try
+                {
+                    await AlterarPasswordAsync(new AlterarPasswordDTO { Nif = user.Id, PasswordActual = user.Id + user.MetodoId + user.Nome + "$PP$", PasswordNova = Input.NewPassword });
+                }
+                catch (Exception e)
+                {
+                    await _userManager.RemovePasswordAsync(user);
+                    await _signInManager.RefreshSignInAsync(user);
+                    StatusMessage = e.Message;
+
+                    return RedirectToPage();
+                }
+            }
+            else
             {
                 foreach (var error in addPasswordResult.Errors)
                 {
@@ -88,6 +106,23 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             StatusMessage = "A sua password foi registada.";
 
             return RedirectToPage();
+        }
+        private async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(alterarPasswordDTO), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/alterar";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Alteração de palavra-passe falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }

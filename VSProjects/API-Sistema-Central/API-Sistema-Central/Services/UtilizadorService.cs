@@ -107,5 +107,46 @@ namespace API_Sistema_Central.Services
                 throw new Exception("Este utilizador não existe.");
             }
         }
+
+        public async Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(resetPasswordDTO.Nif);
+            if (utilizador != null)
+            {
+                await _userManager.RemovePasswordAsync(utilizador);
+                await _userManager.AddPasswordAsync(utilizador, resetPasswordDTO.Password);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
+
+        public async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(alterarPasswordDTO.Nif);
+            if (utilizador != null)
+            {
+                await _userManager.ChangePasswordAsync(utilizador, alterarPasswordDTO.PasswordActual, alterarPasswordDTO.PasswordNova);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
+
+        public async Task AlterarNomeAsync(AlterarNomeDTO alterarNomeDTO)
+        {
+            Utilizador utilizador = await _userManager.FindByIdAsync(alterarNomeDTO.Nif);
+            if (utilizador != null && utilizador.Nome == alterarNomeDTO.NomeActual)
+            {
+                utilizador.Nome = alterarNomeDTO.NomeNovo;
+                await _userManager.UpdateAsync(utilizador);
+            }
+            else
+            {
+                throw new Exception("Este utilizador não existe.");
+            }
+        }
     }
 }

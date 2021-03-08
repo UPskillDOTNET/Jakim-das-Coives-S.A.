@@ -7,10 +7,10 @@ activate User
 User -> "APP" : inicia pedido de depósito de dinheiro na carteira
 activate "APP"
 
-"APP" -> User : pede dados necessários (montante)
+"APP" -> User : pede valor
 deactivate "APP"
 
-User -> "APP" : Insere os dados
+User -> "APP" : insere valor
 activate "APP"
 
 "APP" -> User : operação bem sucedida

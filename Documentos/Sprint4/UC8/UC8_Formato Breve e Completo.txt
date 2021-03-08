@@ -37,8 +37,5 @@ Fluxos Alternativos
     2a - O Utilizador não tem qualquer reserva disponibilizada para sub-aluguer.
        - A App.FrontEnd informa o Utilizador desse facto.
 
-    2b - O Utilizador pede para ver detalhes de um sub-aluguer.
-       - A App.FrontEnd devolve a lista de reservas referentes ao sub-aluguer.
-
 --------------------------------------------------------------------------------------------------
 

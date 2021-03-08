@@ -3,6 +3,7 @@ autonumber
 actor "Utilizador Não Registado" as UNR
 participant ":app/Register(RazorPage)" as R
 participant "userManager" as UM
+participant "API:SistemaCentral" as API
 
 activate UNR
 
@@ -12,7 +13,19 @@ activate R
 R --> UM : CreateAsync()
 activate UM
 
-UM --> R : operação bem sucedida
+UM --> R : IdentityResult ok
+deactivate UM
+
+R --> API: PostAsync(RegistarUtilizadorDTO)
+activate API
+
+API --> R: return(TokenUtilizadorDTO)
+deactivate API
+
+R --> UM : UpdateAsync(TokenUtilizadorDTO)
+activate UM
+
+UM --> R : IdentityResult ok
 deactivate UM
 
 R --> UNR : operação bem sucedida

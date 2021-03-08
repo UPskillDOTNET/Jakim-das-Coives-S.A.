@@ -64,7 +64,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "The external login was removed.";
+            StatusMessage = "A autenticação externa foi removida.";
             return RedirectToPage();
         }
 
@@ -103,7 +103,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = "A autenticação externa foi registada.";
             return RedirectToPage();
         }
     }

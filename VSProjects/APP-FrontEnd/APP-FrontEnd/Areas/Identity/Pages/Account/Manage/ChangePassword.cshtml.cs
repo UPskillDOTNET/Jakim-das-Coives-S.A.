@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
 namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
@@ -36,18 +40,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Password Atual")]
+            [Display(Name = "Palavra-passe actual")]
             public string OldPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "A password deve conter pelo menos um caracter especial.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "A palavra-passe deve ter no mínimo 6 caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Nova Password")]
+            [Display(Name = "Nova palavra-passe")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirmar Nova Password")]
-            [Compare("Nova Password", ErrorMessage = "A nova password e a sua confirmação não coincidem. Por favor tente novamente.")]
+            [Display(Name = "Confirmar nova palavra-passe")]
+            [Compare("NewPassword", ErrorMessage = "A nova palavra-passe e a sua confirmação não correspondem.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -82,7 +86,22 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
-            if (!changePasswordResult.Succeeded)
+            if (changePasswordResult.Succeeded)
+            {
+                try
+                {
+                    await AlterarPasswordAsync(new AlterarPasswordDTO { Nif = user.Id, PasswordActual = Input.OldPassword, PasswordNova = Input.NewPassword });
+                }
+                catch (Exception e)
+                {
+                    await _userManager.ChangePasswordAsync(user, Input.NewPassword, Input.OldPassword);
+                    await _signInManager.RefreshSignInAsync(user);
+                    StatusMessage = e.Message;
+
+                    return RedirectToPage();
+                }
+            }
+            else
             {
                 foreach (var error in changePasswordResult.Errors)
                 {
@@ -92,10 +111,28 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("O utilizador modou a sua password com sucesso.");
-            StatusMessage = "A sua password foi modificada.";
+            _logger.LogInformation("User changed their password successfully.");
+            StatusMessage = "A tua palavra-passe foi alterada.";
 
             return RedirectToPage();
+        }
+
+        private async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(alterarPasswordDTO), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/alterar";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Alteração de palavra-passe falhou no servidor. Volte a tentar.");
+            }
         }
     }
 }
