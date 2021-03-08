@@ -10,6 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Services
 {
+    public interface ITransacaoService
+    {
+        public Task<Transacao> GetByIdAsync(int id);
+        public Task<ActionResult<IEnumerable<TransacaoDTO>>> GetByNifAsync(string nif);
+    }
+
     public class TransacaoService : ITransacaoService
     {
         private readonly ITransacaoRepository _repository;

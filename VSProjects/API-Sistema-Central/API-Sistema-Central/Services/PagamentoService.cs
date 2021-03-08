@@ -14,6 +14,12 @@ using System.Threading.Tasks;
 
 namespace API_Sistema_Central.Services
 {
+    public interface IPagamentoService
+    {
+        public Task Pay(PagamentoDTO payDTO);
+        public Task Reembolso(Transacao transacao);
+    }
+
     public class PagamentoService : IPagamentoService
     {
         private readonly IMetodoPagamentoRepository _repository;

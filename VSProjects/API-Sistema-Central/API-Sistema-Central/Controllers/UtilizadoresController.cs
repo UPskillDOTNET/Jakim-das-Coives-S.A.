@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using API_Sistema_Central.Authentication;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,43 +15,40 @@ namespace API_Sistema_Central.Controllers
     [ApiController]
     public class UtilizadoresController : ControllerBase
     {
-        private readonly ITokenService _tokenService;
         private readonly IUtilizadorService _utilizadorService;
-        public UtilizadoresController(ITokenService tokenService, IUtilizadorService utilizadorService)
+        public UtilizadoresController(IUtilizadorService utilizadorService)
         {
-            _tokenService = tokenService;
             _utilizadorService = utilizadorService;
         }
 
         [HttpPost("registar")]
-        public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
+        public async Task<ActionResult<TokenResponse>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.EmailUtilizador, Password = registarUtilizadorDTO.PasswordUtilizador };
-            var result = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO);
+            var response = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO, IpAddress());
 
-            if (result.Succeeded)
-            {
-                return _tokenService.BuildToken(infoUtilizadorDTO);
-            }
-            else
+            if (response == null)
             {
                 return BadRequest("Utilizador ou password inválidos");
             }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<TokenUtilizadorDTO>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
+        public async Task<ActionResult<TokenResponse>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
         {
-            var result = await _utilizadorService.Login(infoUtilizadorDTO);
+            var response = await _utilizadorService.Login(infoUtilizadorDTO, IpAddress());
 
-            if (result.Succeeded)
-            {
-                return _tokenService.BuildToken(infoUtilizadorDTO);
-            }
-            else
+            if (response == null)
             {
                 return BadRequest("Login inválido");
             }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
         }
 
         [Authorize(AuthenticationSchemes = "Bearer")]
@@ -147,6 +146,24 @@ namespace API_Sistema_Central.Controllers
                     return NotFound(e.Message);
                 }
             }
+        }
+
+
+        private void SetTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
+        }
+        private string IpAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }
