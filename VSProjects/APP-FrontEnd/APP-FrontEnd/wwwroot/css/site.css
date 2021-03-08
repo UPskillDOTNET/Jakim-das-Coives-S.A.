@@ -19,9 +19,10 @@ a {
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    box-shadow: -0.4rem 0 0px 0px #1b6ec2;
 }
 
 /* Sticky footer styles
@@ -95,13 +96,18 @@ body {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     outline: none;
 }
+    #pesquisa:hover {
+        -webkit-transition-duration: 0.3s;
+        background: #1a6775
+    }
+
 #gestaoConta {
     padding-left: 0;
     background-color: transparent;
     border-left: 0.5rem solid #1b6ec2;
     border-bottom-left-radius:3px;
     border-top-left-radius:3px;
-    box-shadow: -3px 0 0px 0px #1b6ec2;
+    
 }
 
 .dropdown-item {
