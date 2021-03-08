@@ -123,12 +123,57 @@ body {
     background-color: #f8f9fa;
 }
 
+/*
+    Login Menu Stuff
+
+*/
+
+#menuLoginBorder {
+    margin-right: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1.2em #268596;
+    display: block;
+    font-size: 1.2rem;
+}
+
+#externalLogin {
+    margin-left: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: block;
+    font-size: 1.2rem;
+}
+
+.extLoginImg {
+    width: 4rem;
+    height: 4rem;
+}
+
+.extLoginBtn {
+    background: white;
+    margin-right: 1rem;
+}
+
+.btnAccountSubmit {
+    background: #268596;
+    border-radius: 30px;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    border: none;
+    width: 100%;
+    margin-top: 1rem;
+    height: 2.5rem;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    outline: none;
+}
 
 /*Tables
 
   Aqui está tudo o que tem a ver com as tabelas responsivas utilizadas para listar elementos
 */
-
 td, th {
     padding: 8px;
     padding: 2rem;
@@ -201,5 +246,29 @@ td {
         font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
         text-transform: uppercase;
         letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 62rem) {
+    #menuLoginBorder {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px 1.2em #268596;
+        font-size: 1.2rem;
+        width: 90%;
+        margin-bottom: 2rem;
+    }
+
+    #externalLogin {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+    }
+
+    .col-md-4 {
+        max-width: 100%;
+        flex: none;
     }
 }
