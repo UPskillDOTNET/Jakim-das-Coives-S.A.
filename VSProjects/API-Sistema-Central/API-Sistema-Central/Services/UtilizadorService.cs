@@ -148,5 +148,91 @@ namespace API_Sistema_Central.Services
                 throw new Exception("Este utilizador não existe.");
             }
         }
+
+        public async Task AlterarMetodoPagamentoAsync(AlterarMetodoPagamentoDTO dto)
+        {
+            var result = await _signInManager.PasswordSignInAsync(dto.Email, dto.Password, isPersistent: false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                var utilizador = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Email == dto.Email);
+                if (utilizador == null)
+                {
+                    throw new Exception("Não existe um utilizador com este email.");
+                }
+                int credencialId;
+                try
+                {
+                    switch (dto.MetodoId)
+                    {
+                        case 1:
+                            Cartao c = new Cartao { MetodoId = dto.MetodoId, Nome = dto.NomeCartao, Numero = dto.Numero, Cvv = dto.Cvv, DataValidade = dto.DataValidade };
+                            if (c.Numero == null || c.Nome == null || c.Cvv == null || c.DataValidade == null)
+                            {
+                                throw new Exception();
+                            }
+                            Cartao cartao = await _cartaoRepository.PostAsync(c);
+                            credencialId = cartao.Id;
+                            break;
+                        case 2:
+                            DebitoDireto d = new DebitoDireto { MetodoId = dto.MetodoId, Iban = dto.Iban, CodigoPostal = dto.CodigoPostal, Freguesia = dto.Freguesia, Nome = dto.NomeDebitoDireto, DataSubscricao = dto.DataSubscricao, Rua = dto.Rua };
+                            if (d.Iban == null || d.CodigoPostal == null || d.Freguesia == null || d.Rua == null || d.Nome == null)
+                            {
+                                throw new Exception();
+                            }
+                            DebitoDireto debitoDireto = await _debitoDiretoRepository.PostAsync(d);
+                            credencialId = debitoDireto.Id;
+                            break;
+                        case 3:
+                            PayPal p = new PayPal { MetodoId = dto.MetodoId, Email = dto.EmailPayPal, Password = dto.PasswordPayPal };
+                            if (p.Password == null || p.Email == null)
+                            {
+                                throw new Exception();
+                            }
+                            PayPal payPal = await _payPalRepository.PostAsync(p);
+                            credencialId = payPal.Id;
+                            break;
+                        default:
+                            throw new Exception();
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Registo do novo método de pagamento falhou.");
+                }
+                int credencialIdAntiga = utilizador.CredencialId;
+                int metodoIdAntigo = utilizador.Credencial.MetodoId;
+                try
+                {
+                    utilizador.CredencialId = credencialId;
+                    await _userManager.UpdateAsync(utilizador);
+                }
+                catch
+                {
+                    throw new Exception("Actualização da credencial do utilizador falhou.");
+                }
+                try
+                {
+                    if (metodoIdAntigo == 1)
+                    {
+                        await _cartaoRepository.DeleteAsync(credencialIdAntiga);
+                    }
+                    if (metodoIdAntigo == 2)
+                    {
+                        await _debitoDiretoRepository.DeleteAsync(credencialIdAntiga);
+                    }
+                    if (metodoIdAntigo == 3)
+                    {
+                        await _payPalRepository.DeleteAsync(credencialIdAntiga);
+                    }
+                }
+                catch
+                {
+                    utilizador.CredencialId = credencialIdAntiga;
+                    await _userManager.UpdateAsync(utilizador);
+                    throw new Exception("Remover antigo método de pagamento falhou.");
+                }
+
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace API_Sistema_Central.DTOs
     {
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string Nif { get; set; }
+        [DataType(DataType.Currency)]
         [Range(1, 10000)]
         public double Valor { get; set; }
     }

@@ -8,6 +8,7 @@ namespace APP_FrontEnd.Models
 {
     public class SaldoDTO
     {
+        [DataType(DataType.Currency)]
         [Range(0, double.MaxValue)]
         public double Valor { get; set; }
     }
