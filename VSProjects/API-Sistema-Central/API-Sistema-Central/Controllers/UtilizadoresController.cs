@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
+    [Authorize]
     [Route("api/utilizadores")]
     [ApiController]
     public class UtilizadoresController : ControllerBase
@@ -21,8 +22,9 @@ namespace API_Sistema_Central.Controllers
             _utilizadorService = utilizadorService;
         }
 
+        [AllowAnonymous]
         [HttpPost("registar")]
-        public async Task<ActionResult<TokenResponse>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
+        public async Task<IActionResult> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
             var response = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO, IpAddress());
 
@@ -36,8 +38,9 @@ namespace API_Sistema_Central.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<TokenResponse>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
+        public async Task<IActionResult> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
         {
             var response = await _utilizadorService.Login(infoUtilizadorDTO, IpAddress());
 
@@ -51,7 +54,44 @@ namespace API_Sistema_Central.Controllers
             return Ok(response);
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshTokenAsync()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var response = await _utilizadorService.RefreshTokenAsync(refreshToken, IpAddress());
+
+            if (response == null)
+            {
+                return Unauthorized("Token inválido");
+            }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
+        }
+
+        [HttpPost("rescindir-token")]
+        public async Task<IActionResult> RevokeTokenAsync([FromBody] RevokeTokenRequest model)
+        {
+            var token = model.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token é necessário");
+            }
+
+            var response = await _utilizadorService.RevokeTokenAsync(token, IpAddress());
+
+            if (!response)
+            {
+                return NotFound("Token não encontrado");
+            }
+            
+            return Ok("Token rescindido");
+        }
+
+
         [HttpGet("saldo/{nif}")]
         public async Task<ActionResult<double>> GetSaldoByNif(string nif)
         {
@@ -66,7 +106,6 @@ namespace API_Sistema_Central.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("depositar")]
         public async Task<ActionResult> DepositarSaldoByNif(DepositarDTO depositar)
         {
@@ -81,70 +120,59 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("reset")]
         public async Task<ActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.ResetPasswordAsync(resetPasswordDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.ResetPasswordAsync(resetPasswordDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
         [HttpPost("alterar")]
         public async Task<ActionResult> AlterarPassword(AlterarPasswordDTO alterarPasswordDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarPasswordAsync(alterarPasswordDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarPasswordAsync(alterarPasswordDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("nome")]
         public async Task<ActionResult> AlterarNome(AlterarNomeDTO alterarNomeDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarNomeAsync(alterarNomeDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarNomeAsync(alterarNomeDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("metodo")]
         public async Task<ActionResult> AlterarMetodoPagamento(AlterarMetodoPagamentoDTO alterarMetodoPagamentoDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarMetodoPagamentoAsync(alterarMetodoPagamentoDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarMetodoPagamentoAsync(alterarMetodoPagamentoDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 

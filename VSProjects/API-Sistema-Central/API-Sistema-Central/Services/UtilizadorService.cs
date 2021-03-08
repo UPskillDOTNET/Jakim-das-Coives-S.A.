@@ -22,6 +22,8 @@ namespace API_Sistema_Central.Services
     {
         public Task<TokenResponse> RegistarUtilizador(RegistarUtilizadorDTO registarUtilizadorDTO, string ipAddress);
         public Task<TokenResponse> Login(InfoUtilizadorDTO infoUtilizadorDTO, string ipAddress);
+        public Task<TokenResponse> RefreshTokenAsync(string token, string ipAddress);
+        public Task<bool> RevokeTokenAsync(string token, string ipAddress);
         public Task<double> GetSaldoAsync(string nif);
         public Task DepositarSaldoAsync(string nif, double valor);
         public Task ResetPasswordAsync(ResetPasswordDTO resetPasswordDTO);
@@ -41,7 +43,7 @@ namespace API_Sistema_Central.Services
         private readonly ITransacaoRepository _transacaoRepository;
         private readonly AppSettings _appSettings;
 
-        public UtilizadorService (UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService, ITransacaoRepository transacaoRepository, IOptions<AppSettings> appSettings)
+        public UtilizadorService(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService, ITransacaoRepository transacaoRepository, IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -69,7 +71,7 @@ namespace API_Sistema_Central.Services
                     break;
                 case 2:
                     DebitoDireto d = new DebitoDireto { MetodoId = registarUtilizadorDTO.MetodoId, Iban = registarUtilizadorDTO.Iban, CodigoPostal = registarUtilizadorDTO.CodigoPostal, Freguesia = registarUtilizadorDTO.Freguesia, Nome = registarUtilizadorDTO.NomeDebitoDireto, DataSubscricao = registarUtilizadorDTO.DataSubscricao, Rua = registarUtilizadorDTO.Rua };
-                    if ( d.Iban == null || d.CodigoPostal == null || d.Freguesia == null || d.Rua == null || d.Nome == null)
+                    if (d.Iban == null || d.CodigoPostal == null || d.Freguesia == null || d.Rua == null || d.Nome == null)
                     {
                         return null;
                     }
@@ -89,13 +91,17 @@ namespace API_Sistema_Central.Services
                     return null;
             }
 
-            var user = new Utilizador { Id = registarUtilizadorDTO.Nif, UserName = registarUtilizadorDTO.EmailUtilizador, Nome = registarUtilizadorDTO.NomeUtilizador, Email = registarUtilizadorDTO.EmailUtilizador, CredencialId = credencialId };
-            var result = await _userManager.CreateAsync(user, registarUtilizadorDTO.PasswordUtilizador);
+            var utilizador = new Utilizador { Id = registarUtilizadorDTO.Nif, UserName = registarUtilizadorDTO.EmailUtilizador, Nome = registarUtilizadorDTO.NomeUtilizador, Email = registarUtilizadorDTO.EmailUtilizador, CredencialId = credencialId };
+            var result = await _userManager.CreateAsync(utilizador, registarUtilizadorDTO.PasswordUtilizador);
 
             if (result.Succeeded)
             {
                 var jwtToken = GenerateJwtToken(new InfoUtilizadorDTO { Email = registarUtilizadorDTO.EmailUtilizador, Password = registarUtilizadorDTO.PasswordUtilizador });
                 var refreshToken = GenerateRefreshToken(ipAddress);
+
+                var user = await _userManager.FindByEmailAsync(registarUtilizadorDTO.EmailUtilizador);
+                user.RefreshTokens.Add(refreshToken);
+                await _userManager.UpdateAsync(user);
 
                 return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
             }
@@ -111,8 +117,13 @@ namespace API_Sistema_Central.Services
 
             if (result.Succeeded)
             {
+
                 var jwtToken = GenerateJwtToken(infoUtilizadorDTO);
                 var refreshToken = GenerateRefreshToken(ipAddress);
+
+                var user = await _userManager.FindByEmailAsync(infoUtilizadorDTO.Email);
+                user.RefreshTokens.Add(refreshToken);
+                await _userManager.UpdateAsync(user);
 
                 return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
             }
@@ -121,6 +132,60 @@ namespace API_Sistema_Central.Services
                 return null;
             }
         }
+
+        public async Task<TokenResponse> RefreshTokenAsync(string token, string ipAddress)
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsActive)
+            {
+                return null;
+            }
+
+            var newRefreshToken = GenerateRefreshToken(ipAddress);
+            refreshToken.Revoked = DateTime.UtcNow;
+            refreshToken.RevokedByIp = ipAddress;
+            refreshToken.ReplacedByToken = newRefreshToken.Token;
+            user.RefreshTokens.Add(newRefreshToken);
+
+            await _userManager.UpdateAsync(user);
+
+            var jwtToken = GenerateJwtToken(new InfoUtilizadorDTO { Email = user.Email });
+
+            return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
+        }
+
+        public async Task<bool> RevokeTokenAsync(string token, string ipAddress)
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsActive)
+            {
+                return false;
+            }
+
+            refreshToken.Revoked = DateTime.UtcNow;
+            refreshToken.RevokedByIp = ipAddress;
+
+            await _userManager.UpdateAsync(user);
+
+            return true;
+        }
+
 
         public async Task<double> GetSaldoAsync(string nif)
         {
@@ -294,7 +359,7 @@ namespace API_Sistema_Central.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        private RefreshToken GenerateRefreshToken(string ipAddress)
+        private static RefreshToken GenerateRefreshToken(string ipAddress)
         {
             using (var rngCryptoServiceProvider = new RNGCryptoServiceProvider())
             {
