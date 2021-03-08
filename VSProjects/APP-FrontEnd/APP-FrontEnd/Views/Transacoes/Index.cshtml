@@ -5,21 +5,21 @@
 }
 
 <h1>Transações</h1>
-
+<br />
 <table class="table">
     <thead>
         <tr class="table__heading">
             <th class="table__heading">
-                @Html.DisplayNameFor(model => model.Tipo)
-            </th>
-            <th class="table__heading">
-                @Html.DisplayNameFor(model => model.NifDestinatario)
+                @Html.DisplayNameFor(model => model.DataHora)
             </th>
             <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Valor)
             </th>
             <th class="table__heading">
-                @Html.DisplayNameFor(model => model.DataHora)
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.NifDestinatario)
             </th>
             <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Metodo)
@@ -29,17 +29,17 @@
     <tbody>
 @foreach (var item in Model) {
         <tr class="table__row">
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.DataHora)">
+                @Html.DisplayFor(modelItem => item.DataHora)
+            </td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Valor)">
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Tipo)">
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NifDestinatario)">
                 @Html.DisplayFor(modelItem => item.NifDestinatario)
-            </td>
-            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Valor)">
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.DataHora)">
-                @Html.DisplayFor(modelItem => item.DataHora)
             </td>
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Metodo)">
                 @Html.DisplayFor(modelItem => item.Metodo)
