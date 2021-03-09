@@ -5,87 +5,102 @@
 }
 
 <h1>Cancelar</h1>
-
-<h3>Tem a certeza que pretende cancelar este sub-aluguer?</h3>
 <div>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ParqueId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ParqueId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NomeParque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NomeParque)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Numero)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Numero)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Fila)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Fila)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Andar)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Andar)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Preco)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Preco)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NifProprietario)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NifProprietario)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReservaSistemaCentralId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReservaSistemaCentralId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsReservado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsReservado)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Inicio)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Inicio)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Fim)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Fim)
-        </dd>
-    </dl>
-    
+    <div class="headerCancelar">
+        Tem a certeza que pretende cancelar este sub-aluguer?
+    </div>
+    <table class="table">
+        <tbody>
+            <tr class="table__row">
+                <td class="table__content" style="width:250px">
+                    @Html.DisplayNameFor(model => model.Id)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Id)
+                </td>
+            <tr />
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.NomeParque)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.NomeParque)
+                </td>
+            <tr />
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Numero)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Numero)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Fila)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Fila)
+                </td>
+            </tr>
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Andar)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Andar)
+                </td>
+            <tr />
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Preco)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Preco)
+                </td>
+            <tr />
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Inicio)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Inicio)
+                </td>
+            <tr />
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Fim)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Fim)
+                </td>
+            <tr />
+        </tbody>
+    </table>
+
     <form asp-action="Cancelar">
-        <input type="submit" value="Confirmar" class="btn btn-danger" /> |
-        <a asp-action="Index">Desistir</a>
+        <input id="pesquisa" type="submit" value="Cancelar" class="btn btn-danger" style="width:200px"/>
     </form>
+    <br />
+    <a class="text-light" style="font-size:1.2rem" asp-action="Index">Voltar Atrás</a>
+
 </div>
+
+<style>
+    .headerCancelar {
+        border-bottom: 2px solid #ddd;
+        background-color: #268596;
+        color: #fff;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        text-align: left;
+        font-weight: 300;
+        font-size: 20px;
+        font-size: 1.25rem;
+        padding: 8px;
+        line-height: 1.42857143;
+        box-sizing: border-box;
+        width:550px;
+    }
+</style>
