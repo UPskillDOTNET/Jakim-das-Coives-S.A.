@@ -103,7 +103,7 @@ namespace API_Sistema_Central.Services
                 user.RefreshTokens.Add(refreshToken);
                 await _userManager.UpdateAsync(user);
 
-                return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
+                return new TokenResponse { Token = jwtToken, Nif = user.Id, RefreshToken = refreshToken.Token };
             }
             else
             {
@@ -125,7 +125,7 @@ namespace API_Sistema_Central.Services
                 user.RefreshTokens.Add(refreshToken);
                 await _userManager.UpdateAsync(user);
 
-                return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
+                return new TokenResponse { Token = jwtToken, Nif = user.Id, RefreshToken = refreshToken.Token };
             }
             else
             {
@@ -159,7 +159,7 @@ namespace API_Sistema_Central.Services
 
             var jwtToken = GenerateJwtToken(new InfoUtilizadorDTO { Email = user.Email });
 
-            return new TokenResponse { Token = jwtToken, RefreshToken = refreshToken.Token };
+            return new TokenResponse { Token = jwtToken, Nif = user.Id, RefreshToken = refreshToken.Token };
         }
 
         public async Task<bool> RevokeTokenAsync(string token, string ipAddress)
