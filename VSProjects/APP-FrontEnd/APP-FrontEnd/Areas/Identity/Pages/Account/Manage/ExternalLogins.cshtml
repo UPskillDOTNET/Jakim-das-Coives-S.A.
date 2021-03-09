@@ -10,7 +10,7 @@
 {
     <h4>Autenticações externas registadas</h4>
     <table class="table">
-        <tbody>
+        <tbody >
             @foreach (var login in Model.CurrentLogins)
             {
                 <tr>
@@ -33,7 +33,7 @@
                                 <div style="padding-top:0.6em; display:flex; align-items: center; ">
                                     <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                     <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                    <button type="submit" class="btn btn-primary" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
+                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
                                 </div>
                             </form>
                         }
