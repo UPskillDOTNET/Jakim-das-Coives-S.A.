@@ -217,11 +217,11 @@ td {
 
 .table__row:nth-child(odd) {
     background: #92d4de;
-}
+} 
 
 .table__row:last-of-type {
-        border-bottom-left-radius: 1rem;
-        border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 @media (max-width: 32rem) {
