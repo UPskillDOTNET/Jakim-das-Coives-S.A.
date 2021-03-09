@@ -13,6 +13,12 @@ using System.Text;
 
 namespace APP_FrontEnd.Services
 {
+    public interface IUtilizadorService
+    {
+        public Task<double> GetSaldoAsync();
+        public Task DepositarSaldoAsync(DepositarDTO depositar);
+    }
+
     public class UtilizadorService : IUtilizadorService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

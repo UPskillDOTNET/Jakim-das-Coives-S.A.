@@ -14,6 +14,15 @@ using System.Net.Http.Json;
 
 namespace APP_FrontEnd.Services
 {
+    public interface IReservaService
+    {
+        public Task<IEnumerable<LugarDTO>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim);
+        public Task<IEnumerable<DetalheReservaDTO>> GetByNifAsync();
+        public Task<DetalheReservaDTO> GetByIdAsync(int id);
+        public Task PostAsync(ReservaDTO reservaDTO);
+        public Task DeleteAsync(int id);
+    }
+
     public class ReservaService : IReservaService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

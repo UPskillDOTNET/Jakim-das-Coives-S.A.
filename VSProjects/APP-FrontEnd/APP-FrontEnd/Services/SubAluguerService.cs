@@ -12,6 +12,14 @@ using System.Net.Http.Headers;
 
 namespace APP_FrontEnd.Services
 {
+    public interface ISubAluguerService
+    {
+        public Task<IEnumerable<SubAluguerDTO>> GetAllSubAluguerByNIF();
+        public Task<SubAluguerDTO> GetSubAluguerById(int id);
+        public Task PostSubAluguerAsync(SubAluguerDTO subAluguerDTO);
+        public Task DeleteSubAluguerAsync(int id);
+    }
+
     public class SubAluguerService : ISubAluguerService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;

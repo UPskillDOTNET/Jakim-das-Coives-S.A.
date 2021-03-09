@@ -12,6 +12,11 @@ using System.Net.Http.Headers;
 
 namespace APP_FrontEnd.Services
 {
+    public interface ITransacaoService
+    {
+        public Task<IEnumerable<TransacaoDTO>> GetAllTransacoesByNIF();
+    }
+
     public class TransacaoService : ITransacaoService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
