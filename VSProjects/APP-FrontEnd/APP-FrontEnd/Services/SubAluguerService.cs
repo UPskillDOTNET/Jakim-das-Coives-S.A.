@@ -23,15 +23,16 @@ namespace APP_FrontEnd.Services
     public class SubAluguerService : ISubAluguerService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public SubAluguerService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
+        public SubAluguerService(IHttpContextAccessor httpContextAccessor, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
+
         public async Task<IEnumerable<SubAluguerDTO>> GetAllSubAluguerByNIF()
         {
             string nif;
@@ -44,7 +45,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var listaSubAlugueres = new List<SubAluguerDTO>();
             using (HttpClient client = new HttpClient())
@@ -69,7 +79,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var subAluguer = new SubAluguerDTO();
             try
@@ -91,7 +110,6 @@ namespace APP_FrontEnd.Services
         }
         public async Task PostSubAluguerAsync(SubAluguerDTO subAluguerDTO)
         {
-
             string nif;
             try
             {
@@ -102,7 +120,17 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -131,7 +159,17 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -145,19 +183,6 @@ namespace APP_FrontEnd.Services
             catch
             {
                 throw new Exception("O cancelamento do lugar para Sub-Aluguer falhou.");
-            }
-        }
-        private async Task<string> GetTokenByNif(string nif)
-        {
-            var user = await _userManager.FindByIdAsync(nif);
-            if (user.Expiration < DateTime.UtcNow)
-            {
-                await _signInManager.SignOutAsync();
-                throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
-            }
-            else
-            {
-                return user.Token;
             }
         }
     }

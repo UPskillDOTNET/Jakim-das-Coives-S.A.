@@ -22,19 +22,18 @@ namespace APP_FrontEnd.Services
     public class UtilizadorService : IUtilizadorService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public UtilizadorService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
+        public UtilizadorService(IHttpContextAccessor httpContextAccessor, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         public async Task<double> GetSaldoAsync()
         {
-
             string nif;
             try
             {
@@ -45,7 +44,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             double saldoUtilizador;
             using (HttpClient client = new HttpClient())
@@ -70,7 +78,17 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+
             depositar.Nif = nif;
 
             using (HttpClient client = new HttpClient())
@@ -80,20 +98,6 @@ namespace APP_FrontEnd.Services
                 string endpoint = "https://localhost:5050/api/utilizadores/depositar";
                 var response = await client.PostAsync(endpoint, content);
                 response.EnsureSuccessStatusCode();
-            }
-        }
-
-        private async Task<string> GetTokenByNif(string nif)
-        {
-            var user = await _userManager.FindByIdAsync(nif);
-            if (user.Expiration < DateTime.UtcNow)
-            {
-                await _signInManager.SignOutAsync();
-                throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
-            }
-            else
-            {
-                return user.Token;
             }
         }
     }

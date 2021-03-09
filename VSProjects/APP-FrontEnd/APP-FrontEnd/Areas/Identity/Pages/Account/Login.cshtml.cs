@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
+using APP_FrontEnd.Services;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -24,14 +25,14 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ITokenService _tokenService;
 
-        public LoginModel(SignInManager<Utilizador> signInManager, 
-            ILogger<LoginModel> logger,
-            UserManager<Utilizador> userManager)
+        public LoginModel(SignInManager<Utilizador> signInManager, ILogger<LoginModel> logger, UserManager<Utilizador> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -80,7 +81,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -88,12 +89,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var user = _userManager.FindByEmailAsync(Input.Email).Result;
                     var info = new InfoUtilizadorDTO { Email = Input.Email, Password = Input.Password };
                     var token = GetTokenAsync(info).Result;
-                    user.Token = token.Token;
-                    user.Expiration = token.Expiration;
-                    await _userManager.UpdateAsync(user);
+                    _tokenService.SaveToken(token.Token);
 
                     _logger.LogInformation("O utilizador iniciou sessão.");
                     return LocalRedirect(returnUrl);
@@ -118,18 +116,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
+        private async Task<TokenResponse> GetTokenAsync(InfoUtilizadorDTO info)
         {
             try
             {
-                TokenUtilizadorDTO token;
+                TokenResponse token;
                 using (HttpClient client = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
                     string endpoint = "https://localhost:5050/api/utilizadores/login";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
-                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                    token = await response.Content.ReadAsAsync<TokenResponse>();
                 }
                 return token;
             }

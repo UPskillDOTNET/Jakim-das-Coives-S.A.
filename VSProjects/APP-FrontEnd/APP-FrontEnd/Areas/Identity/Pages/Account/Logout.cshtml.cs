@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -30,6 +33,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
+            //await RevokeTokenAsync(token);
+
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
@@ -38,6 +44,24 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             else
             {
                 return RedirectToPage();
+            }
+        }
+
+        private async Task RevokeTokenAsync(TokenResponse token)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(token), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/rescindir-token";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Rescindir refresh token falhou no servidor. Volte a tentar.");
             }
         }
     }

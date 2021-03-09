@@ -36,7 +36,7 @@ namespace SCUnitTests
 
             var response = await testController.RegistarUtilizador(theNewRegisto);
 
-            var item = Assert.IsType<TokenResponse>(response.Value);
+            var item = Assert.IsType<TokenResponse>(response);
             Assert.NotNull(response);
             Assert.NotNull(item);
             Assert.Equal("TestToken", item.Token);
@@ -55,7 +55,7 @@ namespace SCUnitTests
 
             var response = await testController.Login(theNewRegisto);
 
-            var item = Assert.IsType<TokenResponse>(response.Value);
+            var item = Assert.IsType<TokenResponse>(response);
             Assert.NotNull(response);
             Assert.NotNull(item);
             Assert.Equal("TestToken", item.Token);

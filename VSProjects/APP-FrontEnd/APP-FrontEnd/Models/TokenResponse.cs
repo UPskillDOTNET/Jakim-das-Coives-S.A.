@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace APP_FrontEnd.Models
 {
-    public class TokenUtilizadorDTO
+    public class TokenResponse
     {
         public string Token { get; set; }
-        public DateTime Expiration { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/utilizadores")]
     [ApiController]
     public class UtilizadoresController : ControllerBase

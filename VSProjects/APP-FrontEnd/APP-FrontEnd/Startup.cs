@@ -50,7 +50,9 @@ namespace APP_FrontEnd
             services.AddControllersWithViews();
             
             services.AddRazorPages();
-            
+
+            services.AddMemoryCache();
+            services.AddSingleton<ITokenService, TokenService>();
             services.AddTransient<ITransacaoService, TransacaoService>();
             services.AddTransient<IUtilizadorService, UtilizadorService>();
             services.AddTransient<IReservaService, ReservaService>();
