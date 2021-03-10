@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using APP_FrontEnd.Services;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 {
@@ -21,16 +22,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly ITokenService _tokenService;
 
-        public MetodoPagamentoModel(
-            UserManager<Utilizador> userManager,
-            SignInManager<Utilizador> signInManager,
-            IEmailSender emailSender)
+        public MetodoPagamentoModel(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
+            _tokenService = tokenService;
         }
 
         [TempData]
@@ -161,13 +159,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
                 try
                 {
-                    await AlterarMetodoPagamentoAsync(dto, user.Token);
+                    await AlterarMetodoPagamentoAsync(dto);
                 }
-                catch
+                catch (Exception e)
                 {
                     user.MetodoId = metodoIdAntigo;
                     await _userManager.UpdateAsync(user);
-                    StatusMessage = "Alteração do método de pagamento preferencial falhou no servidor. Volte a tentar.";
+                    StatusMessage = e.Message;
                     return RedirectToPage();
                 }
 
@@ -179,15 +177,32 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
-        private async Task AlterarMetodoPagamentoAsync(AlterarMetodoPagamentoDTO dto, string token)
+        private async Task AlterarMetodoPagamentoAsync(AlterarMetodoPagamentoDTO dto)
         {
-            using (HttpClient client = new HttpClient())
+            string token;
+            try
             {
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                StringContent content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-                string endpoint = "https://localhost:5050/api/utilizadores/metodo";
-                var response = await client.PostAsync(endpoint, content);
-                response.EnsureSuccessStatusCode();
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/metodo";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Alteração do método de pagamento preferencial falhou no servidor. Volte a tentar.");
             }
         }
     }

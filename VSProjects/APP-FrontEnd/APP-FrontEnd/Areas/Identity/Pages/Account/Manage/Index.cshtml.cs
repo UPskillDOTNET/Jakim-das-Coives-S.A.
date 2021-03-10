@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
+using APP_FrontEnd.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,13 +19,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public IndexModel(
-            UserManager<Utilizador> userManager,
-            SignInManager<Utilizador> signInManager)
+        public IndexModel(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         [Display(Name = "NIF")]
@@ -96,7 +97,17 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    await AlterarNomeAsync(new AlterarNomeDTO { Nif = user.Id, NomeActual = nomeActual, NomeNovo = Input.Name }, user.Token);
+                    try
+                    {
+                        await AlterarNomeAsync(new AlterarNomeDTO { Nif = user.Id, NomeActual = nomeActual, NomeNovo = Input.Name });
+                    }
+                    catch (Exception e)
+                    {
+                        user.Nome = nomeActual;
+                        await _userManager.UpdateAsync(user);
+                        StatusMessage = e.Message;
+                        return RedirectToPage();
+                    }
                 }
                 else
                 {
@@ -120,8 +131,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             StatusMessage = "O seu perfil foi atualizado";
             return RedirectToPage();
         }
-        private async Task AlterarNomeAsync(AlterarNomeDTO alterarNomeDTO, string token)
+        private async Task AlterarNomeAsync(AlterarNomeDTO alterarNomeDTO)
         {
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
             try
             {
                 using (HttpClient client = new HttpClient())
