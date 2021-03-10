@@ -11,7 +11,7 @@ namespace API_Sistema_Central.Authentication
         public string Token { get; set; }
         public string Nif { get; set; }
 
-        [JsonIgnore] // refresh token is returned in http only cookie
+        //[JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
     }
 }

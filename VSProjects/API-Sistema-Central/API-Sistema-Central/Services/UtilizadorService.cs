@@ -159,7 +159,7 @@ namespace API_Sistema_Central.Services
 
             var jwtToken = GenerateJwtToken(new InfoUtilizadorDTO { Email = user.Email });
 
-            return new TokenResponse { Token = jwtToken, Nif = user.Id, RefreshToken = refreshToken.Token };
+            return new TokenResponse { Token = jwtToken, Nif = user.Id, RefreshToken = newRefreshToken.Token };
         }
 
         public async Task<bool> RevokeTokenAsync(string token, string ipAddress)

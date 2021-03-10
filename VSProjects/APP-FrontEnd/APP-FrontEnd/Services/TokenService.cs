@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -17,10 +19,12 @@ namespace APP_FrontEnd.Services
     public class TokenService : ITokenService
     {
         private readonly IMemoryCache _cache;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TokenService(IMemoryCache cache)
+        public TokenService(IMemoryCache cache, IHttpContextAccessor httpContextAccessor)
         {
             _cache = cache;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> GetTokenAsync()
@@ -38,7 +42,7 @@ namespace APP_FrontEnd.Services
                 {
                     throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
                 }
-                
+
                 SaveToken(apitoken);
                 token = apitoken;
             }
@@ -55,14 +59,25 @@ namespace APP_FrontEnd.Services
 
         private async Task<string> GetTokenFromApiAsync()
         {
+            var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
+            var cookie = new Cookie { Name = "refreshToken", Value = refreshToken, Path = "/", Domain = "localhost", Expires = DateTime.UtcNow.AddMinutes(1), HttpOnly = true };
             var tokenResponse = new TokenResponse();
-            using (HttpClient client = new HttpClient())
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(cookie);
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (HttpClient client = new HttpClient(handler))
             {
                 string endpoint = "https://localhost:5050/api/utilizadores/refresh-token";
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
             }
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, cookieOptions);
             return tokenResponse.Token;
         }
     }

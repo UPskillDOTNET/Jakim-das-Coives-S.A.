@@ -16,6 +16,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using APP_FrontEnd.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -128,6 +129,12 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
                     token = await response.Content.ReadAsAsync<TokenResponse>();
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTime.UtcNow.AddDays(7)
+                    };
+                    Response.Cookies.Append("refreshToken", token.RefreshToken, cookieOptions);
                 }
                 return token;
             }

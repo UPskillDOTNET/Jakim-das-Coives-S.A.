@@ -55,7 +55,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
+        [HttpGet("refresh-token")]
         public async Task<IActionResult> RefreshTokenAsync()
         {
             var refreshToken = Request.Cookies["refreshToken"];
