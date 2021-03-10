@@ -97,6 +97,12 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
+
+        public IActionResult VoltarAsReservas()
+        {
+            return RedirectToAction("Index", "Reservas");
+        }
+
         private IActionResult MensagemErro(string mensagem)
         {
             return View("MensagemErro", new MensagemErro { Mensagem = mensagem });

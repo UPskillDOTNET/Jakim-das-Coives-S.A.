@@ -117,6 +117,12 @@ namespace APP_FrontEnd.Controllers
             }
         }
 
+        public IActionResult VoltarAHomepage()
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+
         private IActionResult MensagemErro(string mensagem)
         {
             return View("MensagemErro", new MensagemErro { Mensagem = mensagem });
