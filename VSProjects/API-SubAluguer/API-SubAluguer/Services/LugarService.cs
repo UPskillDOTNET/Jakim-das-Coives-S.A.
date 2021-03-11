@@ -21,7 +21,7 @@ namespace API_SubAluguer.Services
             _reservaRepository = reservaRepository;
         }
 
-        public async Task<ActionResult<IEnumerable<Lugar>>> GetAllAsync()
+        public async Task<IEnumerable<Lugar>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
@@ -36,11 +36,11 @@ namespace API_SubAluguer.Services
             return l;
         }
 
-        public async Task<ActionResult<IEnumerable<Lugar>>> GetByNifAsync(string nif)
+        public async Task<IEnumerable<Lugar>> GetByNifAsync(string nif)
         {
             var temp = await _repository.GetAllAsync();
-            var lista = temp.Value.Where(t => t.NifProprietario == nif);
-            return lista.ToList();
+            var lista = temp.Where(t => t.NifProprietario == nif);
+            return lista;
         }
 
         public async Task<Lugar> PostAsync(Lugar lugar)
@@ -61,10 +61,10 @@ namespace API_SubAluguer.Services
         public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
         {
             List<Lugar> todoslugares = new List<Lugar>();
-            var parques = _parqueRepository.GetAllAsync().Result.Value.Where(p => p.FreguesiaId == freguesiaId);
+            var parques = _parqueRepository.GetAllAsync().Result.Where(p => p.FreguesiaId == freguesiaId);
             foreach (Parque p in parques)
             {
-                var temp = _repository.GetAllAsync().Result.Value.Where(r => r.Inicio <= inicio && r.Fim >= fim && r.ParqueId == p.Id);
+                var temp = _repository.GetAllAsync().Result.Where(r => r.Inicio <= inicio && r.Fim >= fim && r.ParqueId == p.Id);
                 foreach (Lugar l in temp)
                 {
                     todoslugares.Add(l);
@@ -72,7 +72,7 @@ namespace API_SubAluguer.Services
             }
 
             List<Lugar> ocupados = new List<Lugar>();
-            var reservas = _reservaRepository.GetAllAsync().Result.Value.Where(r => 
+            var reservas = _reservaRepository.GetAllAsync().Result.Where(r => 
                 r.Fim > inicio && r.Fim <= fim ||
                 r.Inicio >= inicio && r.Inicio < fim ||
                 r.Inicio >= inicio && r.Fim <= fim ||
@@ -85,6 +85,19 @@ namespace API_SubAluguer.Services
             var disponiveis = todoslugares.Except(ocupados);
 
             return disponiveis;
+        }
+
+        public async Task RemoverUtilizadorAsync(string nif)
+        {
+            var lugares = await _repository.GetAllAsync();
+            foreach (Lugar l in lugares)
+            {
+                if (l.NifProprietario == nif)
+                {
+                    l.NifProprietario = "000000000";
+                    await _repository.PutAsync(l);
+                }
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace API_Sistema_Central.Services
 {
@@ -30,6 +32,7 @@ namespace API_Sistema_Central.Services
         public Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO);
         public Task AlterarNomeAsync(AlterarNomeDTO alterarNomeDTO);
         public Task AlterarMetodoPagamentoAsync(AlterarMetodoPagamentoDTO alterarMetodoPagamentoDTO);
+        public Task RemoverContaAsync(InfoUtilizadorDTO infoUtilizadorDTO);
     }
 
     public class UtilizadorService : IUtilizadorService
@@ -41,9 +44,10 @@ namespace API_Sistema_Central.Services
         private readonly IPayPalRepository _payPalRepository;
         private readonly IPagamentoService _pagamentoService;
         private readonly ITransacaoRepository _transacaoRepository;
+        private readonly IReservaRepository _reservaRepository;
         private readonly AppSettings _appSettings;
 
-        public UtilizadorService(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService, ITransacaoRepository transacaoRepository, IOptions<AppSettings> appSettings)
+        public UtilizadorService(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ICartaoRepository cartaoRepository, IDebitoDiretoRepository debitoDiretoRepository, IPayPalRepository payPalRepository, IPagamentoService pagamentoService, ITransacaoRepository transacaoRepository, IReservaRepository reservaRepository, IOptions<AppSettings> appSettings)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -52,6 +56,7 @@ namespace API_Sistema_Central.Services
             _payPalRepository = payPalRepository;
             _pagamentoService = pagamentoService;
             _transacaoRepository = transacaoRepository;
+            _reservaRepository = reservaRepository;
             _appSettings = appSettings.Value;
         }
 
@@ -340,6 +345,100 @@ namespace API_Sistema_Central.Services
                     throw new Exception("Remover antigo método de pagamento falhou.");
                 }
 
+            }
+        }
+
+        public async Task RemoverContaAsync(InfoUtilizadorDTO info)
+        {
+            var result = await _signInManager.PasswordSignInAsync(info.Email, info.Password, isPersistent: false, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                var utilizador = await _userManager.Users.Include(x => x.Credencial).SingleAsync(x => x.Email == info.Email);
+                var credencialId = utilizador.CredencialId;
+                NifDTO nif = new NifDTO { Nif = utilizador.Id };
+
+                //Substituir o nif do utilizador pelo do "utilizador removido" em todas as transacoes
+                try
+                {
+                    var transacoes = await _transacaoRepository.GetAllAsync();
+                    foreach (Transacao t in transacoes)
+                    {
+                        if (t.NifPagador == utilizador.Id)
+                        {
+                            t.NifPagador = "000000000";
+                            await _transacaoRepository.PutAsync(t);
+                        }
+                        if (t.NifRecipiente == utilizador.Id)
+                        {
+                            t.NifRecipiente = "000000000";
+                            await _transacaoRepository.PutAsync(t);
+                        }
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Remover transações falhou.");
+                }
+
+                //Substituir o nif do utilizador pelo do "utilizador removido" em todas as reservas
+                try
+                {
+                    var reservas = await _reservaRepository.GetAllAsync();
+                    foreach (Reserva r in reservas)
+                    {
+                        if (r.NifUtilizador == utilizador.Id)
+                        {
+                            r.NifUtilizador = "000000000";
+                            await _reservaRepository.PutAsync(r);
+                        }
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Remover reservas falhou.");
+                }
+
+                //Substituir o nif do utilizador pelo do "utilizador removido" em todos os subalugueres
+                try
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        StringContent content = new StringContent(JsonConvert.SerializeObject(nif), Encoding.UTF8, "application/json");
+                        string endpoint = "https://localhost:5005/api/lugares/remover";
+                        var response = await client.PostAsync(endpoint, content);
+                        response.EnsureSuccessStatusCode();
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Remover subalugueres falhou.");
+                }
+
+                //Remover utilizador
+                try
+                {
+                    await _userManager.DeleteAsync(utilizador);
+                }
+                catch
+                {
+                    throw new Exception("Remover utilizador falhou.");
+                }
+
+                //Remover metodo de pagamento
+                try
+                {
+                    if (utilizador.Credencial.MetodoId == 1) await _cartaoRepository.DeleteAsync(credencialId);
+                    if (utilizador.Credencial.MetodoId == 2) await _debitoDiretoRepository.DeleteAsync(credencialId);
+                    if (utilizador.Credencial.MetodoId == 3) await _payPalRepository.DeleteAsync(credencialId);
+                }
+                catch
+                {
+                    throw new Exception("Remover método de pagamento falhou.");
+                }
+            }
+            else
+            {
+                throw new Exception("Credenciais inválidas");
             }
         }
 

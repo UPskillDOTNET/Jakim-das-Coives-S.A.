@@ -17,7 +17,7 @@ namespace API_SubAluguer.Services
             _repository = repository;
         }
 
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetAllAsync()
+        public async Task<IEnumerable<Reserva>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
@@ -51,7 +51,7 @@ namespace API_SubAluguer.Services
 
         private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
         {
-            var reservas = _repository.GetAllAsync().Result.Value;
+            var reservas = _repository.GetAllAsync().Result;
             return reservas.Any(r =>
                 r.LugarId == lugarId &&
                 (r.Fim > inicio && r.Fim <= fim ||

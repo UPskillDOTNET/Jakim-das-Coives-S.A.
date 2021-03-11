@@ -176,6 +176,20 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
+        [HttpPost("remover-conta")]
+        public async Task<IActionResult> RemoverConta([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
+        {
+            try
+            {
+                await _utilizadorService.RemoverContaAsync(infoUtilizadorDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
 
         private void SetTokenCookie(string token)
         {

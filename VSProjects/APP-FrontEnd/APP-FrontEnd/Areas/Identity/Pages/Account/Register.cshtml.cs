@@ -155,6 +155,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                             EmailPayPal = Input.EmailPayPal,
                             PasswordPayPal = Input.PasswordPayPal
                         });
+                        await _userManager.AddToRoleAsync(user, "Utilizador");
                     }
                     catch (Exception)
                     {

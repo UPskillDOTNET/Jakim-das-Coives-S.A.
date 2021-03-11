@@ -21,7 +21,8 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Freguesia>>> GetAllLugar()
         {
-            return await _service.GetAllAsync();
+            var lista = await _service.GetAllAsync();
+            return lista.ToList();
         }
 
         [HttpGet("{id}")]

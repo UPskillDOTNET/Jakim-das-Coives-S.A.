@@ -9,7 +9,7 @@ namespace API_SubAluguer.Services
 {
     public interface IParqueService
     {
-        public Task<ActionResult<IEnumerable<Parque>>> GetAllAsync();
+        public Task<IEnumerable<Parque>> GetAllAsync();
         public Task<Parque> GetByIdAsync(int id);
         public Task PutAsync(Parque parque);
         public Task<Parque> PostAsync(Parque parque);

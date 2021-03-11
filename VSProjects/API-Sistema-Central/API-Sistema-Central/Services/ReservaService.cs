@@ -45,7 +45,7 @@ namespace API_Sistema_Central.Services
         {
             var listaLugares = new List<LugarDTO>();
             var listaParques = _parqueRepository.GetAllAsync().Result;
-            foreach (Parque parque in listaParques.Value)
+            foreach (Parque parque in listaParques)
             {
                 var f = GetFreguesiaByNome(freguesiaNome, parque.ApiUrl).Result;
                 if (f != null)
@@ -86,7 +86,7 @@ namespace API_Sistema_Central.Services
                 throw new Exception("O utilizador não existe.");
             }
             var temp = await _repository.GetAllAsync();
-            var l = temp.Value.Where(t => t.NifUtilizador == nif);
+            var l = temp.Where(t => t.NifUtilizador == nif);
             var lista = new List<DetalheReservaDTO>();
             if (!l.Any())
             {

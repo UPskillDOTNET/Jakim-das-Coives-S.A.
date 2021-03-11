@@ -48,7 +48,7 @@ namespace API_Sistema_Central.Services
                 throw new Exception("O utilizador não existe.");
             }
             var temp = await _repository.GetAllAsync();
-            var listatemp = temp.Value.Where(t => t.NifPagador == nif || t.NifRecipiente == nif);
+            var listatemp = temp.Where(t => t.NifPagador == nif || t.NifRecipiente == nif);
             foreach (Transacao t in listatemp)
             {
                 var metodo = _metodoPagamentoRepository.GetByIdAsync(t.MetodoId).Result;

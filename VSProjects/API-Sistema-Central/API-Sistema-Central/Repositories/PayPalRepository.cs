@@ -7,6 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
+    public interface IPayPalRepository : IRepositoryBase<PayPal>
+    {
+    }
     public class PayPalRepository : RepositoryBase<PayPal>, IPayPalRepository
     {
         public PayPalRepository(SCContext context) : base(context)

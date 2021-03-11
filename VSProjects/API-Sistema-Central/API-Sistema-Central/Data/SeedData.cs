@@ -96,6 +96,16 @@ namespace API_Sistema_Central.Data
                     await userManager.CreateAsync(teste3, "123Pa$$word");
                 }
             }
+
+            var removido = new Utilizador { Id = "000000000", Nome = "Utilizador removido", UserName = "utilizador@removido", Email = "utilizador@removido", CredencialId = 1};
+            if (userManager.Users.All(u => u.Id != removido.Id))
+            {
+                var user = await userManager.FindByEmailAsync(removido.Email);
+                if (user == null)
+                {
+                    await userManager.CreateAsync(removido, "123Pa$$word");
+                }
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ Ator principal
     - Utilizador
 
 Partes Interessadas
-    - Utilizador: pretende consultar as suas reservas.
+    - Utilizador: pretende alterar informações da sua conta ou removê-la do sistema.
     - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
 
 Pré-condições

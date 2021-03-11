@@ -84,7 +84,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             {
                 try
                 {
-                    await AlterarPasswordAsync(new AlterarPasswordDTO { Nif = user.Id, PasswordActual = user.Id + user.MetodoId + user.Nome + "$PP$", PasswordNova = Input.NewPassword });
+                    await AlterarPasswordAsync(new AlterarPasswordDTO { Nif = user.Id, PasswordActual = user.Id + user.Email + "$PP$", PasswordNova = Input.NewPassword });
                 }
                 catch (Exception e)
                 {

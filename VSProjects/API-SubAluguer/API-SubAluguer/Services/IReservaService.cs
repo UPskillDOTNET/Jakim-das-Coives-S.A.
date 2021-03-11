@@ -9,7 +9,7 @@ namespace API_SubAluguer.Services
 {
     public interface IReservaService
     {
-        public Task<ActionResult<IEnumerable<Reserva>>> GetAllAsync();
+        public Task<IEnumerable<Reserva>> GetAllAsync();
         public Task<Reserva> GetByIdAsync(int id);
         public Task PutAsync(Reserva reserva);
         public Task<Reserva> PostAsync(Reserva reserva);

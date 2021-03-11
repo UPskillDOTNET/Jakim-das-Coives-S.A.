@@ -17,7 +17,7 @@ namespace API_SubAluguer.Services
             _repository = repository;
         }
 
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetAllAsync()
+        public async Task<IEnumerable<Cliente>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }

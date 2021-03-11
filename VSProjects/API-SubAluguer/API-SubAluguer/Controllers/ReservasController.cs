@@ -25,7 +25,8 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetAllReserva()
         {
-            return await _service.GetAllAsync();
+            var lista = await _service.GetAllAsync();
+            return lista.ToList();
         }
 
         [HttpGet("{id}")]

@@ -25,7 +25,8 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Lugar>>> GetAllLugar()
         {
-            return await _service.GetAllAsync();
+            var lista = await _service.GetAllAsync();
+            return lista.ToList();
         }
 
         [HttpGet("{id}")]
@@ -46,7 +47,8 @@ namespace API_SubAluguer.Controllers
         {
             try
             {
-                return await _service.GetByNifAsync(nif);
+                var lista = await _service.GetByNifAsync(nif);
+                return lista.ToList();
             }
             catch (Exception e)
             {
@@ -61,6 +63,20 @@ namespace API_SubAluguer.Controllers
             {
                 Lugar l = await _service.PostAsync(lugar);
                 return CreatedAtAction("GetLugarById", new { id = l.Id }, l);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPost("remover")]
+        public async Task<IActionResult> RemoverUtilizador(NifDTO nif)
+        {
+            try
+            {
+                await _service.RemoverUtilizadorAsync(nif.Nif);
+                return Ok();
             }
             catch (Exception e)
             {

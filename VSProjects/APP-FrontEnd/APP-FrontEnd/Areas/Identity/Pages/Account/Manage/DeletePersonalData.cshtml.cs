@@ -1,11 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
+using APP_FrontEnd.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 {
@@ -14,15 +19,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly ITokenService _tokenService;
 
         public DeletePersonalDataModel(
             UserManager<Utilizador> userManager,
             SignInManager<Utilizador> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -66,6 +74,25 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
                     ModelState.AddModelError(string.Empty, "Password incorreta.");
                     return Page();
                 }
+                try
+                {
+                    await RemoverUtilizadorNoSCAsync(new InfoUtilizadorDTO { Email = user.Email, Password = Input.Password });
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+            }
+            else
+            {
+                try
+                {
+                    await RemoverUtilizadorNoSCAsync(new InfoUtilizadorDTO { Email = user.Email, Password = user.Id + user.Email + "$PP$" });
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -80,6 +107,36 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("O utilizador com o ID '{UserId}' foi apagado.", userId);
 
             return Redirect("~/");
+        }
+
+        private async Task RemoverUtilizadorNoSCAsync(InfoUtilizadorDTO info)
+        {
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/remover-conta";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                }
+            }
+            catch
+            {
+                throw new Exception("Remover dados do utilizador falhou no servidor. Volte a tentar.");
+            }
+
         }
     }
 }

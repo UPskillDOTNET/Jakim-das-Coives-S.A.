@@ -200,7 +200,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                                 Nif = Input.Nif,
                                 NomeUtilizador = Input.NomeUtilizador,
                                 EmailUtilizador = Input.Email,
-                                PasswordUtilizador = Input.Nif + Input.MetodoId + Input.NomeUtilizador + "$PP$",
+                                PasswordUtilizador = Input.Nif + Input.Email + "$PP$",
                                 MetodoId = Input.MetodoId,
                                 Numero = Input.Numero,
                                 NomeCartao = Input.NomeCartao,
@@ -215,6 +215,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                                 EmailPayPal = Input.EmailPayPal,
                                 PasswordPayPal = Input.PasswordPayPal
                             });
+                            await _userManager.AddToRoleAsync(user, "Utilizador");
                         }
                         catch (Exception)
                         {

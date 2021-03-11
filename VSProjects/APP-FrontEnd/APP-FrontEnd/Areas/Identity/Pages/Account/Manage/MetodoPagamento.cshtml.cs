@@ -121,7 +121,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             }
             else
             {
-                password = user.Id + user.MetodoId + user.Nome + "$PP$";
+                password = user.Id + user.Email + "$PP$";
                 validado = true;
             }
             if (validado)

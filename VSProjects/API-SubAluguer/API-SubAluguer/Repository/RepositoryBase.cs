@@ -17,7 +17,7 @@ namespace API_SubAluguer.Repository
         {
             _context = context;
         }
-        public async Task<ActionResult<IEnumerable<T>>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
