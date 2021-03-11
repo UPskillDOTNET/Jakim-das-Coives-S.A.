@@ -4,95 +4,58 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Os seus sub-alugueres</h1>
-
-
+<h1>Os Seus Sub-Alugueres</h1>
+<br />
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table__heading">
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParqueId)
-            </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.NomeParque)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Numero)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fila)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Andar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NifProprietario)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReservaSistemaCentralId)
-            </th>
-            <th>
+            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.IsReservado)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Inicio)
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Preco)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fim)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+        @foreach (var item in Model)
+        {
+        <tr class="table__row">
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Id)">
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParqueId)
-            </td>
-            <td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NomeParque)">
                 @Html.DisplayFor(modelItem => item.NomeParque)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Numero)
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.IsReservado)">
+                @if (item.IsReservado)
+                {<text>Sim</text>}
+                else
+                {<text>Não</text>}
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fila)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Andar)
-            </td>
-            <td>
+            <td class="table__content" style="text-align:right" data-heading="@Html.DisplayNameFor(model => model.Preco)">
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NifProprietario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservaSistemaCentralId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsReservado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inicio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fim)
-            </td>
-            <td>
-                @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
-                @Html.ActionLink("Cancelar", "Cancelar", new { id = item.Id })
-            </td>
+            @if (item.IsReservado)
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                    @Html.ActionLink("Cancelar", "Cancelar", new { id = item.Id })
+                </td>
+            }
         </tr>
-}
+        }
     </tbody>
 </table>

@@ -10,19 +10,30 @@
 {
     <h4>Autenticações externas registadas</h4>
     <table class="table">
-        <tbody>
+        <tbody >
             @foreach (var login in Model.CurrentLogins)
             {
                 <tr>
-                    <td id="@($"login-provider-{login.LoginProvider}")">@login.ProviderDisplayName</td>
+                    <td id="@($"login-provider-{login.LoginProvider}")">
+                        @switch (login.LoginProvider)
+                        {
+                            case "Google":
+                                <img class="extLoginImg" src="~/Images/google.svg" />
+                                break;
+
+                            case "Facebook":
+                                <img class="extLoginImg" src="~/Images/facebook.svg" />
+                                break;
+                        }
+                    </td>
                     <td>
                         @if (Model.ShowRemoveButton)
                         {
                             <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post">
-                                <div>
+                                <div style="padding-top:0.6em; display:flex; align-items: center; ">
                                     <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                     <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                    <button type="submit" class="btn btn-primary" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
+                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
                                 </div>
                             </form>
                         }
@@ -45,7 +56,18 @@
             <p>
                 @foreach (var provider in Model.OtherLogins)
                 {
-                    <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Autenticar-se com a sua conta do @provider.DisplayName">@provider.DisplayName</button>
+                <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary extLoginBtn" name="provider" value="@provider.Name" title="Autenticar-se com a sua conta do @provider.DisplayName">
+                    @switch (provider.DisplayName)
+                    {
+                        case "Google":
+                            <img class="extLoginImg" src="~/Images/google.svg" />
+                            break;
+
+                        case "Facebook":
+                            <img class="extLoginImg" src="~/Images/facebook.svg" />
+                            break;
+                    }
+                </button>
                 }
             </p>
         </div>

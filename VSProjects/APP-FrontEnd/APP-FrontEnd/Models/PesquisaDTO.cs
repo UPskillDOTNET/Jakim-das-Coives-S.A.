@@ -8,8 +8,13 @@ namespace APP_FrontEnd.Models
 {
     public class PesquisaDTO
     {
+        [Display(Name = "Qual a Freguesia?")]
         public string FreguesiaNome { get; set; }
+
+        [Display(Name = "Data de Início")]
         public DateTime Inicio { get; set; }
+
+        [Display(Name = "Data de Fim")]
         public DateTime Fim { get; set; }
     }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
+using APP_FrontEnd.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +19,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public SetPasswordModel(
-            UserManager<Utilizador> userManager,
-            SignInManager<Utilizador> signInManager)
+        public SetPasswordModel(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -109,10 +111,21 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
         }
         private async Task AlterarPasswordAsync(AlterarPasswordDTO alterarPasswordDTO)
         {
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     StringContent content = new StringContent(JsonConvert.SerializeObject(alterarPasswordDTO), Encoding.UTF8, "application/json");
                     string endpoint = "https://localhost:5050/api/utilizadores/alterar";
                     var response = await client.PostAsync(endpoint, content);

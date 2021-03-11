@@ -4,79 +4,101 @@
     ViewData["Title"] = "Detalhes";
 }
 
-<h1>Detalhes</h1>
-
+<h1>A Sua Reserva</h1>
 <div>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Custo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Custo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReservaParqueId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReservaParqueId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NomeFreguesia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NomeFreguesia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NomeParque)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NomeParque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumeroLugar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumeroLugar)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fila)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fila)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Andar)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Andar)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsSubAlugado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsSubAlugado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NifProprietario)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NifProprietario)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Inicio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Inicio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fim)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fim)
-        </dd>
-    </dl>
+    <table class="table">
+        <thead style="width:300px">
+            <tr class="table__heading">
+                <th class="table__heading">Detalhes</th>
+        </thead>
+        <tbody>
+            <tr class="table__row">
+                <td class="table__content" style="width:250px">
+                    @Html.DisplayNameFor(model => model.ReservaParqueId)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.ReservaParqueId)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.NomeFreguesia)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.NomeFreguesia)
+                </td>
+            </tr>
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.NomeParque)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.NomeParque)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.NumeroLugar)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.NumeroLugar)
+                </td>
+            </tr>
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Fila)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Fila)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Andar)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Andar)
+                </td>
+            </tr>
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Custo)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Custo)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.IsSubAlugado)
+                </td>
+                <td class="table__content">
+                    @if (Model.IsSubAlugado)
+                    {<text>Sim</text>}
+                    else
+                    {<text>Não</text>}
+                </td>
+            </tr>
+            <tr class="table__row">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Inicio)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Inicio)
+                </td>
+            </tr>
+            <tr class="table__row:nth-child(odd)" style="background:#80bbc4">
+                <td class="table__content">
+                    @Html.DisplayNameFor(model => model.Fim)
+                </td>
+                <td class="table__content">
+                    @Html.DisplayFor(model => model.Fim)
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Index">Voltar à lista</a>
+    <a class="text-light" style="font-size:1.2rem" asp-action="Index">Voltar à Lista</a>
 </div>

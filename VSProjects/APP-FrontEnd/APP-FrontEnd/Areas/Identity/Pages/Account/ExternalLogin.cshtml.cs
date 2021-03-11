@@ -28,7 +28,6 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         private readonly UserManager<Utilizador> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenService _tokenService;
 
         public ExternalLoginModel(
@@ -36,14 +35,12 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             UserManager<Utilizador> userManager,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            IHttpContextAccessor httpContextAccessor,
             ITokenService tokenService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
-            _httpContextAccessor = httpContextAccessor;
             _tokenService = tokenService;
         }
 
@@ -147,8 +144,8 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                var infoDTO = new InfoUtilizadorDTO { Email = user.Email, Password = user.Id + user.MetodoId + user.Nome + "$PP$" };
-                var token = GetTokenAsync(infoDTO).Result;
+                var infoDTO = new InfoUtilizadorDTO { Email = "sistemacentraljakim@gmail.com", Password = "123Pa$$word" };
+                var token = await _tokenService.GetTokenFromLoginAsync(infoDTO);
                 _tokenService.SaveToken(token.Token);
 
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -273,26 +270,6 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 token = await response.Content.ReadAsAsync<TokenResponse>();
             }
             return token;
-        }
-        private async Task<TokenResponse> GetTokenAsync(InfoUtilizadorDTO info)
-        {
-            try
-            {
-                TokenResponse token;
-                using (HttpClient client = new HttpClient())
-                {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/login";
-                    var response = await client.PostAsync(endpoint, content);
-                    response.EnsureSuccessStatusCode();
-                    token = await response.Content.ReadAsAsync<TokenResponse>();
-                }
-                return token;
-            }
-            catch
-            {
-                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
-            }
         }
     }
 }

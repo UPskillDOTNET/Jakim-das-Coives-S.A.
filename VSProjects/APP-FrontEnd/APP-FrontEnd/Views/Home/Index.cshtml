@@ -2,43 +2,52 @@
 
 @{
     ViewData["Title"] = "HomePage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4"><b>Bem-vindo ao Jakim Smartparking!</b></h1>
-    <br /><br />
-    <h3>
-        A solução inovadora criada pela equipa "Jakim das Coives"<br />
-        para a gestão eficiente do estacionamento na rua num único sistema integrado.
-    </h3>
-    <br /><br />
-    <h3>Um sistema <b>completo</b>, <b>fácil</b> de gerir e <b>agradável</b> de usar.</h3>
-</div>
-
-<h1>Pesquisa</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Pesquisa">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FreguesiaNome" class="control-label"></label>
-                <input asp-for="FreguesiaNome" class="form-control" />
-                <span asp-validation-for="FreguesiaNome" class="text-danger"></span>
+<table style="width:100%">
+    <tr>
+        <td style="width:70%; padding-right:150px">
+            <div class="text-center">
+                <img src="~/Images/couve.png" width="250" height="250" />
+                <h1 class="display-4"><b>Bem-vindo ao Jakim Smartparking!</b></h1>
+                <br /><br />
+                <h3>
+                    A solução inovadora criada pela equipa "Jakim das Coives"
+                    para a gestão eficiente do estacionamento na rua num único sistema integrado.
+                </h3>
+                <br /><br />
+                <h3>Um sistema <b>completo</b>, <b>fácil</b> de gerir e <b>agradável</b> de usar.</h3>
             </div>
-            <div class="form-group">
-                <label asp-for="Inicio" class="control-label"></label>
-                <input asp-for="Inicio" step="3600" class="form-control" />
-                <span asp-validation-for="Inicio" class="text-danger"></span>
+        </td>
+        <td style="width:30%">
+            <div class="row" id="menuBorder">
+                <div class="col-md-8">
+                    <img src="~/Images/carro.png" width="250" height="250" style="margin-left: 1.7rem; filter: invert (100%);"/>
+                    <form asp-action="Pesquisa">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="FreguesiaNome" class="control-label"></label>
+                            <input id="pesquisa" required asp-for="FreguesiaNome" class="form-controlIndex" />
+                            <span asp-validation-for="FreguesiaNome" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Inicio" class="control-label"></label>
+                            <input id="pesquisa" required asp-for="Inicio" step="3600" class="form-controlIndex" />
+                            <span asp-validation-for="Inicio" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Fim" class="control-label"></label>
+                            <input id="pesquisa" required asp-for="Fim" step="3600" class="form-controlIndex" />
+                            <span asp-validation-for="Fim" class="text-danger"></span>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <input id="pesquisa" type="submit" value="Pesquisar" class="btnPesquisarHome" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Fim" class="control-label"></label>
-                <input asp-for="Fim" step="3600" class="form-control" />
-                <span asp-validation-for="Fim" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Pesquisar" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </td>
+    </tr>
+</table>

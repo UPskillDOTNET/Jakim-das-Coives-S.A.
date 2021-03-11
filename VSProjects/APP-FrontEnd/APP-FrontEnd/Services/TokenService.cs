@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using APP_FrontEnd.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 
 namespace APP_FrontEnd.Services
 {
@@ -15,6 +17,7 @@ namespace APP_FrontEnd.Services
     {
         public Task<string> GetTokenAsync();
         public void SaveToken(string token);
+        public Task<TokenResponse> GetTokenFromLoginAsync(InfoUtilizadorDTO info);
     }
     public class TokenService : ITokenService
     {
@@ -36,7 +39,7 @@ namespace APP_FrontEnd.Services
                 string apitoken;
                 try
                 {
-                    apitoken = await GetTokenFromApiAsync();
+                    apitoken = await GetTokenFromRefreshTokenAsync();
                 }
                 catch
                 {
@@ -57,7 +60,29 @@ namespace APP_FrontEnd.Services
             _cache.Set("TOKEN", token, options);
         }
 
-        private async Task<string> GetTokenFromApiAsync()
+        public async Task<TokenResponse> GetTokenFromLoginAsync(InfoUtilizadorDTO info)
+        {
+            try
+            {
+                TokenResponse tokenResponse;
+                using (HttpClient client = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
+                    string endpoint = "https://localhost:5050/api/utilizadores/login";
+                    var response = await client.PostAsync(endpoint, content);
+                    response.EnsureSuccessStatusCode();
+                    tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
+                    SaveCookie(tokenResponse.RefreshToken);
+                }
+                return tokenResponse;
+            }
+            catch
+            {
+                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
+            }
+        }
+
+        private async Task<string> GetTokenFromRefreshTokenAsync()
         {
             var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
             var cookie = new Cookie { Name = "refreshToken", Value = refreshToken, Path = "/", Domain = "localhost", Expires = DateTime.UtcNow.AddMinutes(1), HttpOnly = true };
@@ -72,13 +97,18 @@ namespace APP_FrontEnd.Services
                 response.EnsureSuccessStatusCode();
                 tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
             }
+            SaveCookie(tokenResponse.RefreshToken);
+            return tokenResponse.Token;
+        }
+
+        private void SaveCookie(string refreshToken)
+        {
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7)
             };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", tokenResponse.RefreshToken, cookieOptions);
-            return tokenResponse.Token;
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 }

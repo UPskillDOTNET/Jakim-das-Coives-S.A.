@@ -39,7 +39,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Display(Name = "Insira a sua palavra-passe para validar.")]
+            [Display(Name = "Insira a sua palavra-passe para validar")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
             public int MetodoId { get; set; }

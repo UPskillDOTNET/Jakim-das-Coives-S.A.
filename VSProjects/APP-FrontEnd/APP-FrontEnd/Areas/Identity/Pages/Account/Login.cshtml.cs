@@ -56,7 +56,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Lembrar password")]
             public bool RememberMe { get; set; }
         }
 
@@ -91,7 +91,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var info = new InfoUtilizadorDTO { Email = Input.Email, Password = Input.Password };
-                    var token = GetTokenAsync(info).Result;
+                    var token = await _tokenService.GetTokenFromLoginAsync(info);
                     _tokenService.SaveToken(token.Token);
 
                     _logger.LogInformation("O utilizador iniciou sessão.");
@@ -115,33 +115,6 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        private async Task<TokenResponse> GetTokenAsync(InfoUtilizadorDTO info)
-        {
-            try
-            {
-                TokenResponse token;
-                using (HttpClient client = new HttpClient())
-                {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/login";
-                    var response = await client.PostAsync(endpoint, content);
-                    response.EnsureSuccessStatusCode();
-                    token = await response.Content.ReadAsAsync<TokenResponse>();
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Expires = DateTime.UtcNow.AddDays(7)
-                    };
-                    Response.Cookies.Append("refreshToken", token.RefreshToken, cookieOptions);
-                }
-                return token;
-            }
-            catch
-            {
-                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
-            }
         }
     }
 }

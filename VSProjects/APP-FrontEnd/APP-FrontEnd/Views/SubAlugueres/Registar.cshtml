@@ -4,9 +4,13 @@
     ViewData["Title"] = "Registar";
 }
 
-<h1>Registar</h1>
+<h1>Sub-Alugar Reserva</h1>
 
 <hr />
+
+<h5>Introduza o valor por hora prentendido pelo sub-aluguer do lugar</h5>
+<br />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Registar">
@@ -18,23 +22,27 @@
             <input type="hidden" asp-for="Fila" />
             <input type="hidden" asp-for="Andar" />
             <div class="form-group">
-                <label asp-for="Preco" class="control-label"></label>
-                <input asp-for="Preco" class="form-control" />
+                <label asp-for="Preco" class="control-label" style="font-size:1.2rem"></label>
+                <input asp-for="Preco" class="form-control" style="width:200px; font-size:1.2rem"/>
                 <span asp-validation-for="Preco" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="NifProprietario" />
             <input type="hidden" asp-for="ReservaSistemaCentralId" />
             <input type="hidden" asp-for="Inicio" value="@Model.Inicio.ToString("dd-MM-yyyy HH:mm")" />
             <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
+            <br />
             <div class="form-group">
-                <input type="submit" value="Confirmar" class="btn btn-primary" />
+                <input id="pesquisa" type="submit" value="Confirmar" class="btn btn-primary" style="width:200px"/>
             </div>
         </form>
     </div>
 </div>
-
+<br />
+<br />
+<br />
+<br />
 <div>
-    <a asp-action="Index">Desistir</a>
+    <a class="text-light" style="font-size:1.2rem" asp-action="VoltarAsReservas">Cancelar</a>
 </div>
 
 @section Scripts {

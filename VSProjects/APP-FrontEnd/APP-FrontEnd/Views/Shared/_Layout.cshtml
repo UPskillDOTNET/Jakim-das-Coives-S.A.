@@ -4,55 +4,59 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Jakim Smartparking</title>
+    <link rel="stylesheet" href="~/css/site.css" runat="server" type="text/css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3" style="background: #268596; height:60px;padding-top:5px; margin-bottom: 2rem">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Jakim Smartparking</a>
+                <ul class="navbar-nav">
+                    @if (User.IsInRole("Utilizador"))
+                    {
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link navbar-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="navbar-toggler-icon"></span></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background:#98AFC7">
+                                <a class="dropdown-item" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-area="" asp-controller="Utilizadores" asp-action="Saldo">Saldo</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white; font-size: 20px; margin-top:8px">Jakim Smartparking</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservas" asp-action="Index">Reservas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SubAlugueres" asp-action="Index">Sub-Alugueres</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Transacoes" asp-action="Index">Transações</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Utilizadores" asp-action="Saldo">Saldo</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+                <div class="navbar-collapse collapse">
+                    <div style="margin-left:auto; margin-right: 0">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-light" style="background: #268596">
         <div class="container">
-            &copy; 2021 - Jakim Smartparking - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
+            &copy; 2021 - Jakim Smartparking - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidade</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

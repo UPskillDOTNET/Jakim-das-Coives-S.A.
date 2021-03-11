@@ -24,9 +24,11 @@ namespace APP_FrontEnd.Models
         
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data de Início")]
         public DateTime Inicio { get; set; }
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Data de Fim")]
         public DateTime Fim { get; set; }
         
     }

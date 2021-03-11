@@ -15,7 +15,7 @@
         <form id="email-form" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.MetodoId"></label>
+                <label asp-for="Input.MetodoId">Método de Pagamento</label>
                 <select asp-for="Input.MetodoId" onChange="metodo(this.value);" class="form-control">
                     <option value="1">Cartão de Crédito</option>
                     <option value="2">Débito Direto</option>
@@ -25,61 +25,61 @@
             </div>
             <div id="cartao" style="display: none">
                 <div class="form-group">
-                    <label asp-for="Input.Numero"></label>
+                    <label asp-for="Input.Numero">Nº do Cartão</label>
                     <input asp-for="Input.Numero" class="form-control" />
                     <span asp-validation-for="Input.Numero" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.NomeCartao"></label>
+                    <label asp-for="Input.NomeCartao">Nome do Portador</label>
                     <input asp-for="Input.NomeCartao" class="form-control" />
                     <span asp-validation-for="Input.NomeCartao" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.DataValidade"></label>
+                    <label asp-for="Input.DataValidade">Data de Validade</label>
                     <input asp-for="Input.DataValidade" class="form-control" />
                     <span asp-validation-for="Input.DataValidade" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Cvv"></label>
+                    <label asp-for="Input.Cvv">CVV</label>
                     <input asp-for="Input.Cvv" class="form-control" />
                     <span asp-validation-for="Input.Cvv" class="text-danger"></span>
                 </div>
             </div>
             <div id="debito" style="display: none">
                 <div class="form-group">
-                    <label asp-for="Input.Iban"></label>
+                    <label asp-for="Input.Iban">IBAN</label>
                     <input asp-for="Input.Iban" class="form-control" />
                     <span asp-validation-for="Input.Iban" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.NomeDebitoDireto"></label>
+                    <label asp-for="Input.NomeDebitoDireto">Nome Completo</label>
                     <input asp-for="Input.NomeDebitoDireto" class="form-control" />
                     <span asp-validation-for="Input.NomeDebitoDireto" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Rua"></label>
+                    <label asp-for="Input.Rua">Morada</label>
                     <input asp-for="Input.Rua" class="form-control" />
                     <span asp-validation-for="Input.Rua" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.CodigoPostal"></label>
+                    <label asp-for="Input.CodigoPostal">Código Postal</label>
                     <input asp-for="Input.CodigoPostal" class="form-control" />
                     <span asp-validation-for="Input.CodigoPostal" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Freguesia"></label>
+                    <label asp-for="Input.Freguesia">Localidade</label>
                     <input asp-for="Input.Freguesia" class="form-control" />
                     <span asp-validation-for="Input.Freguesia" class="text-danger"></span>
                 </div>
             </div>
             <div id="paypal" style="display: none">
                 <div class="form-group">
-                    <label asp-for="Input.EmailPayPal"></label>
+                    <label asp-for="Input.EmailPayPal">E-mail</label>
                     <input asp-for="Input.EmailPayPal" class="form-control" />
                     <span asp-validation-for="Input.EmailPayPal" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.PasswordPayPal"></label>
+                    <label asp-for="Input.PasswordPayPal">Palavra-passe</label>
                     <input asp-for="Input.PasswordPayPal" class="form-control" />
                     <span asp-validation-for="Input.PasswordPayPal" class="text-danger"></span>
                 </div>
@@ -92,7 +92,7 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
             }
-            <button id="change-metodo-button" type="submit" asp-page-handler="ChangeMetodoPagamento" class="btn btn-primary">Guardar</button>
+            <button id="pesquisa" type="submit" asp-page-handler="ChangeMetodoPagamento" class="btn btn-primary">Guardar</button>
         </form>
     </div>
 </div>
