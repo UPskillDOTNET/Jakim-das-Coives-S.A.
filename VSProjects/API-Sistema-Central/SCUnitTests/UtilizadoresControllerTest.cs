@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using API_Sistema_Central.Authentication;
 
 namespace SCUnitTests
 {
@@ -19,10 +20,7 @@ namespace SCUnitTests
         {
             //Arrange
             var mock = new Mock<IUtilizadorService>();
-            mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>())).ReturnsAsync(IdentityResult.Success);
-
-            var tokenMock = new Mock<ITokenService>();
-            tokenMock.Setup(x => x.BuildToken(It.IsAny<InfoUtilizadorDTO>())).Returns(new TokenUtilizadorDTO { Token = "TestToken", Expiration = DateTime.Now});
+            mock.Setup(x => x.RegistarUtilizador(It.IsAny<RegistarUtilizadorDTO>(), "0.0.0.1")).ReturnsAsync(new TokenResponse { Token = "token" });
 
             var theNewRegisto = new RegistarUtilizadorDTO
             {
@@ -34,11 +32,11 @@ namespace SCUnitTests
                 EmailPayPal = "test@test.com",
                 PasswordPayPal = "123Pa$$word"
             }; 
-            UtilizadoresController testController = new UtilizadoresController(tokenMock.Object, mock.Object);
+            UtilizadoresController testController = new UtilizadoresController(mock.Object);
 
             var response = await testController.RegistarUtilizador(theNewRegisto);
 
-            var item = Assert.IsType<TokenUtilizadorDTO>(response.Value);
+            var item = Assert.IsType<TokenResponse>(response);
             Assert.NotNull(response);
             Assert.NotNull(item);
             Assert.Equal("TestToken", item.Token);
@@ -49,18 +47,15 @@ namespace SCUnitTests
         {
             //Arrange
             var mock = new Mock<IUtilizadorService>();
-            mock.Setup(x => x.Login(It.IsAny<InfoUtilizadorDTO>())).ReturnsAsync(SignInResult.Success);
-
-            var tokenMock = new Mock<ITokenService>();
-            tokenMock.Setup(x => x.BuildToken(It.IsAny<InfoUtilizadorDTO>())).Returns(new TokenUtilizadorDTO { Token = "TestToken", Expiration = DateTime.Now });
+            mock.Setup(x => x.Login(It.IsAny<InfoUtilizadorDTO>(), "0.0.0.1")).ReturnsAsync(new TokenResponse { Token = "token" });
 
             var theNewRegisto = new InfoUtilizadorDTO { Email = "jakimdascoives@test.pt", Password = "coivinhas123"};
 
-            UtilizadoresController testController = new UtilizadoresController(tokenMock.Object, mock.Object);
+            UtilizadoresController testController = new UtilizadoresController(mock.Object);
 
             var response = await testController.Login(theNewRegisto);
 
-            var item = Assert.IsType<TokenUtilizadorDTO>(response.Value);
+            var item = Assert.IsType<TokenResponse>(response);
             Assert.NotNull(response);
             Assert.NotNull(item);
             Assert.Equal("TestToken", item.Token);

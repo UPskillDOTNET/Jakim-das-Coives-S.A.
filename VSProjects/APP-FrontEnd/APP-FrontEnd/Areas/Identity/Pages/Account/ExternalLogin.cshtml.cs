@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using APP_FrontEnd.Services;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -27,20 +28,20 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         private readonly UserManager<Utilizador> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenService _tokenService;
 
         public ExternalLoginModel(
             SignInManager<Utilizador> signInManager,
             UserManager<Utilizador> userManager,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            IHttpContextAccessor httpContextAccessor)
+            ITokenService tokenService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
-            _httpContextAccessor = httpContextAccessor;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -143,12 +144,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
-                var infoDTO = new InfoUtilizadorDTO { Email = user.Email, Password = user.Id + user.MetodoId + user.Nome + "$PP$" };
-                var token = GetTokenAsync(infoDTO).Result;
-                user.Token = token.Token;
-                user.Expiration = token.Expiration;
-                await _userManager.UpdateAsync(user);
-
+                var infoDTO = new InfoUtilizadorDTO { Email = "sistemacentraljakim@gmail.com", Password = "123Pa$$word" };
+                var token = await _tokenService.GetTokenFromLoginAsync(infoDTO);
+                _tokenService.SaveToken(token.Token);
 
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
@@ -194,7 +192,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        TokenUtilizadorDTO token;
+                        TokenResponse token;
                         try
                         {
                             token = await RegistarUtilizadorNoSCAsync(new RegistarUtilizadorDTO
@@ -223,12 +221,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                             await _userManager.DeleteAsync(user);
                             throw new Exception("O registo no servidor falhou.");
                         }
-                        var registeredUser = await _userManager.FindByIdAsync(Input.Nif);
-                        registeredUser.Token = token.Token;
-                        registeredUser.Expiration = token.Expiration;
-                        await _userManager.UpdateAsync(registeredUser);
-                        await _userManager.AddToRoleAsync(registeredUser, "Utilizador");
-
+                        _tokenService.SaveToken(token.Token);
 
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
@@ -265,38 +258,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             return Page();
         }
-        private async Task<TokenUtilizadorDTO> RegistarUtilizadorNoSCAsync(RegistarUtilizadorDTO registarUtilizadorDTO)
+        private async Task<TokenResponse> RegistarUtilizadorNoSCAsync(RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            TokenUtilizadorDTO token;
+            TokenResponse token;
             using (HttpClient client = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(registarUtilizadorDTO), Encoding.UTF8, "application/json");
                 string endpoint = "https://localhost:5050/api/utilizadores/registar";
                 var response = await client.PostAsync(endpoint, content);
                 response.EnsureSuccessStatusCode();
-                token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                token = await response.Content.ReadAsAsync<TokenResponse>();
             }
             return token;
-        }
-        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
-        {
-            try
-            {
-                TokenUtilizadorDTO token;
-                using (HttpClient client = new HttpClient())
-                {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/login";
-                    var response = await client.PostAsync(endpoint, content);
-                    response.EnsureSuccessStatusCode();
-                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
-                }
-                return token;
-            }
-            catch
-            {
-                throw new Exception("Autenticação falhou no servidor. Volte a tentar.");
-            }
         }
     }
 }

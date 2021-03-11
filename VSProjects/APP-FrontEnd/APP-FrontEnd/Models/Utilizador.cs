@@ -11,7 +11,5 @@ namespace APP_FrontEnd.Models
     {
         public int MetodoId { get; set; }
         public string Nome { get; set; }
-        public string Token { get; set; }
-        public DateTime Expiration { get; set; }
     }
 }

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace APP_FrontEnd.Models
+namespace API_Sistema_Central.Authentication
 {
-    public class TokenUtilizadorDTO
+    public class RevokeTokenRequest
     {
         public string Token { get; set; }
-        public DateTime Expiration { get; set; }
     }
 }

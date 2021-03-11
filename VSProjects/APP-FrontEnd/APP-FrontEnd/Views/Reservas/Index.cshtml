@@ -40,11 +40,20 @@
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NomeParque)">
                 @Html.DisplayFor(modelItem => item.NomeParque)
             </td>
-            <td class="table__content">
-                @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId }) |
-                @Html.ActionLink("Sub-Alugar", "Subalugar", new { id = item.ReservaId }) |
-                @Html.ActionLink("Cancelar", "Cancelar", new { id = item.ReservaId })
-            </td>
+            @if (item.IsSubAlugado)
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId })
+                </td>
+            }
+            else
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.ReservaId }) |
+                    @Html.ActionLink("Sub-Alugar", "Subalugar", new { id = item.ReservaId }) |
+                    @Html.ActionLink("Cancelar", "Cancelar", new { id = item.ReservaId })
+                </td>
+            }
         </tr>
         }
     </tbody>

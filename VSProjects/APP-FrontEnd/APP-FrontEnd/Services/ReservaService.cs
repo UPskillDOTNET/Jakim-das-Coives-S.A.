@@ -14,17 +14,28 @@ using System.Net.Http.Json;
 
 namespace APP_FrontEnd.Services
 {
+    public interface IReservaService
+    {
+        public Task<IEnumerable<LugarDTO>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim);
+        public Task<IEnumerable<DetalheReservaDTO>> GetByNifAsync();
+        public Task<DetalheReservaDTO> GetByIdAsync(int id);
+        public Task PostAsync(ReservaDTO reservaDTO);
+        public Task DeleteAsync(int id);
+    }
+
     public class ReservaService : IReservaService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public ReservaService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
+        public ReservaService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _httpContextAccessor = httpContextAccessor;
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         public async Task<IEnumerable<LugarDTO>> FindAvailableAsync(string freguesiaNome, DateTime inicio, DateTime fim)
@@ -39,7 +50,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem login feito.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var listaLugares = new List<LugarDTO>();
             using (HttpClient client = new HttpClient())
@@ -51,7 +71,6 @@ namespace APP_FrontEnd.Services
                 listaLugares = await response.Content.ReadAsAsync<List<LugarDTO>>();
             }
             return listaLugares;
-
         }
 
         public async Task<IEnumerable<DetalheReservaDTO>> GetByNifAsync()
@@ -66,7 +85,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem login feito.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var listaReservas = new List<DetalheReservaDTO>();
             using (HttpClient client = new HttpClient())
@@ -92,7 +120,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem login feito.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var result = new DetalheReservaDTO();
             using (HttpClient client = new HttpClient())
@@ -125,7 +162,17 @@ namespace APP_FrontEnd.Services
                 reservaDTO.MetodoId = user.MetodoId;
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
+
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -147,30 +194,23 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem login feito.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
-            var result = new DetalheReservaDTO();
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 string endpoint = "https://localhost:5050/api/reservas/" + id;
                 var response = await client.DeleteAsync(endpoint);
                 response.EnsureSuccessStatusCode();
-                result = await response.Content.ReadAsAsync<DetalheReservaDTO>();
-            }
-        }
-
-        private async Task<string> GetTokenByNif(string nif)
-        {
-            var user = await _userManager.FindByIdAsync(nif);
-            if (user.Expiration < DateTime.UtcNow)
-            {
-                await _signInManager.SignOutAsync();
-                throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
-            }
-            else
-            {
-                return user.Token;
             }
         }
     }

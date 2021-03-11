@@ -21,14 +21,14 @@ namespace APP_FrontEnd.Models
         public int Andar { get; set; }
         [DataType(DataType.Currency)]
 
-        [Display(Name = "Preço")]
+        [Display(Name = "Preço por hora")]
         public double Preco { get; set; }
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifProprietario { get; set; }
         public int ReservaSistemaCentralId { get; set; }
 
         [Display(Name = "Encontra-se Reservado?")]
-        public bool? IsReservado { get; set; }
+        public bool IsReservado { get; set; }
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]

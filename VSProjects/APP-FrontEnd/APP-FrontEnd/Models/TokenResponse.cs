@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API_Sistema_Central.DTOs
+namespace APP_FrontEnd.Models
 {
-    public class TokenUtilizadorDTO
+    public class TokenResponse
     {
         public string Token { get; set; }
-        public DateTime Expiration { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

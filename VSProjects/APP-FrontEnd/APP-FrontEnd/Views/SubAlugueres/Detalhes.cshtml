@@ -66,7 +66,10 @@
                     @Html.DisplayNameFor(model => model.IsReservado)
                 </td>
                 <td class="table__content">
-                    @Html.DisplayFor(model => model.IsReservado)
+                    @if (Model.IsReservado)
+                    {<text>Sim</text>}
+                    else
+                    {<text>Não</text>}
                 </td>
             <tr />
             <tr class="table__row:nth-child(odd)" style="background:#80bbc4">

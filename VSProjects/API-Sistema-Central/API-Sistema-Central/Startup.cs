@@ -20,12 +20,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API_Sistema_Central.Services;
 using API_Sistema_Central.Repositories;
+using API_Sistema_Central.Authentication;
 
 namespace API_Sistema_Central
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,40 +33,46 @@ namespace API_Sistema_Central
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins, builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-            });
+            services.AddCors();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+
             /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Sistema_Central", Version = "v1" });
             });*/
 
-            services.AddDbContext<SCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
+            services.AddDbContext<SCContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
 
-            services.AddIdentity<Utilizador, IdentityRole>()
-                .AddEntityFrameworkStores<SCContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<Utilizador, IdentityRole>().AddEntityFrameworkStores<SCContext>().AddDefaultTokenProviders();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-                options.TokenValidationParameters = new TokenValidationParameters
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
                     ClockSkew = TimeSpan.Zero
-                });
+                };
+            });
 
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IUtilizadorService, UtilizadorService>();
+            services.AddScoped<IUtilizadorService, UtilizadorService>();
             services.AddTransient<ITransacaoService, TransacaoService>();
             services.AddTransient<IReservaService, ReservaService>();
             services.AddTransient<IPagamentoService, PagamentoService>();
@@ -82,7 +88,6 @@ namespace API_Sistema_Central
             services.AddScoped<ITransacaoRepository, TransacaoRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -96,16 +101,17 @@ namespace API_Sistema_Central
 
             app.UseRouting();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(x => x
+                .SetIsOriginAllowed(origin => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
 
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

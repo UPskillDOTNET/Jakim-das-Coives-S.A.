@@ -95,18 +95,18 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async Task<TokenUtilizadorDTO> GetTokenAsync(InfoUtilizadorDTO info)
+        private async Task<TokenResponse> GetTokenAsync(InfoUtilizadorDTO info)
         {
             try
             {
-                TokenUtilizadorDTO token;
+                TokenResponse token;
                 using (HttpClient client = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
                     string endpoint = "https://localhost:5050/api/utilizadores/login";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
-                    token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                    token = await response.Content.ReadAsAsync<TokenResponse>();
                 }
                 return token;
             }

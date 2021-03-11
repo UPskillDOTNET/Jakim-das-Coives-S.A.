@@ -19,7 +19,7 @@ namespace API_Sistema_Central.DTOs
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifProprietario { get; set; }
         public int ReservaSistemaCentralId { get; set; }
-        public bool? IsReservado { get; set; }
+        public bool IsReservado { get; set; }
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime Inicio { get; set; }

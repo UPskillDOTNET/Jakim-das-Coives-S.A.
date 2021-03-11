@@ -1,58 +1,97 @@
 ﻿using System;
 using System.Threading.Tasks;
+using API_Sistema_Central.Authentication;
 using API_Sistema_Central.DTOs;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Sistema_Central.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/utilizadores")]
     [ApiController]
     public class UtilizadoresController : ControllerBase
     {
-        private readonly ITokenService _tokenService;
         private readonly IUtilizadorService _utilizadorService;
-        public UtilizadoresController(ITokenService tokenService, IUtilizadorService utilizadorService)
+        public UtilizadoresController(IUtilizadorService utilizadorService)
         {
-            _tokenService = tokenService;
             _utilizadorService = utilizadorService;
         }
 
+        [AllowAnonymous]
         [HttpPost("registar")]
-        public async Task<ActionResult<TokenUtilizadorDTO>> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
+        public async Task<IActionResult> RegistarUtilizador([FromBody] RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            var infoUtilizadorDTO = new InfoUtilizadorDTO { Email = registarUtilizadorDTO.EmailUtilizador, Password = registarUtilizadorDTO.PasswordUtilizador };
-            var result = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO);
+            var response = await _utilizadorService.RegistarUtilizador(registarUtilizadorDTO, IpAddress());
 
-            if (result.Succeeded)
-            {
-                return _tokenService.BuildToken(infoUtilizadorDTO);
-            }
-            else
+            if (response == null)
             {
                 return BadRequest("Utilizador ou password inválidos");
             }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<TokenUtilizadorDTO>> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
+        public async Task<IActionResult> Login([FromBody] InfoUtilizadorDTO infoUtilizadorDTO)
         {
-            var result = await _utilizadorService.Login(infoUtilizadorDTO);
+            var response = await _utilizadorService.Login(infoUtilizadorDTO, IpAddress());
 
-            if (result.Succeeded)
-            {
-                return _tokenService.BuildToken(infoUtilizadorDTO);
-            }
-            else
+            if (response == null)
             {
                 return BadRequest("Login inválido");
             }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [AllowAnonymous]
+        [HttpGet("refresh-token")]
+        public async Task<IActionResult> RefreshTokenAsync()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var response = await _utilizadorService.RefreshTokenAsync(refreshToken, IpAddress());
+
+            if (response == null)
+            {
+                return Unauthorized("Token inválido");
+            }
+
+            SetTokenCookie(response.RefreshToken);
+
+            return Ok(response);
+        }
+
+        [HttpPost("rescindir-token")]
+        public async Task<IActionResult> RevokeTokenAsync([FromBody] RevokeTokenRequest model)
+        {
+            var token = model.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token é necessário");
+            }
+
+            var response = await _utilizadorService.RevokeTokenAsync(token, IpAddress());
+
+            if (!response)
+            {
+                return NotFound("Token não encontrado");
+            }
+            
+            return Ok("Token rescindido");
+        }
+
+
         [HttpGet("saldo/{nif}")]
         public async Task<ActionResult<double>> GetSaldoByNif(string nif)
         {
@@ -67,7 +106,6 @@ namespace API_Sistema_Central.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("depositar")]
         public async Task<ActionResult> DepositarSaldoByNif(DepositarDTO depositar)
         {
@@ -82,71 +120,78 @@ namespace API_Sistema_Central.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("reset")]
         public async Task<ActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.ResetPasswordAsync(resetPasswordDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.ResetPasswordAsync(resetPasswordDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
         [HttpPost("alterar")]
         public async Task<ActionResult> AlterarPassword(AlterarPasswordDTO alterarPasswordDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarPasswordAsync(alterarPasswordDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarPasswordAsync(alterarPasswordDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("nome")]
         public async Task<ActionResult> AlterarNome(AlterarNomeDTO alterarNomeDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarNomeAsync(alterarNomeDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarNomeAsync(alterarNomeDTO);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
             }
         }
 
-        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost("metodo")]
         public async Task<ActionResult> AlterarMetodoPagamento(AlterarMetodoPagamentoDTO alterarMetodoPagamentoDTO)
         {
+            try
             {
-                try
-                {
-                    await _utilizadorService.AlterarMetodoPagamentoAsync(alterarMetodoPagamentoDTO);
-                    return Ok();
-                }
-                catch (Exception e)
-                {
-                    return NotFound(e.Message);
-                }
+                await _utilizadorService.AlterarMetodoPagamentoAsync(alterarMetodoPagamentoDTO);
+                return Ok();
             }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
+
+        private void SetTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
+        }
+        private string IpAddress()
+        {
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                return Request.Headers["X-Forwarded-For"];
+            else
+                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }

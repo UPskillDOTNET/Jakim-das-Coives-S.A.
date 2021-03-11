@@ -7,7 +7,7 @@
 <h1>A Sua Reserva</h1>
 <div>
     <hr />
-    <table class="table" >
+    <table class="table">
         <thead style="width:300px">
             <tr class="table__heading">
                 <th class="table__heading">Detalhes</th>
@@ -74,7 +74,10 @@
                     @Html.DisplayNameFor(model => model.IsSubAlugado)
                 </td>
                 <td class="table__content">
-                    @Html.DisplayFor(model => model.IsSubAlugado)
+                    @if (Model.IsSubAlugado)
+                    {<text>Sim</text>}
+                    else
+                    {<text>Não</text>}
                 </td>
             </tr>
             <tr class="table__row">

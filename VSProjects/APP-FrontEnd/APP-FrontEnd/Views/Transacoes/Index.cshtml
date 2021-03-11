@@ -13,9 +13,6 @@
                 @Html.DisplayNameFor(model => model.DataHora)
             </th>
             <th class="table__heading">
-                @Html.DisplayNameFor(model => model.Valor)
-            </th>
-            <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Tipo)
             </th>
             <th class="table__heading">
@@ -23,6 +20,9 @@
             </th>
             <th class="table__heading">
                 @Html.DisplayNameFor(model => model.Metodo)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Valor)
             </th>
         </tr>
     </thead>
@@ -32,9 +32,6 @@
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.DataHora)">
                 @Html.DisplayFor(modelItem => item.DataHora)
             </td>
-            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Valor)">
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Tipo)">
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
@@ -43,6 +40,9 @@
             </td>
             <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Metodo)">
                 @Html.DisplayFor(modelItem => item.Metodo)
+            </td>
+            <td class="table__content" style="text-align:right" data-heading="@Html.DisplayNameFor(model => model.Valor)">
+                @Html.DisplayFor(modelItem => item.Valor)
             </td>
         </tr>
 }

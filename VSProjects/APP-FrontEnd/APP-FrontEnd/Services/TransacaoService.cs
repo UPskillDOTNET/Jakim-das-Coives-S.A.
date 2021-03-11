@@ -12,17 +12,22 @@ using System.Net.Http.Headers;
 
 namespace APP_FrontEnd.Services
 {
+    public interface ITransacaoService
+    {
+        public Task<IEnumerable<TransacaoDTO>> GetAllTransacoesByNIF();
+    }
+
     public class TransacaoService : ITransacaoService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<Utilizador> _userManager;
         private readonly SignInManager<Utilizador> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public TransacaoService(IHttpContextAccessor httpContextAccessor, UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager)
+        public TransacaoService(IHttpContextAccessor httpContextAccessor, SignInManager<Utilizador> signInManager, ITokenService tokenService)
         {
             _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         public async Task<IEnumerable<TransacaoDTO>> GetAllTransacoesByNIF()
@@ -37,7 +42,16 @@ namespace APP_FrontEnd.Services
                 throw new Exception("Utilizador não tem sessão iniciada.");
             }
 
-            var token = await GetTokenByNif(nif);
+            string token;
+            try
+            {
+                token = await _tokenService.GetTokenAsync();
+            }
+            catch (Exception e)
+            {
+                await _signInManager.SignOutAsync();
+                throw new Exception(e.Message);
+            }
 
             var listaTransacoes = new List<TransacaoDTO>();
             using (HttpClient client = new HttpClient())
@@ -49,20 +63,6 @@ namespace APP_FrontEnd.Services
                 listaTransacoes = await response.Content.ReadAsAsync<List<TransacaoDTO>>();
             }
             return listaTransacoes;
-        }
-
-        private async Task<string> GetTokenByNif(string nif)
-        {
-            var user = await _userManager.FindByIdAsync(nif);
-            if (user.Expiration < DateTime.UtcNow)
-            {
-                await _signInManager.SignOutAsync();
-                throw new Exception("A sua sessão expirou. Volte a autenticar-se.");
-            }
-            else
-            {
-                return user.Token;
-            }
         }
     }
 }

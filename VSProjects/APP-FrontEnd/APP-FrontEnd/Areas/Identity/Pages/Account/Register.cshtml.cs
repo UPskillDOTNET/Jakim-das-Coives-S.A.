@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using Newtonsoft.Json;
+using APP_FrontEnd.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -26,17 +28,15 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
         private readonly UserManager<Utilizador> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ITokenService _tokenService;
 
-        public RegisterModel(
-            UserManager<Utilizador> userManager,
-            SignInManager<Utilizador> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+        public RegisterModel(UserManager<Utilizador> userManager, SignInManager<Utilizador> signInManager, ILogger<RegisterModel> logger, IEmailSender emailSender, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _tokenService = tokenService;
         }
 
         [BindProperty]
@@ -132,7 +132,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    TokenUtilizadorDTO token;
+                    TokenResponse token;
                     try
                     {
                         token = await RegistarUtilizadorNoSCAsync(new RegistarUtilizadorDTO
@@ -161,11 +161,13 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                         await _userManager.DeleteAsync(user);
                         throw new Exception("O registo no servidor falhou.");
                     }
-                    var registeredUser = await _userManager.FindByIdAsync(Input.Nif);
-                    registeredUser.Token = token.Token;
-                    registeredUser.Expiration = token.Expiration;
-                    await _userManager.UpdateAsync(registeredUser);
-                    await _userManager.AddToRoleAsync(registeredUser, "Utilizador");
+                    _tokenService.SaveToken(token.Token);
+                    var cookieOptions = new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTime.UtcNow.AddDays(7)
+                    };
+                    Response.Cookies.Append("refreshToken", token.RefreshToken, cookieOptions);
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -200,16 +202,16 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private async Task<TokenUtilizadorDTO> RegistarUtilizadorNoSCAsync(RegistarUtilizadorDTO registarUtilizadorDTO)
+        private async Task<TokenResponse> RegistarUtilizadorNoSCAsync(RegistarUtilizadorDTO registarUtilizadorDTO)
         {
-            TokenUtilizadorDTO token;
+            TokenResponse token;
             using (HttpClient client = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(registarUtilizadorDTO), Encoding.UTF8, "application/json");
                 string endpoint = "https://localhost:5050/api/utilizadores/registar";
                 var response = await client.PostAsync(endpoint, content);
                 response.EnsureSuccessStatusCode();
-                token = await response.Content.ReadAsAsync<TokenUtilizadorDTO>();
+                token = await response.Content.ReadAsAsync<TokenResponse>();
             }
             return token;
         }
