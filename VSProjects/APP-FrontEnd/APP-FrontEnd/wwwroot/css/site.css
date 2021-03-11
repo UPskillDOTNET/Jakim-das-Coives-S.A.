@@ -162,12 +162,32 @@ body {
     font-size: 1.2rem;
 }
 
+#menuRegisterBorder {
+    margin-right: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1.2em #268596;
+    display: block;
+    font-size: 1.2rem;
+    max-width: 60%;
+    margin-bottom: 2rem;
+}
+
 #externalLogin {
     margin-left: 1rem;
     padding: 1.5rem;
     border-radius: 1rem;
     display: block;
     font-size: 1.2rem;
+}
+
+#externalRegister {
+    margin-left: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: block;
+    font-size: 1.2rem;
+    max-width: 30%;
 }
 
 .extLoginImg {
@@ -296,8 +316,39 @@ td {
         font-size: 1.2rem;
     }
 
+    #menuRegisterBorder {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px 1.2em #268596;
+        display: block;
+        font-size: 1.2rem;
+        width: 90%;
+        max-width: 100%;
+        margin-bottom: 5rem;
+    }
+
     .col-md-4 {
         max-width: 100%;
         flex: none;
+    }
+
+    .col-md-7 {
+        max-width: 100%;
+        flex: none;
+    }
+
+    .col-md-5 {
+        padding: 3rem;
+        max-width: 100%;
+        flex: none;
+    }
+
+    #externalRegister {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+        max-width: 100%;
     }
 }
