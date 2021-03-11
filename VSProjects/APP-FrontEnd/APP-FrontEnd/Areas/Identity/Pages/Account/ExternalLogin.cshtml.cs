@@ -222,6 +222,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                             throw new Exception("O registo no servidor falhou.");
                         }
                         _tokenService.SaveToken(token.Token);
+                        _tokenService.SaveCookie(token.RefreshToken);
 
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 

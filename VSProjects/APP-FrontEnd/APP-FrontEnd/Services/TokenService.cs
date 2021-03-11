@@ -18,6 +18,7 @@ namespace APP_FrontEnd.Services
         public Task<string> GetTokenAsync();
         public void SaveToken(string token);
         public Task<TokenResponse> GetTokenFromLoginAsync(InfoUtilizadorDTO info);
+        public void SaveCookie(string refreshToken);
     }
     public class TokenService : ITokenService
     {
@@ -82,6 +83,16 @@ namespace APP_FrontEnd.Services
             }
         }
 
+        public void SaveCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        }
+
         private async Task<string> GetTokenFromRefreshTokenAsync()
         {
             var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
@@ -99,16 +110,6 @@ namespace APP_FrontEnd.Services
             }
             SaveCookie(tokenResponse.RefreshToken);
             return tokenResponse.Token;
-        }
-
-        private void SaveCookie(string refreshToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 }

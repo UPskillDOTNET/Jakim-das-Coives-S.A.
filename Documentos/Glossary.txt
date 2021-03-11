@@ -14,6 +14,6 @@ API.SubAluguer : Refere-se à API responsável por disponibilizar e permitir res
 
 Reserva: Identifica o aluguer de um Lugar de estacionamento num determinado Parque efectuado por um Cliente ou Utilizador.
 
-Sub-aluguer: Um Utilizador efectua um aluguer de um Lugar disponibilizado e previamente reservado por outro Utilizador.
+Sub-aluguer: Um Utilizador disponibiliza para aluguer por outro Utilizador um lugar de estacionamento previamente reservado por si.
 
-APP.Frontend: Aplicação (mobile e web) que funciona como frontend do Sistema Central e que permite aos utilizadores registados no sistema a utilização das funcionalidades disponibilizadas pelo mesmo
+APP.Frontend: Aplicação (mobile e web) que funciona como frontend do Sistema Central e que permite aos utilizadores registados no sistema a utilização das funcionalidades disponibilizadas pelo mesmo.

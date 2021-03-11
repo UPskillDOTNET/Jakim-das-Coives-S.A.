@@ -162,12 +162,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                         throw new Exception("O registo no servidor falhou.");
                     }
                     _tokenService.SaveToken(token.Token);
-                    var cookieOptions = new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Expires = DateTime.UtcNow.AddDays(7)
-                    };
-                    Response.Cookies.Append("refreshToken", token.RefreshToken, cookieOptions);
+                    _tokenService.SaveCookie(token.RefreshToken);
 
                     _logger.LogInformation("User created a new account with password.");
 
