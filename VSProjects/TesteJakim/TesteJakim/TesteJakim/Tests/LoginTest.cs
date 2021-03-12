@@ -10,6 +10,7 @@ namespace TesteJakim.Tests
 {
     class LoginTest
     {
+
         //Abrir Browser (Se n abrir confirmar versao do browser)
         IWebDriver webDriver = new ChromeDriver(/*versao do browser*/);
 
@@ -23,6 +24,7 @@ namespace TesteJakim.Tests
 
         [Test]
         public void Login()
+            //Por o Programa a correr
         {
             HomePage homePage = new HomePage(webDriver);
             homePage.ClickLogin();
@@ -30,7 +32,7 @@ namespace TesteJakim.Tests
             LoginPage loginPage = new LoginPage(webDriver);
             loginPage.Login("sistemacentraljakim@gmail.com", "123Pa$$word");
 
-            Assert.That(homePage.IncertUserLogin, Is.True);
+            Assert.That(homePage.WelcomeMsgLogin, Is.True);
 
         }
     }

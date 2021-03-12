@@ -14,9 +14,14 @@ namespace TesteJakim.Pages
 
         private IWebDriver Driver { get; }
 
+
+        //Procurar os elemento necessários na Pagina de Login
         IWebElement txtUserName => Driver.FindElement(By.Name("Input.Email"));
         IWebElement txtPassword => Driver.FindElement(By.Name("Input.Password"));
         IWebElement btnLogin => Driver.FindElement(By.ClassName("btnAccountSubmit"));
+
+
+        //Ações a fazer aos elementos da página Login
 
         public void Login(string userName, string password)
         {

@@ -15,13 +15,18 @@ namespace TesteJakim.Pages
 
         private IWebDriver Driver { get; }
 
-        public IWebElement lnkLogin => Driver.FindElement(By.LinkText("Iniciar Sessão"));
 
-        public IWebElement InsertUserName => Driver.FindElement(By.Name("Input.Email"));
+        //Procurar o Link do Login
+        IWebElement lnkLogin => Driver.FindElement(By.LinkText("Iniciar Sessão"));
+
+        //Procurar Prava como fez Login
+        IWebElement welcomeMsg => Driver.FindElement(By.LinkText("Bem-vindo Administrador!"));
 
 
+        //Ação pra fazer Login
         public void ClickLogin() => lnkLogin.Click();
 
-        public bool IncertUserLogin() => InsertUserName.Displayed;
+        //Ação pra procar que fez login
+        public bool WelcomeMsgLogin() => welcomeMsg.Displayed;
     }
 }
