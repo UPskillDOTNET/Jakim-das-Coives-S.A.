@@ -4,7 +4,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace TesteJakim
 {
-    public class Tests
+    public class Testes
     {
         [SetUp]
         public void Setup()
@@ -36,7 +36,7 @@ namespace TesteJakim
 
             webDriver.FindElement(By.ClassName("btnAccountSubmit")).Click();
 
-            IWebElement terminarSessao = webDriver.FindElement(By.LinkText("Bem-vindo sistemacentraljakim@gmail.com!"));
+            IWebElement terminarSessao = webDriver.FindElement(By.LinkText("Bem-vindo Administrador!"));
             Assert.That(terminarSessao.Displayed, Is.True);
 
         }
