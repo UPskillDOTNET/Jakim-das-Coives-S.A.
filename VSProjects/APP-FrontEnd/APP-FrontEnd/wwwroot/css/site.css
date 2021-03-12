@@ -275,6 +275,7 @@ td {
     .table__content {
         display: block;
         padding: .5rem 0;
+        text-align: left !important;
     }
 
     .table__row {
