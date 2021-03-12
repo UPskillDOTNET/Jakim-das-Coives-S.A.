@@ -5,10 +5,10 @@ using System.Text;
 
 namespace TesteJakim.Pages
 {
-    public class Home
+    public class HomePage
     {
 
-        public Home (IWebDriver webDriver)
+        public HomePage (IWebDriver webDriver)
         {
             Driver = webDriver;
         }
@@ -17,7 +17,7 @@ namespace TesteJakim.Pages
 
         public IWebElement lnkLogin => Driver.FindElement(By.LinkText("Iniciar Sessão"));
 
-        IWebElement userLgn => Driver.FindElement(By.Name("Input.Email"));
+        IWebElement insertUserName => Driver.FindElement(By.Name("Input.Email"));
 
         public void ClickLogin() => lnkLogin.Click();
 
