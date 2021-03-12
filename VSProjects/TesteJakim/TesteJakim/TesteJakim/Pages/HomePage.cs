@@ -17,10 +17,11 @@ namespace TesteJakim.Pages
 
         public IWebElement lnkLogin => Driver.FindElement(By.LinkText("Iniciar Sessão"));
 
-        IWebElement insertUserName => Driver.FindElement(By.Name("Input.Email"));
+        public IWebElement InsertUserName => Driver.FindElement(By.Name("Input.Email"));
+
 
         public void ClickLogin() => lnkLogin.Click();
 
-        public bool IncertUserLogin() => userLgn.Displayed;
+        public bool IncertUserLogin() => InsertUserName.Displayed;
     }
 }

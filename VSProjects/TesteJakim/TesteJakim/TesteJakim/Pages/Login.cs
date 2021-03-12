@@ -5,9 +5,9 @@ using System.Text;
 
 namespace TesteJakim.Pages
 {
-    class Login
+    class LoginPage
     {
-        public Login(IWebDriver driver)
+        public LoginPage(IWebDriver driver)
         {
             Driver = driver;
         }
@@ -18,7 +18,7 @@ namespace TesteJakim.Pages
         IWebElement txtPassword => Driver.FindElement(By.Name("Input.Password"));
         IWebElement btnLogin => Driver.FindElement(By.ClassName("btnAccountSubmit"));
 
-        public void Logins(string userName, string password)
+        public void Login(string userName, string password)
         {
             txtUserName.SendKeys(userName);
             txtPassword.SendKeys(password);

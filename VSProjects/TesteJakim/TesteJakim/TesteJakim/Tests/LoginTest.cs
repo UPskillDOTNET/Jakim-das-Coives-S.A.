@@ -24,13 +24,13 @@ namespace TesteJakim.Tests
         [Test]
         public void Login()
         {
-            Home home = new Home(webDriver);
-            home.ClickLogin();
+            HomePage homePage = new HomePage(webDriver);
+            homePage.ClickLogin();
 
-            Login login = new Login(webDriver);
-            login.Logins("sistemacentraljakim@gmail.com", "123Pa$$word");
+            LoginPage loginPage = new LoginPage(webDriver);
+            loginPage.Login("sistemacentraljakim@gmail.com", "123Pa$$word");
 
-            Assert.That(home.IncertUserLogin, Is.True);
+            Assert.That(homePage.IncertUserLogin, Is.True);
 
         }
     }
