@@ -1,34 +1,77 @@
 @startuml
 autonumber
 actor "Utilizador" as U
-participant ":app/Views/Reservas/Index" as RV
-participant ":app/ReservasController" as RC
-participant ":app/ReservaService" as RS
+participant ":app/Areas/Identity/Pages/Account/Manage/" as RP
+participant "UserManager" as UM
 participant "API:SistemaCentral" as API
+participant "Autenticação Externa" as AE
 
 activate U
 
-U --> RC: inicia a consulta
-activate RC
+alt Alterar dados do utilizador
+alt
+U --> RP: inicia a alteração \n(Nome, Numero Telefone)
+activate RP
+U --> RP: inicia a alteração \n(Password)
+U --> RP: inicia a alteração \n(Método de Pagamento)
+U --> RP: inicia a alteração \n(Autenticações externas)
+end
 
-RC --> RS: GetByNifAsync()
-activate RS
+RP --> U: pede dados
 
-RS --> API: GetAsync(nif)
+U --> RP: insere dados
+
+RP --> UM: UpdateAsync(Utilizador)
+activate UM
+
+UM --> RP: success
+deactivate UM
+
+alt
+RP --> API: PostAsync(AlterarNomeDTO)
 activate API
-
-API --> RS: return(lista DetalheReservaDTO)
+RP --> API: PostAsync(AlterarPasswordDTO)
+RP --> API: PostAsync(AlterarMetodoPagamentoDTO)
+API --> RP: return Ok()
 deactivate API
+end
 
-RS --> RC: return(lista DetalheReservaDTO)
-deactivate RS
+alt
+RP --> AE: adicionar autenticação externa
+activate AE
+AE --> RP: return Ok()
+deactivate AE
+end
 
-RC --> RV: return View(lista)
-deactivate RC
-activate RV
-
-RV --> U: operacao bem sucedida
-deactivate RV
+RP --> U: operacao bem sucedida
+deactivate RP
 
 deactivate U
+end
+
+alt Remover conta de utilizador
+U --> RP: inicia a remoção de conta
+activate RP
+
+RP --> U: pede confirmação
+
+U --> RP: confirma
+
+RP --> API: PostAsync(InfoUtilizadorDTO)
+activate API
+
+API --> RP: return Ok()
+deactivate API
+
+RP --> UM: DeleteAsync(Utilizador)
+activate UM
+
+UM --> RP: success
+deactivate UM
+
+RP --> U: operacao bem sucedida
+deactivate RP
+
+deactivate U
+end
 @enduml

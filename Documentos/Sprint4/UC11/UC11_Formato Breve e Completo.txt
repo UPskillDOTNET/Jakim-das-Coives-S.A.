@@ -8,8 +8,8 @@ Formato Breve
 
     O Utilizador faz à App.FrontEnd um pedido de alteração das suas informações.
     A App.FrontEnd permite ao utilizador inserir os novos dados.
-    O Utilizador insere os dados e pede para os gravar.
-    A App.FrontEnd grava e informa do sucesso da operação.
+    O Utilizador insere os dados e pede para os guardar.
+    A App.FrontEnd guarda os dados e informa do sucesso da operação.
 
 --------------------------------------------------------------------------------------------------
 
@@ -23,21 +23,26 @@ Partes Interessadas
     - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
 
 Pré-condições
-    - O Utilizador já tinha efetuado uma reserva anteriormente.
+    - O Utilizador está registado na App.FrontEnd.
 
 Pós-condições
-    ...
-
+    - Informações do Utilizador actualizadas.
+    - Conta removida e todos as informações do Utilizador apagadas.
 
 Fluxo Básico
 
-    1. O Utilizador inicia o pedido de consulta.
-    2. A App.FrontEnd devolve a lista de reservas.
+    1 - O Utilizador inicia o pedido de alteração.
+    2 - A App.FrontEnd permite inserir os novos dados.
+    3 - O utilizador insere os dados e pede para os guardar.
+    4 - A App.FrontEnd guarda os dados e informa do sucesso da operação.
 
 Fluxos Alternativos
 
-    2a - O Utilizador não tem qualquer reserva efectuada.
-       - A App.FrontEnd informa o Utilizador desse facto.
+    1a - O Utilizador inicia o pedido de remoção da conta.
+    2a - A App.FrontEnd pede confirmação de remoção de conta ao Utilizador.
+    3a - O utilizador confirma.
+    4a - A App.FrontEnd remove a conta de Utilizador e apaga todos os dados relacionados com esse utilizador no Sistema Central.
+
 
 --------------------------------------------------------------------------------------------------
 
