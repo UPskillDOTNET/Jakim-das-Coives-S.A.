@@ -8,7 +8,7 @@ using TesteJakim.Pages;
 
 namespace TesteJakim.Tests
 {
-    class LoginTest
+    class SaldoTest
     {
 
         //Abrir Browser (Se n abrir confirmar versao do browser)
@@ -20,20 +20,23 @@ namespace TesteJakim.Tests
             //Entrar no Site
             webDriver.Navigate().GoToUrl("https://localhost:44372/");
 
-        }
-
-        [Test]
-        public void Login()
-            //Por o Programa a correr
-        {
             HomePage homePage = new HomePage(webDriver);
             homePage.ClickLogin();
 
             LoginPage loginPage = new LoginPage(webDriver);
             loginPage.Login("sistemacentraljakim@gmail.com", "123Pa$$word");
 
-            Assert.That(homePage.WelcomeMsgLogin, Is.True);
+        }
 
+        [Test]
+        public void VerSaldo()
+        {
+            HomePage homePage = new HomePage(webDriver);
+            homePage.ClickNavBar();
+            homePage.ClickSaldoNavBar();
+
+            SaldoPage saldoPage = new SaldoPage(webDriver);
+            Assert.That(saldoPage.TextAdicionarCreditos, Is.True);
         }
     }
 }
