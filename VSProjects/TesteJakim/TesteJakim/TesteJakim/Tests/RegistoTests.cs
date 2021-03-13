@@ -19,7 +19,7 @@ namespace TesteJakim.Tests
         public void Setup()
         {
             //Entrar no Site
-            webDriver.Navigate().GoToUrl("https://localhost:5055/");
+            webDriver.Navigate().GoToUrl("https://localhost:44372/");
 
         }
 
@@ -47,11 +47,20 @@ namespace TesteJakim.Tests
 
             IWebElement metodoPagElement = webDriver.FindElement(By.Id("Input_MetodoId"));
             SelectElement metodoPagSelector = new SelectElement(metodoPagElement);
-            metodoPagSelector.SelectByIndex(0); ; //testar um nif inválido
+            metodoPagSelector.SelectByIndex(0); //testar um nif inválido
 
             IWebElement submitRegisterButton = webDriver.FindElement(By.XPath("/html/body/div/main/div/div[1]/form/button"));
             submitRegisterButton.Click();
             submitRegisterButton.Submit();
+
+
+            /*
+             
+            ASSERT ERROR MESSAGES SHOWING 
+
+             */
+
+
 
             IWebElement emailErrorText = webDriver.FindElement(By.Id("Input_Email-error"));
             Assert.IsTrue(emailErrorText.Text == "The Email field is not a valid e-mail address.");
@@ -74,5 +83,47 @@ namespace TesteJakim.Tests
             IWebElement summaryErrors = webDriver.FindElement(By.ClassName("validation-summary-errors"));
             Assert.NotNull(summaryErrors);
         }
+
+        [Test]
+        public void RegisterLocalAccount()
+        //Por o Programa a correr
+        {
+            IWebElement registerButton = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
+            registerButton.Click();
+
+            IWebElement emailTxtBox = webDriver.FindElement(By.Id("Input_Email"));
+            emailTxtBox.SendKeys("endtoend@test.com");
+
+            IWebElement pwdTxtBox = webDriver.FindElement(By.Id("Input_Password"));
+            pwdTxtBox.SendKeys("123Pa$$word");
+
+            IWebElement confPwdTxtBox = webDriver.FindElement(By.Id("Input_ConfirmPassword"));
+            confPwdTxtBox.SendKeys("123Pa$$word");
+
+            IWebElement nomeTxtBox = webDriver.FindElement(By.Id("Input_NomeUtilizador"));
+            nomeTxtBox.SendKeys("End To End Test User"); ;
+
+            IWebElement nifTxtBox = webDriver.FindElement(By.Id("Input_Nif"));
+            nifTxtBox.SendKeys("888888888");
+
+            IWebElement metodoPagElement = webDriver.FindElement(By.Id("Input_MetodoId"));
+            SelectElement metodoPagSelector = new SelectElement(metodoPagElement);
+            metodoPagSelector.SelectByIndex(3); //PAYPAL
+
+            IWebElement payPalEmailTxtBox = webDriver.FindElement(By.Id("Input_EmailPayPal"));
+            payPalEmailTxtBox.SendKeys("endtoend@test.com");
+
+            IWebElement payPalPwdTxtBox = webDriver.FindElement(By.Id("Input_PasswordPayPal"));
+            payPalPwdTxtBox.SendKeys("Pa$$wordzinha123");
+
+            IWebElement submitRegisterButton = webDriver.FindElement(By.XPath("/html/body/div/main/div/div[1]/form/button"));
+            submitRegisterButton.Submit();
+
+
+
+            IWebElement loggedInText = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
+            Assert.IsTrue(loggedInText.Text == "Bem-vindo End To End Test User!");
+        }
+
     }
 }
