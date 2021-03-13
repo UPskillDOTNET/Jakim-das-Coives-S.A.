@@ -18,5 +18,8 @@ namespace TesteJakim.Pages
         IWebElement txtAdicionarCreditos => Driver.FindElement(By.LinkText("Pretende Adicionar Créditos à Carteira?"));
 
         public bool TextAdicionarCreditos => txtAdicionarCreditos.Displayed;
+
+        //Ação Click Adicionar Creditos
+        public void ClickAdicionarCreditos() => txtAdicionarCreditos.Click();
     }
 }
