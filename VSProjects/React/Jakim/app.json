@@ -1,0 +1,13 @@
+{
+  "name": "Jakim",
+  "displayName": "Jakim",
+  "expo": {
+    "name": "JakimCoives",
+    "slug": "Jakim",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "description": ""
+  }
+}
