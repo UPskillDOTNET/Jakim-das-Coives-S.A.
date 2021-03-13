@@ -35,7 +35,7 @@ namespace TesteJakim.Tests
             homePage.ClickLogin();
 
             LoginPage loginPage = new LoginPage(webDriver);
-            loginPage.Login("sistemacentraljakim@gmail.com", "123Pa$$word");
+            loginPage.Login("testecartaojakim@gmail.com", "123Pa$$word");
 
 
 
@@ -48,13 +48,15 @@ namespace TesteJakim.Tests
             IWebElement inicioDate = webDriver.FindElement(By.Name("Inicio"));
             inicioDate.SendKeys("25052021");
             inicioDate.SendKeys(Keys.Right);
+            inicioDate.SendKeys("13");
 
             IWebElement fimDate = webDriver.FindElement(By.Name("Fim"));
             fimDate.SendKeys("27052021");
             fimDate.SendKeys(Keys.Right);
+            fimDate.SendKeys("13");
 
-                IWebElement pesquisarButton = webDriver.FindElement(By.Id("pesquisa"));
-                pesquisarButton.Submit();
+            IWebElement pesquisarButton = webDriver.FindElement(By.Id("pesquisa"));
+            pesquisarButton.Submit();
 
 
             // SELECIONAR RESERVA
@@ -71,6 +73,9 @@ namespace TesteJakim.Tests
 
             IWebElement reservarButton = webDriver.FindElement(By.Id("pesquisa"));
             reservarButton.Submit();
+
+            IWebElement reservaItem = webDriver.FindElement(By.XPath("/html/body/div/main/table/tbody/tr/td[1]"));
+            Assert.NotNull(reservaItem);
 
         }
 
