@@ -32,7 +32,7 @@ namespace TesteJakim.Pages
         public void ClickLogin() => lnkLogin.Click();
 
         //Ação pra procar que fez login
-        public bool WelcomeMsgLogin => welcomeMsg.Displayed;
+        public bool WelcomeMsgLogin() => welcomeMsg.Displayed;
 
         //Ação para Carregar na NavBar
         public void ClickNavBar() => lnkNavBar.Click();
