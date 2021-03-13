@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>API_SubAluguer</RootNamespace>
+    <UserSecretsId>3079c7c7-7013-4ad8-9e1a-c2914bfc2976</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

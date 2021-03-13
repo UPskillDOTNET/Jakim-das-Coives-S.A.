@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/jakim-api-management/apis/blank-ppublico",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/jakim-server/databases/jakim-parque-publico",
+      "type": "mssql.azure",
+      "connectionId": "API_Parque_PublicoContext",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

@@ -16,11 +16,11 @@ namespace API_Sistema_Central.Data
                 return;
             }
 
-            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Cartão de Crédito", ApiUrl = "https://localhost:5021/" });
+            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Cartão de Crédito", ApiUrl = "https://jakim-api-management.azure-api.net/cartao/" });
             context.SaveChanges();
-            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Débito Direto", ApiUrl = "https://localhost:5022/" });
+            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Débito Direto", ApiUrl = "https://jakim-api-management.azure-api.net/debito-direto/" });
             context.SaveChanges();
-            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Paypal", ApiUrl = "https://localhost:5020/" });
+            context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Paypal", ApiUrl = "https://jakim-api-management.azure-api.net/paypal/" });
             context.SaveChanges();
             context.MetodosPagamento.Add(new MetodoPagamento { Nome = "Carteira"});
             context.SaveChanges();
@@ -36,15 +36,15 @@ namespace API_Sistema_Central.Data
             context.PayPal.Add(new PayPal { Email = "testepaypaljakim@gmail.com", Password = "123Pa$$word", MetodoId = 3 });
             context.SaveChanges();
 
-            context.Parques.Add(new Parque { ApiUrl = "https://localhost:5001/" });
+            context.Parques.Add(new Parque { ApiUrl = "https://jakim-api-management.azure-api.net/parque-publico/" });
             context.SaveChanges();
-            context.Parques.Add(new Parque { ApiUrl = "https://localhost:5002/" });
+            context.Parques.Add(new Parque { ApiUrl = "https://jakim-api-management.azure-api.net/parque-privado-1/" });
             context.SaveChanges();
-            context.Parques.Add(new Parque { ApiUrl = "https://localhost:5003/" });
+            context.Parques.Add(new Parque { ApiUrl = "https://jakim-api-management.azure-api.net/parque-privado-2/" });
             context.SaveChanges();
-            context.Parques.Add(new Parque { ApiUrl = "https://localhost:5004/" });
+            context.Parques.Add(new Parque { ApiUrl = "https://jakim-api-management.azure-api.net/parque-privado-3/" });
             context.SaveChanges();
-            context.Parques.Add(new Parque { ApiUrl = "https://localhost:5005/" });
+            context.Parques.Add(new Parque { ApiUrl = "https://jakim-api-management.azure-api.net/sub-alugueres/" });
             context.SaveChanges();
         }
 

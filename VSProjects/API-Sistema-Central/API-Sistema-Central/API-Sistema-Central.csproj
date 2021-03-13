@@ -5,6 +5,7 @@
     <RootNamespace>API_Sistema_Central</RootNamespace>
 	<PreserveCompilationReferences>true</PreserveCompilationReferences>
 	<PreserveCompilationContext>true</PreserveCompilationContext>
+	<UserSecretsId>fbbbe3cf-db98-4ec8-9232-2941b7dfbd93</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

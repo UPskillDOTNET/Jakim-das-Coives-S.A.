@@ -30,13 +30,18 @@ namespace Api_DebitoDireto
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddControllers();
             /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api_DebitoDireto", Version = "v1" });
             });*/
-
+            services.AddSwaggerGen();
             services.AddDbContext<Api_DebitoDiretoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Api_DebitoDiretoContext")));
 
@@ -55,6 +60,9 @@ namespace Api_DebitoDireto
                 /*app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api_DebitoDireto v1"));*/
             }
+            app.UseSwagger();
+
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 

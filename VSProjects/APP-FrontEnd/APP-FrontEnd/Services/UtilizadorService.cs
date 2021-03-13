@@ -58,8 +58,9 @@ namespace APP_FrontEnd.Services
             var saldo = new SaldoDTO();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/utilizadores/saldo/" + nif;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/saldo/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 var valor = await response.Content.ReadAsAsync<double>();
@@ -94,9 +95,10 @@ namespace APP_FrontEnd.Services
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 StringContent content = new StringContent(JsonConvert.SerializeObject(depositar), Encoding.UTF8, "application/json");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/utilizadores/depositar";
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/depositar";
                 var response = await client.PostAsync(endpoint, content);
                 response.EnsureSuccessStatusCode();
             }

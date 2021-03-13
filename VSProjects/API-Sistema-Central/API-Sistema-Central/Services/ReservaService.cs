@@ -52,7 +52,8 @@ namespace API_Sistema_Central.Services
                 {
                     using (HttpClient client = new HttpClient())
                     {
-                        string endpoint1 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + " / " + fim.ToString("yyyy-MM-ddTHH:mm:ss");
+                        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
+                        string endpoint1 = parque.ApiUrl + "api/lugares/disponibilidade/" + f.Id + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + "/" + fim.ToString("yyyy-MM-ddTHH:mm:ss");
                         var response1 = await client.GetAsync(endpoint1);
                         response1.EnsureSuccessStatusCode();
                         List<LugarDTO> temp = await response1.Content.ReadAsAsync<List<LugarDTO>>();
@@ -157,7 +158,7 @@ namespace API_Sistema_Central.Services
             try
             {
                 QRCodeDTO qr = QRCodeDTOAsync(reservaDTO, reserva.ReservaParqueId, l, p.ApiUrl).Result;
-                if (p.ApiUrl == "https://localhost:5005/")
+                if (p.ApiUrl == "https://jakim-api-management.azure-api.net/sub-alugueres/")
                 {
                     var rs = _repository.GetByIdAsync(reservaDTO.ReservaSistemaCentralId).Result;
                     _emailService.EnviarEmailSubAluguer(qr, rs.ReservaParqueId);
@@ -288,6 +289,7 @@ namespace API_Sistema_Central.Services
                 ReservaAPIParqueDTO r2;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     StringContent content = new StringContent(JsonConvert.SerializeObject(r), Encoding.UTF8, "application/json");
                     string endpoint = url + "api/reservas";
                     var response = await client.PostAsync(endpoint, content);
@@ -308,6 +310,7 @@ namespace API_Sistema_Central.Services
                 Parque parque = await _parqueRepository.GetByIdAsync(parqueId);
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     string endpoint1 = parque.ApiUrl + "api/reservas/" + reservaParqueId;
                     var response1 = await client.DeleteAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
@@ -325,6 +328,7 @@ namespace API_Sistema_Central.Services
                 FreguesiaDTO f;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     string endpoint1 = url + "api/parques/" + id;
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
@@ -349,6 +353,7 @@ namespace API_Sistema_Central.Services
                 ParqueDTO p;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     string endpoint1 = url + "api/parques/" + id;
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
@@ -368,6 +373,7 @@ namespace API_Sistema_Central.Services
                 LugarDTO l;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     string endpoint1 = url + "api/lugares/" + id;
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
@@ -387,6 +393,7 @@ namespace API_Sistema_Central.Services
                 ReservaAPIParqueDTO r;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     string endpoint1 = url + "api/reservas/" + id;
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
@@ -404,6 +411,7 @@ namespace API_Sistema_Central.Services
             FreguesiaDTO f;
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 var listaFreguesias = new List<FreguesiaDTO>();
                 string endpoint1 = url + "api/freguesias";
                 var response1 = await client.GetAsync(endpoint1);
@@ -421,8 +429,9 @@ namespace API_Sistema_Central.Services
                 SubAluguerDTO l;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     var listaSubAlugueres = new List<SubAluguerDTO>();
-                    string endpoint1 = "https://localhost:5005/api/lugares";
+                    string endpoint1 = "https://jakim-api-management.azure-api.net/sub-alugueres/api/lugares";
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
                     listaSubAlugueres = await response1.Content.ReadAsAsync<List<SubAluguerDTO>>();
@@ -455,7 +464,8 @@ namespace API_Sistema_Central.Services
                 SubAluguerDTO l;
                 using (HttpClient client = new HttpClient())
                 {
-                    string endpoint1 = "https://localhost:5005/api/lugares/" + id;
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
+                    string endpoint1 = "https://jakim-api-management.azure-api.net/sub-alugueres/api/lugares/" + id;
                     var response1 = await client.GetAsync(endpoint1);
                     response1.EnsureSuccessStatusCode();
                     l = await response1.Content.ReadAsAsync<SubAluguerDTO>();

@@ -182,6 +182,7 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
 
             var cartaoURI = "api/cartoes";
 
@@ -215,6 +216,7 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
 
             var debitoDiretoURI = "api/DebitosDiretos";
 
@@ -229,6 +231,7 @@ namespace API_Sistema_Central.Services
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            _client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
 
             var payPalURI = "api/paypal";
 

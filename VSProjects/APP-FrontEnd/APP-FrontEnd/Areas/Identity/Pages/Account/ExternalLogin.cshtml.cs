@@ -265,8 +265,9 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
             TokenResponse token;
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 StringContent content = new StringContent(JsonConvert.SerializeObject(registarUtilizadorDTO), Encoding.UTF8, "application/json");
-                string endpoint = "https://localhost:5050/api/utilizadores/registar";
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/registar";
                 var response = await client.PostAsync(endpoint, content);
                 response.EnsureSuccessStatusCode();
                 token = await response.Content.ReadAsAsync<TokenResponse>();
