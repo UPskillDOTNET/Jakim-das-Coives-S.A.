@@ -41,7 +41,7 @@ export default () => {
         if(chosenMode){
             setInicio(moment(date).format('yyyy-MM-DDTHH:mm:ss'))
             Alert.alert(
-                "Data de Inicio: ",
+                "Hora Selecionada!",
                 inicio.toString(),
                 [
                   {
@@ -57,7 +57,7 @@ export default () => {
         if(!chosenMode){
             setFim(moment(date).format('yyyy-MM-DDTHH:mm:ss'))
             Alert.alert(
-                "Data de fim: ",
+                "Hora Selecionada!",
                 fim.toString(),
                 [
                   {
