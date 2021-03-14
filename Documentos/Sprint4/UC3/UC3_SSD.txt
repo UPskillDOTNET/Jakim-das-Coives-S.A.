@@ -1,0 +1,19 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+participant ":APP.FrontEnd" as APP
+
+activate UserNR
+UserNR -> "APP" : inicia cancelamento de reserva(id)
+activate "APP"
+"APP" --> UserNR : Confirmação
+deactivate "APP"
+
+UserNR -> "APP" : Confirma dados Introduzidos
+activate "APP"
+
+"APP" --> UserNR : operação bem sucedida
+deactivate "APP"
+
+deactivate UserNR
+@enduml

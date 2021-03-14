@@ -1,0 +1,34 @@
+@startuml
+autonumber
+actor "Utilizador Não Registado" as UNR
+participant ":app/Register(RazorPage)" as R
+participant "userManager" as UM
+participant "API:SistemaCentral" as API
+
+activate UNR
+
+UNR --> R : solicita registo(nome, email, password,\nnif, método pagamento preferencial)
+activate R
+
+R --> UM : CreateAsync()
+activate UM
+
+UM --> R : IdentityResult ok
+deactivate UM
+
+R --> API: PostAsync(RegistarUtilizadorDTO)
+activate API
+
+API --> R: return(TokenUtilizadorDTO)
+deactivate API
+
+R --> UM : UpdateAsync(TokenUtilizadorDTO)
+activate UM
+
+UM --> R : IdentityResult ok
+deactivate UM
+
+R --> UNR : operação bem sucedida
+deactivate R
+deactivate UNR
+@enduml

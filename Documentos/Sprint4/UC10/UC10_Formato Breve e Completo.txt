@@ -1,0 +1,61 @@
+Caso de Uso Simples
+
+    - Adicionar saldo à carteira
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à APP.FrontEnd um pedido de depósito de dinheiro na carteira do sistema.
+    A APP pede os dados de pagamento do utilizador.
+    A APP.FrontEnd envia o pedido de depósito à API.SistemaCentral.
+    A API.SistemaCentral realiza o pagamento e deposita o dinheiro na conta.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende depositar dinheiro na sua carteira para utilizar a App
+    - API.SistemaCentral: pretende receber o dinheiro do utilizador para ser utilizado na App
+    - APP.FrontEnd: pretende estabelecer a comunicação entre o Utilizador e a API.SistemaCentral
+
+Pré-condições
+    - O Utilizador deve ter um método de pagamento associado à sua conta.
+
+Pós-condições
+    - O dinheiro deverá ser depositado na API.SistemaCentral.
+
+
+Fluxo Básico
+
+    1. O Utilizador faz à APP.FrontEnd um pedido de depósito na carteira.
+    2. A APP pede os dados necessários para o depósito
+    3. O Utilizador insere os dados.
+    4. A APP pede confirmação.
+    5. O Utilizador confirma.
+    6. A APP.FrontEnd envia o pedido de depósito à API.SistemaCentral.
+    5. A API.SistemaCentral realiza a transação e informa a APP do sucesso da operação.
+    6. A APP.FrontEnd informa o Utilizador do sucesso da operação.
+
+Fluxos Alternativos
+
+    .a - O Utilizador cancela a operação
+        O caso de uso acaba.
+    
+    1a - O Utilizador não possui nenhum método de pagamento
+        A APP.FrontEnd informa o Utilizador de que não possui nenhum método de pagamento associado.
+        A APP.FrontEnd redireciona o Utilizador para a área de registo de pagamento.
+        O caso de uso acaba.
+
+    5a - Ocorre um erro no depósito
+        A APP.FrontEnd informa o Utilizador de que ocorreu um erro.
+        O caso de uso acaba.
+
+--------------------------------------------------------------------------------------------------
+
+
+

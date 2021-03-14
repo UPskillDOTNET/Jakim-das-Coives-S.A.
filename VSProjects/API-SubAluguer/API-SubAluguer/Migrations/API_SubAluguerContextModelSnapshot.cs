@@ -81,7 +81,7 @@ namespace API_SubAluguer.Migrations
                     b.Property<double>("Preco")
                         .HasColumnType("float");
 
-                    b.Property<int>("ReservaOriginalId")
+                    b.Property<int>("ReservaSistemaCentralId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

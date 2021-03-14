@@ -8,7 +8,7 @@ namespace API_SubAluguer.Repository
 {
     public interface IRepositoryBase<T>
     {
-        public Task<ActionResult<IEnumerable<T>>> GetAllAsync();
+        public Task<IEnumerable<T>> GetAllAsync();
         public Task<T> GetByIdAsync(int id);
         public Task PutAsync(T entity);
         public Task<T> PostAsync(T entity);

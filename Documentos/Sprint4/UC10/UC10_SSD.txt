@@ -1,0 +1,20 @@
+@startuml
+autonumber
+actor "Utilizador" as User
+participant ":APP.FrontEnd" as APP
+
+activate User
+User -> "APP" : inicia pedido de depósito de dinheiro na carteira
+activate "APP"
+
+"APP" -> User : pede valor
+deactivate "APP"
+
+User -> "APP" : insere valor
+activate "APP"
+
+"APP" -> User : operação bem sucedida
+deactivate "APP"
+
+deactivate User
+@enduml

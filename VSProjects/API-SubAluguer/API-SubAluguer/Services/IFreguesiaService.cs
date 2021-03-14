@@ -9,7 +9,7 @@ namespace API_SubAluguer.Services
 {
     public interface IFreguesiaService
     {
-        public Task<ActionResult<IEnumerable<Freguesia>>> GetAllAsync();
+        public Task<IEnumerable<Freguesia>> GetAllAsync();
         public Task<Freguesia> GetByIdAsync(int id);
         public Task PutAsync(Freguesia freguesia);
         public Task<Freguesia> PostAsync(Freguesia freguesia);

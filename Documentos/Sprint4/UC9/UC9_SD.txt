@@ -1,0 +1,33 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/Transacoes/Index" as TV
+participant ":app/TransacoesController" as TC
+participant ":app/TransacaoService" as TS
+participant "API:SistemaCentral" as API
+
+activate U
+
+U --> TC: inicia a consulta
+activate TC
+
+TC --> TS: GetAllTransacoesByNifAsync()
+activate TS
+
+TS --> API: GetAsync(nif)
+activate API
+
+API --> TS: return(lista TransacaoDTO)
+deactivate API
+
+TS --> TC: return(lista TransacaoDTO)
+deactivate TS
+
+TC --> TV: return View(lista)
+deactivate TC
+
+TV --> U: operacao bem sucedida
+deactivate TV
+
+deactivate U
+@enduml

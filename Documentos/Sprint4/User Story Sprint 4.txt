@@ -1,0 +1,64 @@
+User Story 1 “Registar Utilizador”
+As a … Utilizador não registado
+I want … registar-me
+So that … poder utilizar a aplicação
+
+User Story 2 “Pesquisar lugares disponiveis”
+As a … Utilizador registado
+I want … pesquisar lugares disponiveis num determinado parque
+So that … para efectuar uma reserva
+
+User Story 3 “Efectuar reserva”
+As a … Utilizador registado
+I want … reservar um lugar de estacionamento
+So that … para estacionar ou sub-alugar
+
+User Story 4 “Pagar reserva”
+As a … Utilizador registado
+I want … pagar a reserva
+So that … validar a reserva
+
+User Story 5 “Consultar as minhas reservas”
+As a … Utilizador registado
+I want … consultar as minhas reservas
+So that … poder gerir as minhas reservas (cancelar e sub-alugar)
+
+User Story 6 “Sub-alugar reserva”
+As a … Utilizador registado com reserva efectuada
+I want … sub-alugar a minha reserva
+So that … ter lucro
+
+User Story 7 “Cancelar reserva”
+As a … Utilizador registado com reserva efectuada
+I want … cancelar a minha reserva e ser “reembolsado”
+So that … ficar com o valor a crédito na minha carteira virtual para futuras reservas
+
+User Story 8 “Receber factura”
+As a … Utilizador registado com reserva efectuada
+I want … receber a factura referente à reserva
+So that … para cumprir a lei
+
+User Story 9 “Receber email de confirmação”
+As a … Utilizador registado com reserva efectuada
+I want … receber um email de confirmação referente à reserva
+So that … para usufruir da reserva no parque
+
+User Story 10 “Carregar carteira”
+As a … Utilizador registado
+I want … usar o meu método de pagamento pré-definido para carregar saldo na minha carteira
+So that … para usar o saldo mais tarde
+
+User Story 11 “Cancelar sub-aluguer”
+As a … Utilizador registado com sub-aluguer disponibilizado mas não sub-reservado por terceiro
+I want … cancelar o meu sub-aluguer
+So that … poder usufruir ou cancelar a minha reserva original
+
+User Story 12 “Consultar os meus sub-alugueres”
+As a … Utilizador registado
+I want … consultar as minhas reservas que disponibilizei para sub-aluguer
+So that … gerir os meus sub-alugueres
+
+User Story 13 “Consultar o histórico de transações”
+As a … Utilizador registado
+I want … consultar as minhas transações
+So that … ter conhecimento das entradas e saídas de dinheiro da minha conta

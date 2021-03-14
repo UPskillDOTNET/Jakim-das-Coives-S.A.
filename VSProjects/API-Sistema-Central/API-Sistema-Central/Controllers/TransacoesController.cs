@@ -9,11 +9,12 @@ using API_Sistema_Central.Data;
 using API_Sistema_Central.Models;
 using API_Sistema_Central.Services;
 using Microsoft.AspNetCore.Authorization;
+using API_Sistema_Central.DTOs;
 
 namespace API_Sistema_Central.Controllers
 {
-    //[Authorize]
-    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("api/transacoes")]
     [ApiController]
     public class TransacoesController : ControllerBase
     {
@@ -25,7 +26,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("all/{nif}")]
-        public async Task<ActionResult<IEnumerable<Transacao>>> GetTransacaoByNif(string nif)
+        public async Task<ActionResult<IEnumerable<TransacaoDTO>>> GetTransacaoByNif(string nif)
         {
             try
             {

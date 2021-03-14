@@ -7,6 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
+    public interface IDebitoDiretoRepository : IRepositoryBase<DebitoDireto>
+    {
+    }
     public class DebitoDiretoRepository : RepositoryBase<DebitoDireto>, IDebitoDiretoRepository
     {
         public DebitoDiretoRepository(SCContext context) : base(context)

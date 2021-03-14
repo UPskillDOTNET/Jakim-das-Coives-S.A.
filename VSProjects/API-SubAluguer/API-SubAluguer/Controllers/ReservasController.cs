@@ -25,7 +25,8 @@ namespace API_SubAluguer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reserva>>> GetAllReserva()
         {
-            return await _service.GetAllAsync();
+            var lista = await _service.GetAllAsync();
+            return lista.ToList();
         }
 
         [HttpGet("{id}")]
@@ -44,9 +45,15 @@ namespace API_SubAluguer.Controllers
         [HttpPost]
         public async Task<ActionResult<Reserva>> PostReserva(Reserva reserva)
         {
-            await _service.PostAsync(reserva);
-
-            return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            try
+            {
+                await _service.PostAsync(reserva);
+                return CreatedAtAction("GetReserva", new { id = reserva.Id }, reserva);
+            }
+            catch (Exception e)
+            {
+                return Conflict(new { message = e.Message });
+            }
         }
 
         [HttpDelete("{id}")]

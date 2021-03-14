@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/jakim-api-management/apis/jakim-debito-direto",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/jakim-server/databases/jakim-debito-direto",
+      "type": "mssql.azure",
+      "connectionId": "Api_DebitoDiretoContext",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using API_Sistema_Central.Services;
 using API_Sistema_Central.Repositories;
+using API_Sistema_Central.Authentication;
 
 namespace API_Sistema_Central
 {
@@ -32,36 +33,52 @@ namespace API_Sistema_Central
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+            services.AddSwaggerGen();
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API_Sistema_Central", Version = "v1" });
-            });
+            });*/
 
-            services.AddDbContext<SCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
+            services.AddDbContext<SCContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SCContext")));
 
-            services.AddIdentity<Utilizador, IdentityRole>()
-                .AddEntityFrameworkStores<SCContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<Utilizador, IdentityRole>().AddEntityFrameworkStores<SCContext>().AddDefaultTokenProviders();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-                options.TokenValidationParameters = new TokenValidationParameters
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
                     ClockSkew = TimeSpan.Zero
-                });
+                };
+            });
 
-            services.AddTransient<ITokenService, TokenService>();
-            services.AddTransient<IUtilizadorService, UtilizadorService>();
+            services.AddScoped<IUtilizadorService, UtilizadorService>();
             services.AddTransient<ITransacaoService, TransacaoService>();
             services.AddTransient<IReservaService, ReservaService>();
             services.AddTransient<IPagamentoService, PagamentoService>();
@@ -77,15 +94,18 @@ namespace API_Sistema_Central
             services.AddScoped<ITransacaoRepository, TransacaoRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Sistema_Central v1"));
+                /*app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Sistema_Central v1"));*/
             }
+
+            app.UseSwagger();
+
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 
@@ -95,10 +115,7 @@ namespace API_Sistema_Central
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -1,0 +1,21 @@
+@startuml
+autonumber
+actor "Utilizador" as User
+participant ":APP.FrontEnd" as FE
+
+activate User
+User -> FE : inicia pedido de sub-aluguer
+activate FE
+
+FE --> User: solicita dados necessários
+deactivate FE
+
+User --> FE: insere os dados solicitados
+activate FE
+
+FE --> User : operação bem sucedida
+
+deactivate FE
+
+deactivate User
+@enduml

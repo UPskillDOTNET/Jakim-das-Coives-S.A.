@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Api_DebitoDireto</RootNamespace>
+    <UserSecretsId>3954b4dc-2e51-4443-acd0-5721c7d949c6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,0 +1,23 @@
+﻿@model APP_FrontEnd.Models.MensagemErro
+
+@{
+    ViewData["Title"] = "Erro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Erro! :(</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mensagem:
+            </th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Mensagem)
+            </td>
+        </tr>
+    </thead>
+</table>

@@ -114,7 +114,12 @@ namespace API_Parque_Privado_3.Controllers
         }
         private bool IsNotAvailable(int lugarId, DateTime inicio, DateTime fim)
         {
-            return _context.Reservas.Any(e => e.LugarId == lugarId && e.Inicio <= inicio && e.Fim >= fim);
+            return _context.Reservas.Any(r => 
+                r.LugarId == lugarId && 
+                (r.Fim > inicio && r.Fim <= fim ||
+                r.Inicio >= inicio && r.Inicio < fim ||
+                r.Inicio >= inicio && r.Fim <= fim ||
+                r.Inicio <= inicio && r.Fim >= fim));
         }
     }
 }

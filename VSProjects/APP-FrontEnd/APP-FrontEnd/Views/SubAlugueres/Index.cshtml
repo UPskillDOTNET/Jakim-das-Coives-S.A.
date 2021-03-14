@@ -1,0 +1,61 @@
+﻿@model IEnumerable<APP_FrontEnd.Models.SubAluguerDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Os Seus Sub-Alugueres</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr class="table__heading">
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.NomeParque)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.IsReservado)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr class="table__row">
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Id)">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NomeParque)">
+                @Html.DisplayFor(modelItem => item.NomeParque)
+            </td>
+            <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.IsReservado)">
+                @if (item.IsReservado)
+                {<text>Sim</text>}
+                else
+                {<text>Não</text>}
+            </td>
+            <td class="table__content" style="text-align:right" data-heading="@Html.DisplayNameFor(model => model.Preco)">
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            @if (item.IsReservado)
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td class="table__content">
+                    @Html.ActionLink("Detalhes", "Detalhes", new { id = item.Id }) |
+                    @Html.ActionLink("Cancelar", "Cancelar", new { id = item.Id })
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<APP_FrontEnd.Models.LugarDTO>
+
+@{
+    ViewData["Title"] = "Disponibilidade";
+}
+
+<h1>Lugares Disponíveis</h1>
+<br />
+<table class="table">
+    <thead>
+        <tr class="table__heading">
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.NomeParque)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Numero)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Fila)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Andar)
+            </th>
+            <th class="table__heading">
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table__row">
+                <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.NomeParque)">
+                    @Html.DisplayFor(modelItem => item.NomeParque)
+                </td>
+                <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Numero)">
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Fila)">
+                    @Html.DisplayFor(modelItem => item.Fila)
+                </td>
+                <td class="table__content" data-heading="@Html.DisplayNameFor(model => model.Andar)">
+                    @Html.DisplayFor(modelItem => item.Andar)
+                </td>
+                <td class="table__content" style="text-align:right" data-heading="@Html.DisplayNameFor(model => model.Preco)">
+                    @Html.DisplayFor(modelItem => item.Preco)
+                </td>
+                <td class="table__content">
+                    @Html.ActionLink("Reservar", "Reservar", item)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,61 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/SubAlugueres/Index" as SIV
+participant ":app/Views/SubAlugueres/Cancelar" as SCV
+participant ":app/SubAlugueresController" as SC
+participant ":app/SubAluguerService" as SS
+participant "API:SistemaCentral" as API
+
+activate U
+
+U --> SIV: Inicia o cancelamento
+activate SIV
+
+SIV --> SC: Cancelar(id)
+deactivate SIV
+activate SC
+
+SC --> SS: GetSubAluguerById(id)
+activate SS
+
+SS --> API: GetAsync(id)
+activate API
+
+API --> SS: return(SubAluguerDTO)
+deactivate API
+
+SS --> SC: return(SubAluguerDTO)
+deactivate SS
+
+SC --> SCV: return View(SubAluguerDTO)
+activate SCV
+
+SCV --> U: pede para confirmar
+
+U --> SCV: confirma
+
+SCV --> SC: CancelarConfirmado(id)
+deactivate SCV
+
+SC --> SS: DeleteSubAluguerAsync(id)
+activate SS
+
+SS --> API: DeleteAsync(id)
+activate API
+
+API --> SS:No Content
+deactivate API
+
+SS --> SC: Task ok
+deactivate SS
+
+SC --> SIV: RedirectToAction(nameof(Index))
+deactivate SC
+activate SIV
+
+SIV --> U: operacao bem sucedida
+deactivate SIV
+
+deactivate U
+@enduml

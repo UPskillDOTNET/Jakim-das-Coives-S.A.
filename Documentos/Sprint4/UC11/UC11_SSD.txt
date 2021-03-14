@@ -1,0 +1,31 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":App.FrontEnd" as API
+
+alt
+activate U
+U -> API : inicia pedido de alteração
+activate API
+API --> U : pede dados
+deactivate API
+U -> API : insere dados
+activate API
+API --> U : operação bem sucedida
+deactivate API
+end
+
+alt
+activate U
+U -> API : inicia pedido de remoção de conta
+activate API
+API --> U : pede confirmação
+deactivate API
+U -> API : confirma
+activate API
+API --> U : operação bem sucedida
+deactivate API
+end
+
+deactivate U
+@enduml

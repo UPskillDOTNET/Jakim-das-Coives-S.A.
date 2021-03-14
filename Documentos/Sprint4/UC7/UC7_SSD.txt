@@ -1,0 +1,13 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+participant ":App.FrontEnd" as API
+
+activate UserNR
+UserNR -> "API" : inicia consulta de reservas
+activate "API"
+"API" --> UserNR : return listaReservas
+deactivate "API"
+
+deactivate UserNR
+@enduml

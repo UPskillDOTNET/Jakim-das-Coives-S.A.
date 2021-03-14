@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API_Sistema_Central.Controllers
 {
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/reservas")]
     [ApiController]
     public class ReservasController : ControllerBase
@@ -39,7 +39,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("all/{nif}")]
-        public async Task<ActionResult<IEnumerable<Reserva>>> GetReservaByNif(string nif)
+        public async Task<ActionResult<IEnumerable<DetalheReservaDTO>>> GetReservaByNif(string nif)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace API_Sistema_Central.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reserva>> GetReservaById(int id)
+        public async Task<ActionResult<DetalheReservaDTO>> GetReservaById(int id)
         {
             try
             {

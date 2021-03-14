@@ -1,0 +1,33 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/SubAlugueres/Index" as SV
+participant ":app/SubAlugueresController" as SC
+participant ":app/SubAluguerService" as SS
+participant "API:SistemaCentral" as API
+
+activate U
+
+U --> SC: inicia a consulta
+activate SC
+
+SC --> SS: GetAllSubAluguerByNIF()
+activate SS
+
+SS --> API: GetAsync(nif)
+activate API
+
+API --> SS: return(lista SubAluguerDTO)
+deactivate API
+
+SS --> SC: return(lista SubAluguerDTO)
+deactivate SS
+
+SC --> SV: return View(lista)
+deactivate SC
+
+SV --> U: operacao bem sucedida
+deactivate SV
+
+deactivate U
+@enduml

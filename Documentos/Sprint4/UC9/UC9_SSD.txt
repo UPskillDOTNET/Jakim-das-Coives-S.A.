@@ -1,0 +1,13 @@
+@startuml
+autonumber
+actor "Utilizador" as UserNR
+participant ":App.FrontEnd" as API
+
+activate UserNR
+UserNR -> "API" : inicia consulta de transacoes
+activate "API"
+"API" --> UserNR : return listaTransacoes
+deactivate "API"
+
+deactivate UserNR
+@enduml

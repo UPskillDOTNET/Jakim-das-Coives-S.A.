@@ -10,18 +10,14 @@ namespace API_Sistema_Central.DTOs
     {
         //Para usar na reserva da API-Sistema-Central
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
-        public string NifUtilizador { get; set; }
+        public string NifComprador { get; set; }
         [RegularExpression(@"^\d{9}$", ErrorMessage = "NIF inválido")]
         public string NifVendedor { get; set; }
-        public int ParqueId { get; set; }
-        public string ApiUrl { get; set; }
+        public int ParqueIdSC { get; set; }
         public int MetodoId { get; set; }
 
         //Apenas para Sub-Alugueres
-        public int ReservaOriginalId { get; set; }
-
-        //Para calcular o custo na reserva da API-Sistema-Central
-        public double Preco { get; set; }
+        public int ReservaSistemaCentralId { get; set; }
 
         //Para usar na reserva da API-Parque
         public int LugarId { get; set; }

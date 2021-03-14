@@ -7,20 +7,29 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using API_Sistema_Central.DTOs;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace API_Sistema_Central.Services
 {
+    public interface IEmailService
+    {
+        public Task EnviarEmailReservaAsync(QRCodeDTO qr);
+        public Task EnviarEmailSubAluguerAsync(QRCodeDTO qr, int reservaId);
+        public Task EnviarEmailCancelamentoAsync(string nome, int id, string email);
+    }
+
     public class EmailService : IEmailService
     {
-        public void EnviarEmailReserva(QRCodeDTO qr)
+        public async Task EnviarEmailReservaAsync(QRCodeDTO qr)
         {
             try
             {
                 string subject = "Confirmação de reserva";
-                string conteudoqr = "Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
+                string conteudoqr = "Reserva nº " + qr.ReservaParqueId + ", Parque: " + qr.NomeParque;
                 string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
                 string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
-                    "<h2>A sua reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                    "<h2>A sua reserva número " + qr.ReservaParqueId + " está pronta!</h2>" +
                     "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>" +
                     "<p><b>Fila: " + qr.Fila + "</b></p>" +
                     "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
@@ -29,7 +38,7 @@ namespace API_Sistema_Central.Services
                     "<p>Data e Hora de início: " + qr.Inicio + "</p>" +
                     "<p>Data e Hora de fim: " + qr.Fim + "</p></td><td style='width: 30px'></td><td>" + qrcode + "</td></tr></table>";
 
-                EnviarEmail(subject, qr.Email, body);
+                await EnviarEmailAsync(subject, qr.Email, body);
             }
             catch (Exception)
             {
@@ -37,15 +46,15 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        public void EnviarEmailSubAluguer(QRCodeDTO qr, int reservaOriginalId)
+        public async Task EnviarEmailSubAluguerAsync(QRCodeDTO qr, int reservaId)
         {
             try
             {
                 string subject = "Confirmação de reserva";
-                string conteudoqr = "Reserva nº " + reservaOriginalId + ", Sub-Reserva nº " + qr.IdReserva + ", Parque: " + qr.NomeParque;
+                string conteudoqr = "Reserva nº " + reservaId + ", Sub-Reserva nº " + qr.ReservaParqueId + ", Parque: " + qr.NomeParque;
                 string qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" + conteudoqr + "'/>";
                 string body = "<h2>Exmo(a) Sr.(a) " + qr.NomeUtilizador + "</h2>" +
-                    "<h2>A sua reserva número " + reservaOriginalId + ", sub-reserva número " + qr.IdReserva + " está pronta!</h2>" +
+                    "<h2>A sua reserva número " + reservaId + ", sub-reserva número " + qr.ReservaParqueId + " está pronta!</h2>" +
                     "<table><tr><td><p><b>Lugar: " + qr.NumeroLugar + "</b></p>" +
                     "<p><b>Fila: " + qr.Fila + "</b></p>" +
                     "<p><b>Andar: " + qr.Andar + "</b></p><br>" +
@@ -54,7 +63,7 @@ namespace API_Sistema_Central.Services
                     "<p>Data e Hora de início: " + qr.Inicio + "</p>" +
                     "<p>Data e Hora de fim: " + qr.Fim + "</p></td><td style='width: 30px'></td><td>" + qrcode + "</td></tr></table>";
 
-                EnviarEmail(subject, qr.Email, body);
+                await EnviarEmailAsync(subject, qr.Email, body);
             }
             catch (Exception)
             {
@@ -62,34 +71,31 @@ namespace API_Sistema_Central.Services
             }
         }
 
-        public void EnviarEmailCancelamento(string nome, int id, string email)
+        public async Task EnviarEmailCancelamentoAsync(string nome, int reservaParqueId, string email)
         {
             try
             {
                 string subject = "Cancelamento de reserva";
                 string body = "<h2>Exmo(a) Sr.(a) " + nome + "</h2>" +
-                "<h2>A sua reserva número " + id + " foi cancelada com sucesso!</h2>";
+                "<h2>A sua reserva número " + reservaParqueId + " foi cancelada com sucesso!</h2>";
 
-                EnviarEmail(subject, email, body);
+                await EnviarEmailAsync(subject, email, body);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-        private static void EnviarEmail(string subject, string email, string body)
+        private static async Task EnviarEmailAsync(string subject, string email, string body)
         {
-            MailMessage msg = new MailMessage();
-            msg.From = new MailAddress("sistemacentraljakim@gmail.com");
-            msg.To.Add(email);
-            msg.Subject = subject;
-            msg.Body = body;
-            msg.IsBodyHtml = true;
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("sistemacentraljakim@gmail.com", "123Pa$$word");
-            smtp.EnableSsl = true;
-            smtp.Send(msg);
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("sistemacentraljakim@gmail.com");
+            var to = new EmailAddress(email);
+            var plainTextContent = "";
+            var htmlContent = body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
         }
     }
 }

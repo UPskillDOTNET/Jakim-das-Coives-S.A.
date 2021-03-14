@@ -1,0 +1,355 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+    box-shadow: -0.4rem 0 0px 0px #1b6ec2;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #63C2D1;
+    color: white;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/*Menu Pesquisa Index*/
+#menuBorder {
+    margin-right: 2rem;
+    padding-top: 1.3rem;
+    padding-bottom: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1.2em #268596;
+    display: inline-block;
+    font-size: 1.2rem;
+}
+#pesquisa {
+    background: #268596;
+    border-radius: 30px;
+    padding-left: 12.5px;
+    padding-right: 12.5px;
+    border: none;
+    width: 19rem;
+    height: 2.5rem;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    outline: none;
+}
+    #pesquisa:hover {
+        -webkit-transition-duration: 0.3s;
+        background: #1a6775
+    }
+
+#pesquisaRemover {
+    background: grey;
+    border-radius: 30px;
+    padding-left: 12.5px;
+    padding-right: 12.5px;
+    border: none;
+    width: 19rem;
+    height: 2.5rem;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    outline: none;
+}
+
+#pesquisaRemover:hover {
+    -webkit-transition-duration: 0.3s;
+    background: #A8A8A8;
+}
+
+#gestaoConta {
+    padding-left: 0;
+    background-color: transparent;
+    border-left: 0.5rem solid #1b6ec2;
+    border-bottom-left-radius:3px;
+    border-top-left-radius:3px;
+    
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: white;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: cornflowerblue;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+
+/*
+    Login Menu Stuff
+
+*/
+
+#menuLoginBorder {
+    margin-right: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1.2em #268596;
+    display: block;
+    font-size: 1.2rem;
+}
+
+#menuRegisterBorder {
+    margin-right: 2rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px 1.2em #268596;
+    display: block;
+    font-size: 1.2rem;
+    max-width: 60%;
+    margin-bottom: 2rem;
+}
+
+#externalLogin {
+    margin-left: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: block;
+    font-size: 1.2rem;
+}
+
+#externalRegister {
+    margin-left: 1rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    display: block;
+    font-size: 1.2rem;
+    max-width: 30%;
+}
+
+.extLoginImg {
+    width: 4rem;
+    height: 4rem;
+}
+
+.extLoginBtn {
+    background: white;
+    margin-right: 1rem;
+}
+
+.btnAccountSubmit {
+    background: #268596;
+    border-radius: 30px;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    border: none;
+    width: 100%;
+    margin-top: 1rem;
+    height: 2.5rem;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    outline: none;
+}
+
+.texto-informativo {
+    color: white;
+}
+
+/*Tables
+
+  Aqui está tudo o que tem a ver com as tabelas responsivas utilizadas para listar elementos
+*/
+td, th {
+    padding: 8px;
+    padding: 2rem;
+}
+
+th {
+    text-align: left;
+    font-weight: 300;
+    font-size: 20px;
+    font-size: 1.25rem;
+}
+
+td {
+    font-family: 'Avenir Next', 'Segoe UI', 'Lucida Grande', sans-serif;
+}
+
+.table {
+    width: 100%;
+    padding: 16px;
+    padding: 1rem;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.table__heading {
+    border-bottom: 2px solid #FFC842;
+    background: #268596;
+    color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.table__row {
+    background: #80bbc4;
+}
+
+.table__row:nth-child(odd) {
+    background: #92d4de;
+} 
+
+.table__row:last-of-type {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+@media (max-width: 32rem) {
+    .table__heading {
+        display: none;
+    }
+
+    .table__content {
+        display: block;
+        padding: .5rem 0;
+        text-align: left !important;
+    }
+
+    .table__row {
+        margin: 1rem 1rem;
+        padding: .5rem 0;
+        display: block;
+        border-bottom: 2px solid #FFC842;
+    }
+
+    .table__content:before {
+        content: attr(data-heading);
+        display: inline-block;
+        width: 5rem;
+        margin-right: 7rem;
+        color: #FFF;
+        font-size: .75rem;
+        font-weight: 700;
+        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 62rem) {
+    #menuLoginBorder {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px 1.2em #268596;
+        font-size: 1.2rem;
+        width: 90%;
+        margin-bottom: 2rem;
+    }
+
+    #externalLogin {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+    }
+
+    #menuRegisterBorder {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px 1.2em #268596;
+        display: block;
+        font-size: 1.2rem;
+        width: 90%;
+        max-width: 100%;
+        margin-bottom: 5rem;
+    }
+
+    .col-md-4 {
+        max-width: 100%;
+        flex: none;
+    }
+
+    .col-md-7 {
+        max-width: 100%;
+        flex: none;
+    }
+
+    .col-md-5 {
+        padding: 3rem;
+        max-width: 100%;
+        flex: none;
+    }
+
+    #externalRegister {
+        margin: auto;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        font-size: 1.2rem;
+        max-width: 100%;
+    }
+}

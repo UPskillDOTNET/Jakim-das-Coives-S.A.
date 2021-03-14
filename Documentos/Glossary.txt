@@ -1,4 +1,4 @@
-Cliente : Nome genérico das aplicações que integram as APIs dos parques. São clientes do parque.
+Cliente: Nome genérico das aplicações que integram as APIs dos parques. São clientes do parque.
 
 Cliente não registado: É o programador da APISistemaCentral que pretende integrar as API dos parques no seu sistema e necessita de se registar na API para identificar as suas Reservas no parque.
 
@@ -6,7 +6,7 @@ Utilizador: É um utilizador humano registado na aplicação APISistemaCentral q
 
 Utilizador não registado: É um utilizador humano que pretende registar-se na APISistemaCentral para utilizar a aplicação.
 
-API.Parque : Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
+API.Parque: Refere-se à API individual de cada parque público ou privado. Devolve uma lista de lugares de estacionamento disponíveis para aluguer, e permite efectuar reservas.
 
 API.SistemaCentral: Refere-se à API que centraliza a gestão de Reservas em todas as APIParque. Devolve uma lista de Lugares de estacionamento disponíveis para aluguer, e permite efectuar Reservas e Sub-alugueres.
 
@@ -14,4 +14,6 @@ API.SubAluguer : Refere-se à API responsável por disponibilizar e permitir res
 
 Reserva: Identifica o aluguer de um Lugar de estacionamento num determinado Parque efectuado por um Cliente ou Utilizador.
 
-Sub-aluguer: Um Utilizador efectua um aluguer de um Lugar disponibilizado e previamente reservado por outro Utilizador.
+Sub-aluguer: Um Utilizador disponibiliza para aluguer por outro Utilizador um lugar de estacionamento previamente reservado por si.
+
+APP.Frontend: Aplicação (mobile e web) que funciona como frontend do Sistema Central e que permite aos utilizadores registados no sistema a utilização das funcionalidades disponibilizadas pelo mesmo.

@@ -1,0 +1,52 @@
+﻿@model APP_FrontEnd.Models.ReservaDTO
+
+@{
+    ViewData["Title"] = "Reservar";
+}
+
+<h1>Reservar</h1>
+
+<hr />
+<div style="padding-right:25rem; text-align:justify">
+    <h5 style="line-height:150%">
+        Para finalizar a sua reserva, por favor escolha se pretende utilizar o seu método de pagamento preferencial ou utilizar antes os créditos da sua carteira.
+    </h5>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Reservar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NifComprador" />
+            <input type="hidden" asp-for="NifVendedor" />
+            <input type="hidden" asp-for="ParqueIdSC" />
+            <div class="form-group">
+                <h5> Como Pretende Efetuar Pagamento?</h5>
+                <p style="line-height: 5px"></p>
+                <select asp-for="MetodoId" class="form-control" style="width:330px">
+                    <option value="0">Método de Pagamento Preferencial</option>
+                    <option value="4">Carteira</option>
+                </select>
+                <span asp-validation-for="MetodoId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ReservaSistemaCentralId" />
+            <input type="hidden" asp-for="LugarId" />
+            <input type="hidden" asp-for="Inicio" value="@Model.Inicio.ToString("dd-MM-yyyy HH:mm")" />
+            <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
+            <br />
+            <div class="form-group">
+                <input id="pesquisa" style="width:250px" type="submit" value="Reservar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<div>
+    <a class="text-light" style="font-size:1.2rem" asp-action="VoltarAHomepage">Cancelar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

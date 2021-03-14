@@ -1,0 +1,68 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/Reservas/Index" as RIV
+participant ":app/Views/SubAlugueres/Registar" as SRV
+participant ":app/Views/SubAlugueres/Index" as SIV
+participant ":app/ReservasController" as RC
+participant ":app/ReservaService" as RS
+participant ":app/SubAlugueresController" as SC
+participant ":app/SubAluguerService" as SS
+participant "API:SistemaCentral" as API
+
+activate U
+U --> RIV : inicia pedido sub-aluguer
+activate RIV
+
+RIV --> RC : Subalugar(id)
+deactivate RIV
+activate RC
+
+RC --> RS : GetByIdAsync(id)
+activate RS
+
+RS --> API : GetAsync(id)
+activate API
+
+API --> RS : return(DetalheReservaDTO)
+deactivate API
+
+RS --> RC : return(DetalheReservaDTO)
+deactivate RS
+
+RC --> SC : RedirectToAction("Registar", "SubAlugueres", DetalheReservaDTO)
+deactivate RC
+activate SC
+
+SC --> SRV: return View(SubAluguerDTO)
+activate SRV
+
+SRV --> U: pede preço ao utilizador
+
+U --> SRV: insere o preço pedido
+
+SRV --> SC: Registar(SubAluguerDTO)
+deactivate SRV
+
+SC --> SS: PostSubAluguerAsync(SubAluguerDTO)
+activate SS
+
+SS --> API : PostAsync(SubAluguerDTO)
+activate API
+
+API --> SS : CreatedAtAction()
+deactivate API
+
+SS --> SC : Task ok
+deactivate SS
+
+SC --> SC : RedirectToAction(nameof(Index))
+
+SC --> SIV : Return View(lista SubAluguerDTO)
+deactivate SC
+activate SIV
+
+SIV --> U: operação bem sucedida
+deactivate SIV
+deactivate U
+@enduml

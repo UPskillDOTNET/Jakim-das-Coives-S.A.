@@ -1,0 +1,135 @@
+﻿@page
+@model MetodoPagamentoModel
+@inject UserManager<Utilizador> UserManager
+@{
+    ViewData["Title"] = "Alterar Método de Pagamento preferencial";
+    ViewData["ActivePage"] = ManageNavPages.MetodoPagamento;
+    var user = await UserManager.GetUserAsync(User);
+    var hasPassword = await UserManager.HasPasswordAsync(user);
+}
+
+<h4>@ViewData["Title"]</h4>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="email-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.MetodoId">Método de Pagamento</label>
+                <select asp-for="Input.MetodoId" onChange="metodo(this.value);" class="form-control">
+                    <option value="1">Cartão de Crédito</option>
+                    <option value="2">Débito Direto</option>
+                    <option value="3">Paypal</option>
+                </select>
+                <span asp-validation-for="Input.MetodoId" class="text-danger"></span>
+            </div>
+            <div id="cartao" style="display: none">
+                <div class="form-group">
+                    <label asp-for="Input.Numero">Nº do Cartão</label>
+                    <input asp-for="Input.Numero" class="form-control" />
+                    <span asp-validation-for="Input.Numero" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.NomeCartao">Nome do Portador</label>
+                    <input asp-for="Input.NomeCartao" class="form-control" />
+                    <span asp-validation-for="Input.NomeCartao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.DataValidade">Data de Validade</label>
+                    <input asp-for="Input.DataValidade" class="form-control" />
+                    <span asp-validation-for="Input.DataValidade" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Cvv">CVV</label>
+                    <input asp-for="Input.Cvv" class="form-control" />
+                    <span asp-validation-for="Input.Cvv" class="text-danger"></span>
+                </div>
+            </div>
+            <div id="debito" style="display: none">
+                <div class="form-group">
+                    <label asp-for="Input.Iban">IBAN</label>
+                    <input asp-for="Input.Iban" class="form-control" />
+                    <span asp-validation-for="Input.Iban" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.NomeDebitoDireto">Nome Completo</label>
+                    <input asp-for="Input.NomeDebitoDireto" class="form-control" />
+                    <span asp-validation-for="Input.NomeDebitoDireto" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Rua">Morada</label>
+                    <input asp-for="Input.Rua" class="form-control" />
+                    <span asp-validation-for="Input.Rua" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.CodigoPostal">Código Postal</label>
+                    <input asp-for="Input.CodigoPostal" class="form-control" />
+                    <span asp-validation-for="Input.CodigoPostal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Freguesia">Localidade</label>
+                    <input asp-for="Input.Freguesia" class="form-control" />
+                    <span asp-validation-for="Input.Freguesia" class="text-danger"></span>
+                </div>
+            </div>
+            <div id="paypal" style="display: none">
+                <div class="form-group">
+                    <label asp-for="Input.EmailPayPal">E-mail</label>
+                    <input asp-for="Input.EmailPayPal" class="form-control" />
+                    <span asp-validation-for="Input.EmailPayPal" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.PasswordPayPal">Palavra-passe</label>
+                    <input asp-for="Input.PasswordPayPal" class="form-control" />
+                    <span asp-validation-for="Input.PasswordPayPal" class="text-danger"></span>
+                </div>
+            </div>
+            @if (hasPassword)
+            {
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            }
+            <button id="pesquisa" type="submit" asp-page-handler="ChangeMetodoPagamento" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<script type='text/javascript'>
+    function metodo(val) {
+        if (val == "1") {
+            document.getElementById('cartao').style.display = 'block';
+            setRequired(true, 'cartao');
+            document.getElementById('debito').style.display = 'none';
+            setRequired(false, 'debito');
+            document.getElementById('paypal').style.display = 'none';
+            setRequired(false, 'paypal');
+        } else if (val == "2") {
+            document.getElementById('cartao').style.display = 'none';
+            setRequired(false, 'cartao');
+            document.getElementById('debito').style.display = 'block';
+            setRequired(true, 'debito');
+            document.getElementById('paypal').style.display = 'none';
+            setRequired(false, 'paypal');
+        } else if (val == "3") {
+            document.getElementById('cartao').style.display = 'none';
+            setRequired(false, 'cartao');
+            document.getElementById('debito').style.display = 'none';
+            setRequired(false, 'debito');
+            document.getElementById('paypal').style.display = 'block';
+            setRequired(true, 'paypal');
+        }
+    }
+    function setRequired(val, id) {
+        input = document.getElementById(id).getElementsByTagName('input');
+        for (i = 0; i < input.length; i++) {
+            input[i].required = val;
+        }
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

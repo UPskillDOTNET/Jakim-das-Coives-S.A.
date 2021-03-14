@@ -1,0 +1,77 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Areas/Identity/Pages/Account/Manage/" as RP
+participant "UserManager" as UM
+participant "API:SistemaCentral" as API
+participant "Autenticação Externa" as AE
+
+activate U
+
+alt Alterar dados do utilizador
+alt
+U --> RP: inicia a alteração \n(Nome, Numero Telefone)
+activate RP
+U --> RP: inicia a alteração \n(Password)
+U --> RP: inicia a alteração \n(Método de Pagamento)
+U --> RP: inicia a alteração \n(Autenticações externas)
+end
+
+RP --> U: pede dados
+
+U --> RP: insere dados
+
+RP --> UM: UpdateAsync(Utilizador)
+activate UM
+
+UM --> RP: success
+deactivate UM
+
+alt
+RP --> API: PostAsync(AlterarNomeDTO)
+activate API
+RP --> API: PostAsync(AlterarPasswordDTO)
+RP --> API: PostAsync(AlterarMetodoPagamentoDTO)
+API --> RP: return Ok()
+deactivate API
+end
+
+alt
+RP --> AE: adicionar autenticação externa
+activate AE
+AE --> RP: return Ok()
+deactivate AE
+end
+
+RP --> U: operacao bem sucedida
+deactivate RP
+
+deactivate U
+end
+
+alt Remover conta de utilizador
+U --> RP: inicia a remoção de conta
+activate RP
+
+RP --> U: pede confirmação
+
+U --> RP: confirma
+
+RP --> API: PostAsync(InfoUtilizadorDTO)
+activate API
+
+API --> RP: return Ok()
+deactivate API
+
+RP --> UM: DeleteAsync(Utilizador)
+activate UM
+
+UM --> RP: success
+deactivate UM
+
+RP --> U: operacao bem sucedida
+deactivate RP
+
+deactivate U
+end
+@enduml

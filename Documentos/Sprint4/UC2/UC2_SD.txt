@@ -1,0 +1,50 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/Reservas/Disponibilidade" as RDV
+participant ":app/Views/Reservas/Index" as RIV
+participant ":app/Views/Reservas/Reservar" as RRV
+participant ":app/ReservasController" as RC
+participant ":app/ReservaService" as RS
+participant "API:SistemaCentral" as API
+
+activate U
+U --> RDV : inicia pedido reserva
+activate RDV
+
+RDV --> RC : Reservar(LugarDTO)
+deactivate RDV
+activate RC
+
+RC --> RRV: return View(ReservaDTO)
+activate RRV
+
+RRV --> U: pede método de pagamento ao utilizador
+
+U --> RRV: escolhe método de pagamento
+
+RRV --> RC: Reservar(ReservaDTO)
+deactivate RRV
+
+RC --> RS: PostAsync(ReservaDTO)
+activate RS
+
+RS --> API : PostAsync(ReservaDTO)
+activate API
+
+API --> RS : CreatedAtAction()
+deactivate API
+
+RS --> RC : Task ok
+deactivate RS
+
+RC --> RC : RedirectToAction(nameof(Index))
+
+RC --> RIV : Return View(lista DetalheReservaDTO)
+deactivate RC
+activate RIV
+
+RIV --> U: operação bem sucedida
+deactivate RIV
+deactivate U
+@enduml

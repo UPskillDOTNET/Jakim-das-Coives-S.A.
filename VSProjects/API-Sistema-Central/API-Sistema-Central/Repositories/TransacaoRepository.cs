@@ -7,6 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
+    public interface ITransacaoRepository : IRepositoryBase<Transacao>
+    {
+    }
     public class TransacaoRepository : RepositoryBase<Transacao>, ITransacaoRepository
     {
         public TransacaoRepository(SCContext context) : base(context)

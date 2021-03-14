@@ -1,0 +1,63 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":app/Views/Utilizadores/Saldo" as USV
+participant ":app/Views/Utilizadores/Depositar" as UDV
+participant ":app/UtilizadoresController" as UC
+participant ":app/UtilizadorService" as US
+participant "API:SistemaCentral" as API
+
+activate U
+
+U --> USV: inicia o depósito
+activate USV
+
+USV --> UC: Depositar()
+deactivate USV
+activate UC
+
+UC --> UDV: return View()
+activate UDV
+
+UDV --> U: pede valor
+
+U --> UDV: insere valor
+
+UDV --> UC: Depositar(DepositarDTO)
+deactivate UDV
+
+UC --> US: DepositarSaldoAsync(DepositarDTO)
+activate US
+
+US --> API: PostAsync(DepositarDTO)
+activate API
+
+API --> US: NoContent()
+deactivate API
+
+US --> UC: Task ok
+deactivate US
+
+UC --> UC: RedirectToAction(nameof(Saldo))
+
+UC --> US: GetSaldoAsync()
+activate US
+
+US --> API: GetAsync(nif)
+activate API
+
+API --> US: return(valor)
+deactivate API
+
+US --> UC: return(SaldoDTO)
+deactivate US
+
+UC --> USV: return View(SaldoDTO)
+deactivate UC
+activate USV
+
+USV --> U: operação bem sucedida
+deactivate USV
+
+deactivate U
+@enduml

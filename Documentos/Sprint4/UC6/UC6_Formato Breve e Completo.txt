@@ -1,0 +1,57 @@
+Caso de Uso Simples
+
+    - Cancelar um Subaluguer
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à APP.FrontEnd um pedido de cancelamento de um específico SubAluguer de reserva.
+    A APP.FrontEnd envia o pedido de cancelamento à API.SistemaCentral.
+    A API.SistemaCentral cancela o SubAluguer.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende cancelar o seu SubAluguer
+    - API.SistemaCentral: pretende atualizar a disponibilidade para subaluguer
+    - APP.FrontEnd: pretende estabelecer a comunicação entre o Utilizador e a API.SistemaCentral
+
+Pré-condições
+    - O Utilizador deve ter pelo menos um SubAluguer registado na plataforma
+
+Pós-condições
+    - O SubAluguer deverá ser cancelado na API.SistemaCentral.
+
+
+Fluxo Básico
+
+    1. O Utilizador faz à APP.FrontEnd um pedido de cancelamento do seu SubAluguer de reserva.
+    2. A APP pede confirmação.
+    3. O Utilizador confirma.
+    4. A APP.FrontEnd envia o pedido de cancelamento à API.SistemaCentral.
+    5. A API.SistemaCentral cancela o SubAluguer e informa a APP do sucesso da operação.
+    6. A APP.FrontEnd informa o Utilizador do sucesso da operação.
+
+Fluxos Alternativos
+
+    .a - O Utilizador cancela a operação
+        O caso de uso acaba.
+    
+    1a - O Utilizador não possui nenhum SubAluguer
+        A APP.FrontEnd informa o Utilizador de que não possui nenhum SubAluguer.
+        O caso de uso acaba.
+
+    5a - Ocorre um erro no cancelamento
+        A APP.FrontEnd informa o Utilizador de que ocorreu um erro.
+        O caso de uso acaba.
+
+--------------------------------------------------------------------------------------------------
+
+
+

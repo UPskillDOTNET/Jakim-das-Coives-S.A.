@@ -1,0 +1,41 @@
+Caso de Uso Simples
+
+    - Consultar sub-alugueres pertencentes a um utilizador
+    
+--------------------------------------------------------------------------------------------------
+
+Formato Breve
+
+    O Utilizador faz à App.FrontEnd um pedido de consulta dos seus sub-alugueres.
+    A App.FrontEnd mostra uma lista de todos os sub-alugueres que pertencem ao Utilizador que está autenticado e permite ver nos detalhes de cada um se já tem algumas reserva associada.
+
+--------------------------------------------------------------------------------------------------
+
+Formato Completo
+
+Ator principal
+    - Utilizador
+
+Partes Interessadas
+    - Utilizador: pretende consultar os seus sub-alugueres.
+    - App.FrontEnd: pretende satisfazer o pedido do Utilizador.
+
+Pré-condições
+    - O Utilizador já tinha disponibilizado reservas para sub-aluguer anteriormente.
+
+Pós-condições
+    ...
+
+
+Fluxo Básico
+
+    1. O Utilizador inicia o pedido de consulta.
+    2. A App.FrontEnd devolve a lista de sub-aluguer.
+
+Fluxos Alternativos
+
+    2a - O Utilizador não tem qualquer reserva disponibilizada para sub-aluguer.
+       - A App.FrontEnd informa o Utilizador desse facto.
+
+--------------------------------------------------------------------------------------------------
+

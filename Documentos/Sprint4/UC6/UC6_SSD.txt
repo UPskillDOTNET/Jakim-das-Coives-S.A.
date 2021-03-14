@@ -1,0 +1,20 @@
+@startuml
+autonumber
+actor "Utilizador" as U
+participant ":APP.FrontEnd" as APP
+
+activate U
+U -> APP : inicia pedido de cancelamento \nde um SubAluguer
+activate APP
+
+APP -> U : pede confirmação
+deactivate "APP"
+
+U -> APP : confirma
+activate APP
+
+APP -> U : operação bem sucedida
+deactivate APP
+
+deactivate U
+@enduml

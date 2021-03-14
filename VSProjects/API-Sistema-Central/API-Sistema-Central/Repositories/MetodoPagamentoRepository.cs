@@ -7,6 +7,9 @@ using API_Sistema_Central.Models;
 
 namespace API_Sistema_Central.Repositories
 {
+    public interface IMetodoPagamentoRepository : IRepositoryBase<MetodoPagamento>
+    {
+    }
     public class MetodoPagamentoRepository : RepositoryBase<MetodoPagamento>, IMetodoPagamentoRepository
     {
         public MetodoPagamentoRepository(SCContext context) : base(context)

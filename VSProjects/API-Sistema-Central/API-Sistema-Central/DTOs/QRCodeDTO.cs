@@ -8,7 +8,8 @@ namespace API_Sistema_Central.DTOs
 {
     public class QRCodeDTO
     {
-        public int IdReserva { get; set; }
+        public int ReservaParqueId { get; set; }
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         public string NomeUtilizador { get; set; }
         public string NomeFreguesia { get; set; }
