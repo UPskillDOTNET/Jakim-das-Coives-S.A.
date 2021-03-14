@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,8 +50,16 @@ namespace APP_FrontEnd
                 options.AppSecret = "3a45d5c169676ebcd6d0031805d1632b";
             });
 
+            services.Configure<RequestLocalizationOptions>(opts =>
+            {
+                var supportedCultures = new List<CultureInfo> { new CultureInfo("pt-PT") };
+                opts.DefaultRequestCulture = new RequestCulture("pt-PT");
+                opts.SupportedCultures = supportedCultures;
+                opts.SupportedUICultures = supportedCultures;
+            });
+
             services.AddControllersWithViews();
-            
+
             services.AddRazorPages();
 
             services.AddMemoryCache();
@@ -78,6 +89,9 @@ namespace APP_FrontEnd
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
 
             app.UseRouting();
 

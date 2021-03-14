@@ -4,73 +4,233 @@ skinparam classAttributeIconSize 0
 package Services <<Folder>> {
 
 class ReservaService:IReservaService {
-  - GetDisponibilidade(nomeFreguesia, inicio, fim)
-  - PostReserva(reserva)
-  - GetAllReservasByNif(nif)
-  - DeleteReserva(id)
-  - GetReservaById(id)
+  - FindAvailableAsync(nomeFreguesia, inicio, fim)
+  - PostAsync(reservaDTO)
+  - GetByNifAsync()
+  - DeleteAsync(id)
+  - GetByIdAsync(id)
 }
-interface IReservaService {}
 
 class SubAluguerService:ISubAluguerService {
-  - GetAllSubAlugueresByNif(nif)
-  - PostSubAluguer(subAluguer)
-  - DeleteSubAluguer(id)
+  - GetAllSubAluguerByNif()
+  - PostSubAluguerAsync(subAluguerDTO)
+  - DeleteSubAluguerAsync(id)
   - GetSubAluguerById(id)
 }
-interface ISubAluguerService {}
+
+class TokenService:ITokenService {
+  - GetTokenAsync()
+  - SaveToken(token)
+  - GetTokenFromLoginAsync(infoUtilizadorDTO)
+  - SaveCookie(refreshToken)
+}
 
 class TransacaoService:ITransacaoService {
-  - GetAllTransacoesByNif(nif)
+  - GetAllTransacoesByNif()
 }
-interface ITransacaoService {}
 
-class CarteiraService:ICarteiraService {
-  - GetSaldoByNif(nif)
-  - UpdateSaldoByNif(nif, valor)
+class UtilizadorService:IUtilizadorService {
+  - GetSaldoAsync()
+  - DepositarSaldoAsync(depositarDTO)
 }
-interface ICarteiraService {}
 
 }
 
 package Controllers <<Folder>> {
 
+class HomeController {
+  +Get Index()
+  +Post Pesquisa(pesquisaDTO)
+  +Get Privacy()
+}
+
 class ReservasController {
-  +Get Disponibilidade
-  +Get Reservar
-  +Post Reservar
-  +Get Index
-  +Get SubAlugar
-  +Post SubAlugar
-  +Get Cancelar
-  +Delete Cancelar
-  +Get Detalhes
+  +Get Index()
+  +Get Disponibilidade(pesquisaDTO)
+  +Get Detalhes(id)
+  +Get Subalugar(id)
+  +Get Reservar(lugarDTO)
+  +Post Reservar(reservaDTO)
+  +Get Cancelar(id)
+  +Get CancelarConfirmado(id)
+  +Get VoltarAHomepage()
 }
 
 class SubAlugueresController {
-  +Get Index
-  +Get Cancelar
-  +Delete Cancelar
-  +Get Detalhes
+  +Get Index()
+  +Get Detalhes(id)
+  +Get Registar(detalheReservaDTO)
+  +Post Registar(subAluguerDTO)
+  +Get Cancelar(id)
+  +Get CancelarConfirmado(id)
+  +Get VoltarAsReservas()
 }
 
 class TransacoesController {
-  +Get Index
+  +Get Index()
 }
 
-class CarteiraController {
-  +Get Depositar
-  +Post Depositar
+class UtilizadoresController {
+  +Get Saldo()
+  +Get Depositar()
+  +Post Depositar(depositarDTO)
 }
 
 }
 
 package Models <<Folder>> {
 
+class AlterarMetodoPagamentoDTO{
+  -string email
+  -string password
+  -int metodoId
+  -string numero
+  -string nomeCartao
+  -string dataValidade
+  -string cvv
+  -string iban
+  -string nomeDebitoDireto
+  -string rua
+  -string codigoPostal
+  -string freguesia
+  -DateTime dataSubscricao
+  -string emailPaypal
+  -string passwordPaypal
+}
+
+class AlterarNomeDTO{
+  -string nif
+  -string nomeActual
+  -string nomeNovo
+}
+
+class AlterarPasswordDTO{
+  -string nif
+  -string passwordActual
+  -string passwordNova
+}
+
+class DepositarDTO{
+  -string nif
+  -double valor
+}
+
+class DetalheReservaDTO{
+  -int reservaId
+  -double custo
+  -int reservaParqueId
+  -string nomeFreguesia
+  -string nomeParque
+  -int numeroLugar
+  -string fila
+  -int andar
+  -bool isSubAlugado
+  -string nifProprietario
+  -DateTime inicio
+  -DateTime fim
+}
+
+class InfoUtilizadorDTO{
+  -string email
+  -string password
+}
+
+class LugarDTO{
+  -int id
+  -int parqueId
+  -string nomeParque
+  -int numero
+  -string fila
+  -int andar
+  -double preco
+  -string nifProprietario
+  -int reservaSistemaCentralId
+  -int parqueIdSC
+  -DateTime inicio
+  -DateTime fim
+}
+
+class PesquisaDTO{
+  -string freguesiaNome
+  -DateTime inicio
+  -DateTime fim
+}
+
+class AlterarMetodoPagamentoDTO{
+  -string nif
+  -string nomeUtilizador
+  -string emailUtilizador
+  -string passwordUtilizador
+  -int metodoId
+  -string numero
+  -string nomeCartao
+  -string dataValidade
+  -string cvv
+  -string iban
+  -string nomeDebitoDireto
+  -string rua
+  -string codigoPostal
+  -string freguesia
+  -DateTime dataSubscricao
+  -string emailPaypal
+  -string passwordPaypal
+}
+
+class ReservaDTO{
+  -string nifComprador
+  -string nifVendedor
+  -int parqueIdSC
+  -int metodoId
+  -int reservaSistemaCentralId
+  -int lugarId
+  -DateTime inicio
+  -DateTime fim
+}
+
+class ResetPasswordDTO{
+  -string nif
+  -string password
+}
+
+class RevokeTokenRequest{
+  -string token
+}
+
+class SaldoDTO{
+  -double valor
+}
+
+class SubAluguerDTO{
+  -int id
+  -int parqueId
+  -string nomeParque
+  -int numero
+  -string fila
+  -int andar
+  -double preco
+  -string nifProprietario
+  -int reservaSistemaCentralId
+  -bool isReservado
+  -DateTime inicio
+  -DateTime fim
+}
+
+class TokenResponse{
+  -string token
+  -string refreshToken
+}
+
+class TransacaoDTO{
+  -string tipo
+  -string nifDestinatario
+  -double valor
+  -DateTime dataHora
+  -string Metodo
+}
+
 class Utilizador:IdentityUser{
-  -String nome
-  -Double carteira
-  -Int credencialId FK
+  -int metodoId
+  -string nome
 }
 
 }
@@ -83,14 +243,13 @@ class "UserManager<Utilizador>" {}
 
 }
 
-ReservasController --> "IReservaService"
-ReservasController --> "ISubAluguerService"
-SubAlugueresController --> "ISubAluguerService"
-TransacoesController --> "ITransacaoService"
-CarteiraController --> "ICarteiraService"
+ReservasController --> "ReservaService:IReservaService"
+SubAlugueresController --> "SubAluguerService:ISubAluguerService"
+TransacoesController --> "TransacaoService:ITransacaoService"
+UtilizadoresController --> "UtilizadorService:IUtilizadorService"
 
-"IReservaService" ..> "ReservaService:IReservaService"
-"ISubAluguerService" ..> "SubAluguerService:ISubAluguerService"
-"ITransacaoService" ..> "TransacaoService:ITransacaoService"
-"ICarteiraService" ..> "CarteiraService:ICarteiraService"
+"ReservaService:IReservaService" --> "TokenService:ITokenService"
+"SubAluguerService:ISubAluguerService" --> "TokenService:ITokenService"
+"TransacaoService:ITransacaoService" --> "TokenService:ITokenService"
+"UtilizadorService:IUtilizadorService" --> "TokenService:ITokenService"
 @enduml

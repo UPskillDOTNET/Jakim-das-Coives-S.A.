@@ -78,9 +78,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
                     using (HttpClient client = new HttpClient(handler))
                     {
+                        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                         StringContent content = new StringContent(JsonConvert.SerializeObject(new RevokeTokenRequest { Token = refreshToken }), Encoding.UTF8, "application/json");
-                        string endpoint = "https://localhost:5050/api/utilizadores/rescindir-token";
+                        string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/rescindir-token";
                         var response = await client.PostAsync(endpoint, content);
                         response.EnsureSuccessStatusCode();
                     }

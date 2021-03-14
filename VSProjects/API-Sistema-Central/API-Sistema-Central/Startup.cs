@@ -35,7 +35,13 @@ namespace API_Sistema_Central
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+            services.AddSwaggerGen();
 
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
 
@@ -97,15 +103,13 @@ namespace API_Sistema_Central
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Sistema_Central v1"));*/
             }
 
+            app.UseSwagger();
+
+            app.UseCors("MyPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseCors(x => x
-                .SetIsOriginAllowed(origin => true)
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
 
             app.UseAuthentication();
 

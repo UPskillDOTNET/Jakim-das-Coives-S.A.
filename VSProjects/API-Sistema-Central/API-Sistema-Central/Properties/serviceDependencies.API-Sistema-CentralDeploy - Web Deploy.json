@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/jakim-api-management/apis/blank-sistema-central",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/jakim-server/databases/jakim-sistema-central",
+      "type": "mssql.azure",
+      "connectionId": "SCContext",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using API_Parque_Publico.Data;
+using API_Parque_Publico.Repositories;
+using API_Parque_Publico.Services;
 
 namespace API_Parque_Publico
 {
@@ -28,7 +30,13 @@ namespace API_Parque_Publico
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+            services.AddSwaggerGen();
             services.AddControllers();
             /*services.AddSwaggerGen(c =>
             {
@@ -37,6 +45,11 @@ namespace API_Parque_Publico
 
             services.AddDbContext<API_Parque_PublicoContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("API_Parque_PublicoContext")));
+
+            services.AddTransient<ILugarService, LugarService>();
+            services.AddScoped<IReservaRepository, ReservaRepository>();
+            services.AddScoped<ILugarRepository, LugarRepository>();
+            services.AddScoped<IParqueRepository, ParqueRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +61,10 @@ namespace API_Parque_Publico
                 /*app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API_Parque_Publico v1"));*/
             }
+
+            app.UseSwagger();
+
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 

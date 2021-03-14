@@ -403,8 +403,9 @@ namespace API_Sistema_Central.Services
                 {
                     using (HttpClient client = new HttpClient())
                     {
+                        client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                         StringContent content = new StringContent(JsonConvert.SerializeObject(nif), Encoding.UTF8, "application/json");
-                        string endpoint = "https://localhost:5005/api/lugares/remover";
+                        string endpoint = "https://jakim-api-management.azure-api.net/sub-alugueres/api/lugares/remover";
                         var response = await client.PostAsync(endpoint, content);
                         response.EnsureSuccessStatusCode();
                     }

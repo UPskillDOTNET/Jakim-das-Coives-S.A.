@@ -56,8 +56,9 @@ namespace APP_FrontEnd.Services
             var listaTransacoes = new List<TransacaoDTO>();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/transacoes/all/" + nif;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/transacoes/all/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 listaTransacoes = await response.Content.ReadAsAsync<List<TransacaoDTO>>();

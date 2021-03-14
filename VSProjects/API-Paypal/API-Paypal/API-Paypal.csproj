@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>API_Paypal</RootNamespace>
+    <UserSecretsId>c7b6ed3f-33bf-412f-9794-36e5683ec95b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

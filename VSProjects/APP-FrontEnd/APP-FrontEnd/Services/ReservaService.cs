@@ -64,8 +64,9 @@ namespace APP_FrontEnd.Services
             var listaLugares = new List<LugarDTO>();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reservas/disponibilidade/" + freguesiaNome + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + "/" + fim.ToString("yyyy-MM-ddTHH:mm:ss");
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/reservas/disponibilidade/" + freguesiaNome + "/" + inicio.ToString("yyyy-MM-ddTHH:mm:ss") + "/" + fim.ToString("yyyy-MM-ddTHH:mm:ss");
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 listaLugares = await response.Content.ReadAsAsync<List<LugarDTO>>();
@@ -99,8 +100,9 @@ namespace APP_FrontEnd.Services
             var listaReservas = new List<DetalheReservaDTO>();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reservas/all/" + nif;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/reservas/all/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 listaReservas = await response.Content.ReadAsAsync<List<DetalheReservaDTO>>();
@@ -134,8 +136,9 @@ namespace APP_FrontEnd.Services
             var result = new DetalheReservaDTO();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reservas/" + id;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/reservas/" + id;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 result = await response.Content.ReadAsAsync<DetalheReservaDTO>();
@@ -175,8 +178,9 @@ namespace APP_FrontEnd.Services
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reservas/";
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/reservas/";
                 var response = await client.PostAsJsonAsync(endpoint, reservaDTO);
                 response.EnsureSuccessStatusCode();
             }
@@ -207,8 +211,9 @@ namespace APP_FrontEnd.Services
 
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/reservas/" + id;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/reservas/" + id;
                 var response = await client.DeleteAsync(endpoint);
                 response.EnsureSuccessStatusCode();
             }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_Parque_Publico.Data;
 using API_Parque_Publico.Models;
+using API_Parque_Publico.Services;
 
 namespace API_Parque_Publico.Controllers
 {
@@ -15,10 +16,12 @@ namespace API_Parque_Publico.Controllers
     public class LugaresController : ControllerBase
     {
         private readonly API_Parque_PublicoContext _context;
+        private readonly ILugarService _lugarService;
 
-        public LugaresController(API_Parque_PublicoContext context)
+        public LugaresController(API_Parque_PublicoContext context, ILugarService lugarService)
         {
             _context = context;
+            _lugarService = lugarService;
         }
 
         // GET: api/Lugares
@@ -43,30 +46,18 @@ namespace API_Parque_Publico.Controllers
         }
 
         [HttpGet("disponibilidade/{freguesiaId}/{inicio}/{fim}")]
-        public IEnumerable<Lugar> FindAvailable(int freguesiaId, DateTime inicio, DateTime fim)
+        public async Task<ActionResult<IEnumerable<Lugar>>> FindAvailableAsync(int freguesiaId, DateTime inicio, DateTime fim)
         {
-            List<Lugar> todoslugares = new List<Lugar>();
-            var parques = _context.Parques.Where(p => p.FreguesiaId == freguesiaId);
-            foreach (Parque p in parques)
+            try
             {
-                var ltemp = _context.Lugares.Where(l => l.ParqueId == p.Id);
-                todoslugares.AddRange(ltemp);
+                var disponiveis = await _lugarService.FindAvailableAsync(freguesiaId, inicio, fim);
+
+                return disponiveis.ToList();
             }
-            
-            List<Lugar> ocupados = new List<Lugar>();
-            var reservas = _context.Reservas.Include(r => r.Lugar).Where(r =>
-                r.Fim > inicio && r.Fim <= fim ||
-                r.Inicio >= inicio && r.Inicio < fim ||
-                r.Inicio >= inicio && r.Fim <= fim ||
-                r.Inicio <= inicio && r.Fim >= fim);
-            foreach (Reserva r in reservas)
+            catch (Exception e)
             {
-                ocupados.Add(r.Lugar);
+                return BadRequest(e.Message);
             }
-
-            var disponiveis = todoslugares.Except(ocupados);
-
-            return disponiveis;
         }
 
         // PUT: api/Lugares/5

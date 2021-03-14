@@ -68,8 +68,9 @@ namespace APP_FrontEnd.Services
                 TokenResponse tokenResponse;
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/login";
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/login";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
                     tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();
@@ -103,7 +104,8 @@ namespace APP_FrontEnd.Services
             using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
             using (HttpClient client = new HttpClient(handler))
             {
-                string endpoint = "https://localhost:5050/api/utilizadores/refresh-token";
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/refresh-token";
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 tokenResponse = await response.Content.ReadAsAsync<TokenResponse>();

@@ -125,9 +125,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     StringContent content = new StringContent(JsonConvert.SerializeObject(info), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/remover-conta";
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/remover-conta";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
                 }

@@ -193,9 +193,10 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account.Manage
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     StringContent content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/utilizadores/metodo";
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/utilizadores/metodo";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
                 }

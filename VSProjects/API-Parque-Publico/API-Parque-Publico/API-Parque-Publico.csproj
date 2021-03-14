@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>API_Parque_Publico</RootNamespace>
+    <UserSecretsId>28d797e6-8d40-4819-b790-5903ca1eb7ab</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

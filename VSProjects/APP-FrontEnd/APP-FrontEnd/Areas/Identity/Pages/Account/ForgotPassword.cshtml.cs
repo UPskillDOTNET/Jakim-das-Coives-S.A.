@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Net.Mail;
 using System.Net;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace APP_FrontEnd.Areas.Identity.Pages.Account
 {
@@ -57,17 +59,15 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                MailMessage msg = new MailMessage();
-                msg.From = new MailAddress("sistemacentraljakim@gmail.com");
-                msg.To.Add(Input.Email);
-                msg.Subject = "Redifinir palavra-passe";
-                msg.Body = $"Para redefinir a sua palavra-passe clique aqui: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Link</a>.";
-                msg.IsBodyHtml = true;
-
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("sistemacentraljakim@gmail.com", "123Pa$$word");
-                smtp.EnableSsl = true;
-                smtp.Send(msg);
+                var apiKey = "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";
+                var client = new SendGridClient(apiKey);
+                var from = new EmailAddress("sistemacentraljakim@gmail.com");
+                var to = new EmailAddress(Input.Email);
+                var subject = "Redifinir palavra-passe";
+                var plainTextContent = "";
+                var htmlContent = $"Para redefinir a sua palavra-passe clique aqui: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Link</a>.";
+                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                var response = await client.SendEmailAsync(msg);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

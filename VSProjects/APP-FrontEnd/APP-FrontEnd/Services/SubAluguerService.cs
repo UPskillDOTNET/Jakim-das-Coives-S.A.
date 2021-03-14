@@ -59,8 +59,9 @@ namespace APP_FrontEnd.Services
             var listaSubAlugueres = new List<SubAluguerDTO>();
             using (HttpClient client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                string endpoint = "https://localhost:5050/api/subalugueres/all/" + nif;
+                string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/subalugueres/all/" + nif;
                 var response = await client.GetAsync(endpoint);
                 response.EnsureSuccessStatusCode();
                 listaSubAlugueres = await response.Content.ReadAsAsync<List<SubAluguerDTO>>();
@@ -95,8 +96,9 @@ namespace APP_FrontEnd.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    string endpoint = "https://localhost:5050/api/subalugueres/" + id;
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/subalugueres/" + id;
                     var response = await client.GetAsync(endpoint);
                     response.EnsureSuccessStatusCode();
                     subAluguer = await response.Content.ReadAsAsync<SubAluguerDTO>();
@@ -135,9 +137,10 @@ namespace APP_FrontEnd.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                     StringContent content = new StringContent(JsonConvert.SerializeObject(subAluguerDTO), Encoding.UTF8, "application/json");
-                    string endpoint = "https://localhost:5050/api/subalugueres";
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/subalugueres";
                     var response = await client.PostAsync(endpoint, content);
                     response.EnsureSuccessStatusCode();
                 }
@@ -174,8 +177,9 @@ namespace APP_FrontEnd.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "aee2fb676a2e4b25a819af617eb64174");
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    string endpoint = "https://localhost:5050/api/subalugueres/" + id;
+                    string endpoint = "https://jakim-api-management.azure-api.net/sistema-central/api/subalugueres/" + id;
                     var response = await client.DeleteAsync(endpoint);
                     response.EnsureSuccessStatusCode();
                 }
