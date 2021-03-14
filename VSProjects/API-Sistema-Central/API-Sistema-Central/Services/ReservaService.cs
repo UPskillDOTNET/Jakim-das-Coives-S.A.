@@ -161,11 +161,11 @@ namespace API_Sistema_Central.Services
                 if (p.ApiUrl == "https://jakim-api-management.azure-api.net/sub-alugueres/")
                 {
                     var rs = _repository.GetByIdAsync(reservaDTO.ReservaSistemaCentralId).Result;
-                    _emailService.EnviarEmailSubAluguer(qr, rs.ReservaParqueId);
+                    await _emailService.EnviarEmailSubAluguerAsync(qr, rs.ReservaParqueId);
                 }
                 else
                 {
-                    _emailService.EnviarEmailReserva(qr);
+                    await _emailService.EnviarEmailReservaAsync(qr);
                 }
             }
             catch (Exception)
@@ -187,7 +187,7 @@ namespace API_Sistema_Central.Services
                 await _transacaoRepository.PostAsync(new Transacao { MetodoId = 4, NifPagador = t.NifRecipiente, NifRecipiente = t.NifPagador, Valor = t.Valor, DataHora = DateTime.UtcNow, Tipo = Tipo.Reembolso });
                 await DeleteReservaInParqueAPIAsync(reserva.ParqueId, reserva.ReservaParqueId);
                 Utilizador utilizador = await _userManager.FindByIdAsync(reserva.NifUtilizador);
-                _emailService.EnviarEmailCancelamento(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
+                await _emailService.EnviarEmailCancelamentoAsync(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
                 throw new Exception("A reserva no Sistema Central falhou.");
             }
         }
@@ -218,7 +218,7 @@ namespace API_Sistema_Central.Services
             try
             {
                 Utilizador utilizador = await _userManager.FindByIdAsync(reserva.NifUtilizador);
-                _emailService.EnviarEmailCancelamento(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
+                await _emailService.EnviarEmailCancelamentoAsync(utilizador.Nome, reserva.ReservaParqueId, utilizador.Email);
             }
             catch (Exception)
             {
