@@ -18,7 +18,7 @@ namespace TesteJakim.Tests
         public void Setup()
         {
             //Entrar no Site
-            webDriver.Navigate().GoToUrl("https://localhost:44372/");
+            webDriver.Navigate().GoToUrl("https://app-frontenddeploy.azurewebsites.net/");
 
             HomePage homePage = new HomePage(webDriver);
             homePage.ClickLogin();
