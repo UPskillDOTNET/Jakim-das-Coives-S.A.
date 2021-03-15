@@ -52,7 +52,9 @@ namespace APP_FrontEnd
 
             services.Configure<RequestLocalizationOptions>(opts =>
             {
-                var supportedCultures = new List<CultureInfo> { new CultureInfo("pt-PT") };
+                var cultureInfo = new CultureInfo("pt-PT");
+                cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+                var supportedCultures = new List<CultureInfo> { cultureInfo };
                 opts.DefaultRequestCulture = new RequestCulture("pt-PT");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
