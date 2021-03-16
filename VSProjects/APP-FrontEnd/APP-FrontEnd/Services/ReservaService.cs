@@ -11,6 +11,7 @@ using System.Text;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
+using System.Linq;
 
 namespace APP_FrontEnd.Services
 {
@@ -71,7 +72,8 @@ namespace APP_FrontEnd.Services
                 response.EnsureSuccessStatusCode();
                 listaLugares = await response.Content.ReadAsAsync<List<LugarDTO>>();
             }
-            return listaLugares;
+            var meusLugares = listaLugares.FindAll(l => l.NifProprietario == nif);
+            return listaLugares.Except(meusLugares);
         }
 
         public async Task<IEnumerable<DetalheReservaDTO>> GetByNifAsync()
