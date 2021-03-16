@@ -88,7 +88,7 @@ namespace API_Sistema_Central.Services
         }
         private static async Task EnviarEmailAsync(string subject, string email, string body)
         {
-            var apiKey = "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";
+            var apiKey = "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";
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("sistemacentraljakim@gmail.com");
             var to = new EmailAddress(email);

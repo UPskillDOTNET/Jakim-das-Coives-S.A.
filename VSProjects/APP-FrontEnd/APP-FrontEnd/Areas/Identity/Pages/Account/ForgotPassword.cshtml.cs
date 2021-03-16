@@ -59,7 +59,7 @@ namespace APP_FrontEnd.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                var apiKey = "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";
+                var apiKey = "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";
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress("sistemacentraljakim@gmail.com");
                 var to = new EmailAddress(Input.Email);
