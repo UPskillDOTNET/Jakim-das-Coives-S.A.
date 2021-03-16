@@ -8,6 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Paypal.Services
 {
+    public interface IPaypalService
+    {
+        public Task<ActionResult<IEnumerable<Paypal>>> GetAllAsync();
+        public Task<Paypal> GetByIdAsync(int id);
+        public Task PutAsync(Paypal paypal);
+        public Task<Paypal> PostAsync(Paypal paypal);
+        public Task DeleteAsync(int id);
+    }
     public class PaypalService : IPaypalService
     {
         private readonly IPaypalRepository _repository;

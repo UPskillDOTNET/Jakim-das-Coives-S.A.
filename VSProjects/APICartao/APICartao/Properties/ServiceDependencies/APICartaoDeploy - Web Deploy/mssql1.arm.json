@@ -58,7 +58,7 @@
             {
               "sku": {
                 "name": "ElasticPool",
-                "tier": "Basic",
+                "tier": "Standard",
                 "capacity": 0
               },
               "kind": "v12.0,user,pool",

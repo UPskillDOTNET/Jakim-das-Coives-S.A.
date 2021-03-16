@@ -10,6 +10,14 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace API_Paypal.Repositories
 {
+    public interface IPaypalRepository
+    {
+        public Task<ActionResult<IEnumerable<Paypal>>> GetAllAsync();
+        public Task<Paypal> GetByIdAsync(int id);
+        public Task PutAsync(Paypal entity);
+        public Task<Paypal> PostAsync(Paypal entity);
+        public Task DeleteAsync(int id);
+    }
     public class PaypalRepository : IPaypalRepository
     {
 
@@ -21,30 +29,30 @@ namespace API_Paypal.Repositories
 
         public async Task<ActionResult<IEnumerable<Paypal>>> GetAllAsync()
         {
-            return await _context.Set<Paypal>().ToListAsync();
+            return await _context.Paypal.ToListAsync();
         }
         public async Task<Paypal> GetByIdAsync(int id)
         {
-            var result = await _context.Set<Paypal>().FindAsync(id);
+            var result = await _context.Paypal.FindAsync(id);
             return result;
         }
         public async Task PutAsync(Paypal entity)
         {
-            _context.Set<Paypal>().Update(entity);
+            _context.Paypal.Update(entity);
             await _context.SaveChangesAsync();
         }
         public async Task<Paypal> PostAsync(Paypal entity)
         {
             EntityEntry<Paypal> entry;
-            entry = await _context.Set<Paypal>().AddAsync(entity);
+            entry = await _context.Paypal.AddAsync(entity);
             await _context.SaveChangesAsync();
 
             return entry.Entity;
         }
         public async Task DeleteAsync(int id)
         {
-            var entity = await _context.Set<Paypal>().FindAsync(id);
-            _context.Set<Paypal>().Remove(entity);
+            var entity = await _context.Paypal.FindAsync(id);
+            _context.Paypal.Remove(entity);
             await _context.SaveChangesAsync();
         }
     }
