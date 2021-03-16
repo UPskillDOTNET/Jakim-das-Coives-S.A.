@@ -19,7 +19,7 @@ namespace TesteJakim.Tests
         public void Setup()
         {
             //Entrar no Site
-            webDriver.Navigate().GoToUrl("https://localhost:44372/");
+            webDriver.Navigate().GoToUrl("https://app-frontenddeploy.azurewebsites.net/");
 
         }
 
@@ -85,7 +85,7 @@ namespace TesteJakim.Tests
         }
 
         [Test]
-        public void RegisterLocalAccount()
+        public void RegisterAndDeleteLocalAccount()
         //Por o Programa a correr
         {
             IWebElement registerButton = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
@@ -119,10 +119,29 @@ namespace TesteJakim.Tests
             IWebElement submitRegisterButton = webDriver.FindElement(By.XPath("/html/body/div/main/div/div[1]/form/button"));
             submitRegisterButton.Submit();
 
-
+            //VERIFICAR QUE FEZ LOGIN
 
             IWebElement loggedInText = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
             Assert.IsTrue(loggedInText.Text == "Bem-vindo End To End Test User!");
+
+            //APAGAR UTILIZADOR CRIADO
+
+            IWebElement manageButton = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
+            manageButton.Click();
+
+            webDriver.FindElement(By.XPath("/html/body/div/main/div/div/div[1]/ul/li[5]/a")).Click(); //BOTAO RGPD
+
+            webDriver.FindElement(By.XPath("/html/body/div/main/div/div/div[2]/div/div/a")).Click(); //BOTAO APAGAR CONTA
+
+            IWebElement pwdDeleteTxtBox = webDriver.FindElement(By.XPath("/html/body/div/main/div/div/div[2]/div[2]/form/div[2]/input"));
+            pwdDeleteTxtBox.SendKeys("123Pa$$word");
+
+            webDriver.FindElement(By.XPath("/html/body/div/main/div/div/div[2]/div[2]/form/button")).Click(); //BOTAO VERMELHO CONFIRMAR APAGAR CONTA
+
+            IWebElement registerBtnAfterDelete = webDriver.FindElement(By.XPath("/html/body/header/nav/div/div/div/ul/li[1]/a"));
+
+            Assert.IsTrue(registerBtnAfterDelete.Text == "Registar");
+
         }
 
     }
