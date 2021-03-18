@@ -10,7 +10,7 @@
     <div class="col-md-4">
         <section>
             <div class="row" id="menuLoginBorder">
-                <form id="account" method="post">
+                <form id="account" method="post" onsubmit="loadingjakim();">
                     <h4>Use uma conta local para iniciar sessão</h4>
                     <hr />
                     <div asp-validation-summary="All" class="text-danger"></div>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btnAccountSubmit" onclick="loadingjakim();">
+                        <button type="submit" class="btn btn-primary btnAccountSubmit">
                             Iniciar Sessão
                         </button>
                     </div>

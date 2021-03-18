@@ -14,7 +14,7 @@
 <br />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Depositar">
+        <form asp-action="Depositar" onsubmit="loadingjakim();">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Valor" class="control-label">Valor (€)</label>
@@ -23,7 +23,7 @@
             </div>
             <br />
             <div class="form-group">
-                <input id="pesquisa" type="submit" value="Depositar" class="btn btn-primary" style="width:208px" onclick="loadingjakim();" />
+                <input id="pesquisa" type="submit" value="Depositar" class="btn btn-primary" style="width:208px"/>
             </div>
         </form>
     </div>

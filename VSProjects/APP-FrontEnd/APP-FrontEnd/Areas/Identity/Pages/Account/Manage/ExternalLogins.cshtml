@@ -29,11 +29,11 @@
                     <td>
                         @if (Model.ShowRemoveButton)
                         {
-                            <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post">
+                            <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post" onsubmit="loadingjakim();">
                                 <div style="padding-top:0.6em; display:flex; align-items: center; ">
                                     <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                     <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta" onclick="loadingjakim();">Remover</button>
+                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
                                 </div>
                             </form>
                         }

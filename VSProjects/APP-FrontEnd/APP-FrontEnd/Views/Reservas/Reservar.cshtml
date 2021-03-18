@@ -15,7 +15,7 @@
 <br />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Reservar">
+        <form asp-action="Reservar" onsubmit="loadingjakim();">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="NifComprador" />
             <input type="hidden" asp-for="NifVendedor" />
@@ -35,7 +35,7 @@
             <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
             <br />
             <div class="form-group">
-                <input id="pesquisa" style="width:250px" type="submit" value="Reservar" class="btn btn-primary" onclick="loadingjakim();" />
+                <input id="pesquisa" style="width:250px" type="submit" value="Reservar" class="btn btn-primary" />
             </div>
         </form>
     </div>
