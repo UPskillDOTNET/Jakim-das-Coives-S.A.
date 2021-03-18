@@ -6,7 +6,54 @@
     <title>@ViewData["Title"] - Jakim Smartparking</title>
     <link rel="stylesheet" href="~/css/site.css" runat="server" type="text/css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .loader-wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #242f3f;
+            opacity: 0.7;
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            border: 6px solid #Fff;
+            animation: loader 2s infinite ease;
+        }
+
+        .loader-inner {
+            vertical-align: top;
+            display: inline-block;
+            width: 100%;
+            background-color: #fff;
+            animation: loader-inner 2s infinite ease-in;
+        }
+
+        @@keyframes loader {
+            0% {transform: rotate(0deg);}
+            25% {transform: rotate(180deg);}
+            50% {transform: rotate(180deg);}
+            75% {transform: rotate(360deg);}
+            100% {transform: rotate(360deg);}
+        }
+
+        @@keyframes loader-inner {
+            0% {height: 0%;}
+            25% {height: 0%;}
+            50% {height: 100%;}
+            75% {height: 100%;}
+            100% {height: 0%;}
+        }
+    </style>
 
 </head>
 <body>
@@ -17,21 +64,21 @@
                     @if (User.IsInRole("Utilizador"))
                     {
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link navbar-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="navbar-toggler-icon"></span></a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background:#98AFC7">
-                                <a class="dropdown-item" asp-area="" asp-controller="Reservas" asp-action="Index" onclick="loading();">Reservas</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-area="" asp-controller="Utilizadores" asp-action="Saldo" onclick="loading();">Saldo</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-area="" asp-controller="SubAlugueres" asp-action="Index" onclick="loading();">Sub-Alugueres</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" asp-area="" asp-controller="Transacoes" asp-action="Index" onclick="loading();">Transações</a>
-                            </div>
-                        </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navbar-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="navbar-toggler-icon"></span></a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background:#98AFC7">
+                            <a class="dropdown-item" asp-area="" asp-controller="Reservas" asp-action="Index" onclick="loadingjakim();">Reservas</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Utilizadores" asp-action="Saldo" onclick="loadingjakim();">Saldo</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="SubAlugueres" asp-action="Index" onclick="loadingjakim();">Sub-Alugueres</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="" asp-controller="Transacoes" asp-action="Index" onclick="loadingjakim();">Transações</a>
+                        </div>
+                    </li>
                     }
                 </ul>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white; font-size: 20px; margin-top:8px" onclick="loading();">Jakim Smartparking</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color: white; font-size: 20px; margin-top:8px" onclick="loadingjakim();">Jakim Smartparking</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -51,13 +98,13 @@
         </main>
     </div>
 
-    <div id="loading" class="loader-wrapper">
+    <div id="loadingjakim" class="loader-wrapper">
         <span class="loader"><span class="loader-inner"></span></span>
     </div>
 
     <footer class="footer text-light" style="background: #268596">
         <div class="container">
-            &copy; 2021 - Jakim Smartparking - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy" onclick="loading();">Privacidade</a>
+            &copy; 2021 - Jakim Smartparking - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy" onclick="loadingjakim();">Privacidade</a>
         </div>
     </footer>
 
@@ -66,8 +113,7 @@
 </html>
 
 <script type='text/javascript'>
-    function loading()
-    {
-        document.getElementById('loading').style.visibility = 'visible';
+    function loadingjakim() {
+        document.getElementById('loadingjakim').style.visibility = 'visible';
     }
 </script>

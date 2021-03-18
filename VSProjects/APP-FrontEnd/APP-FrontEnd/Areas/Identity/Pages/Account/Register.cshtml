@@ -116,7 +116,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="submit" class="btn btn-primary" onclick="loading();">Registar</button>
+            <button type="submit" class="btn btn-primary" onclick="loadingjakim();">Registar</button>
         </form>
     </div>
     <div class="col-md-5" id="externalRegister">
@@ -140,7 +140,7 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                <button type="submit" class="btn btn-primary extLoginBtn" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" onclick="loading();">
+                                <button type="submit" class="btn btn-primary extLoginBtn" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" onclick="loadingjakim();">
                                     @switch (provider.DisplayName)
                                     {
                                         case "Google":
