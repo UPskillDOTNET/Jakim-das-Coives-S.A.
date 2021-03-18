@@ -35,7 +35,7 @@
             <input type="hidden" asp-for="Fim" value="@Model.Fim.ToString("dd-MM-yyyy HH:mm")" />
             <br />
             <div class="form-group">
-                <input id="pesquisa" style="width:250px" type="submit" value="Reservar" class="btn btn-primary" />
+                <input id="pesquisa" style="width:250px" type="submit" value="Reservar" class="btn btn-primary" onclick="loading();" />
             </div>
         </form>
     </div>
@@ -44,7 +44,7 @@
 <br />
 <br />
 <div>
-    <a class="text-light" style="font-size:1.2rem" asp-action="VoltarAHomepage">Cancelar</a>
+    <a class="text-light" style="font-size:1.2rem" asp-action="VoltarAHomepage" onclick="loading();">Cancelar</a>
 </div>
 
 @section Scripts {

@@ -33,7 +33,7 @@
                                 <div style="padding-top:0.6em; display:flex; align-items: center; ">
                                     <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                     <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta">Remover</button>
+                                    <button id="pesquisa" type="submit" class="btn btn-primary" style="width:200px" title="Remover esta autenticação @login.ProviderDisplayName da sua conta" onclick="loading();">Remover</button>
                                 </div>
                             </form>
                         }
@@ -56,7 +56,7 @@
             <p>
                 @foreach (var provider in Model.OtherLogins)
                 {
-                <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary extLoginBtn" name="provider" value="@provider.Name" title="Autenticar-se com a sua conta do @provider.DisplayName">
+                <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary extLoginBtn" name="provider" value="@provider.Name" title="Autenticar-se com a sua conta do @provider.DisplayName" onclick="loading();">
                     @switch (provider.DisplayName)
                     {
                         case "Google":
