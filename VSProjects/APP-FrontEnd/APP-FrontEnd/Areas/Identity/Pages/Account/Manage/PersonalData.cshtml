@@ -16,8 +16,8 @@
         </p>
         <br />
         <br />
-        <form id="download-data" asp-page="DownloadPersonalData" method="post" class="form-group" onsubmit="loadingjakim();">
-            <button id="pesquisa" class="btn btn-primary" style="width:250px" type="submit">Transferir</button>
+        <form asp-page="DownloadPersonalData" method="post" class="form-group" id="formjakim">
+            <button id="pesquisa" class="btn btn-primary" style="width:250px" type="submit" onclick="loadingjakim();">Transferir</button>
         </form>
         <br />
         <a asp-page="DeletePersonalData" class="btn btn-secondary" style="width:250px" id="pesquisaRemover" onclick="loadingjakim();">Remover</a>

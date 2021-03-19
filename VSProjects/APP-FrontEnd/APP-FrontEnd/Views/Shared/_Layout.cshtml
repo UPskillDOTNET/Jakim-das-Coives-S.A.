@@ -116,4 +116,12 @@
     function loadingjakim() {
         document.getElementById('loadingjakim').style.visibility = 'visible';
     }
+    function submitloadingjakim() {
+        let incompleto = true;
+        document.getElementById("formjakim").querySelectorAll("[required]").forEach(function (i) {
+            if (!i.value) { incompleto = true; }
+            else { incompleto = false; }
+        })
+        if (!incompleto) loadingjakim();
+    }
 </script>

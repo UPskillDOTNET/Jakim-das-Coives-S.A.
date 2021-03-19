@@ -14,17 +14,17 @@
 </div>
 
 <div>
-    <form id="delete-user" method="post" class="form-group" onsubmit="loadingjakim();">
+    <form method="post" class="form-group" id="formjakim">
         <div asp-validation-summary="All" class="text-danger"></div>
         @if (Model.RequirePassword)
         {
             <div class="form-group">
                 <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
+                <input required asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
         }
-        <button class="btn btn-danger" type="submit">Apagar dados e remover conta</button>
+        <button class="btn btn-danger" type="submit" onclick="submitloadingjakim();">Apagar dados e remover conta</button>
     </form>
 </div>
 
