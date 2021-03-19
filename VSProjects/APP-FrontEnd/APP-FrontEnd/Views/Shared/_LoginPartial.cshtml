@@ -9,7 +9,7 @@
             <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" onclick="loadingjakim();">Bem-vindo @UserManager.GetUserAsync(User).Result.Nome!</a>
         </li>
         <li class="nav-item">
-            <form class="form-inline" style="margin-top:4px" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" id="formjakim">
+            <form class="form-inline" style="margin-top:4px" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-light" onclick="loadingjakim();">Terminar Sessão</button>
             </form>
         </li>
